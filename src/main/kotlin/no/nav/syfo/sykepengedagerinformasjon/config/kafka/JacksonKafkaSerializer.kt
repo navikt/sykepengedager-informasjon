@@ -1,4 +1,4 @@
-package no.nav.syfo.config.kafka
+package no.nav.syfo.sykepengedagerinformasjon.config.kafka
 
 import com.fasterxml.jackson.databind.DeserializationFeature
 import com.fasterxml.jackson.databind.SerializationFeature

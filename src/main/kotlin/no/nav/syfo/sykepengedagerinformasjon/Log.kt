@@ -1,4 +1,4 @@
-package no.nav.syfo
+package no.nav.syfo.sykepengedagerinformasjon
 
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory

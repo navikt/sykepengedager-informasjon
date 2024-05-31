@@ -5,9 +5,9 @@ import org.springframework.boot.test.context.SpringBootTest
 
 @SpringBootTest
 class SykepengedagerInformasjonApplicationTests {
-
-	@Test
-	fun contextLoads() {
-	}
-
+    private val log = logger()
+    @Test
+    fun contextLoads() {
+        log.info("test")
+    }
 }

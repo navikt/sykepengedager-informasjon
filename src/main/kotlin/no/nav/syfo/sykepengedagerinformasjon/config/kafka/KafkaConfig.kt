@@ -1,5 +1,4 @@
-package no.nav.syfo.config.kafka
-
+package no.nav.syfo.sykepengedagerinformasjon.config.kafka
 import org.apache.kafka.clients.CommonClientConfigs
 import org.apache.kafka.clients.consumer.ConsumerConfig
 import org.apache.kafka.clients.producer.ProducerConfig
