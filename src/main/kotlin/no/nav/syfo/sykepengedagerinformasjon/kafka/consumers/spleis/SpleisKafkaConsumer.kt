@@ -5,6 +5,7 @@ import no.nav.syfo.sykepengedagerinformasjon.kafka.consumers.spleis.domain.Utbet
 import no.nav.syfo.sykepengedagerinformasjon.logger
 import org.springframework.kafka.annotation.KafkaListener
 
+@Suppress("TooGenericExceptionCaught")
 class SpleisKafkaConsumer {
     private val log = logger()
 
@@ -13,7 +14,7 @@ class SpleisKafkaConsumer {
         log.info("Received record from spleis: $utbetalingSpleis")
         try {
             log.info(
-                "Todo: should process utbetaling record ${utbetalingSpleis.utbetalingId}, ${utbetalingSpleis.event}"
+                "Todo: should process utbetaling record ${utbetalingSpleis.utbetalingId}, ${utbetalingSpleis.event}",
             )
         } catch (e: Exception) {
             log.error("Exception in [$topicUtbetaling]-listener: $e", e)

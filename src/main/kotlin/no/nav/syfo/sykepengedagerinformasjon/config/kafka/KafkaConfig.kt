@@ -1,3 +1,5 @@
+@file:Suppress("TopLevelPropertyNaming")
+
 package no.nav.syfo.sykepengedagerinformasjon.config.kafka
 
 import org.apache.kafka.clients.CommonClientConfigs
@@ -25,7 +27,6 @@ class KafkaConfig(
     @Value("\${kafka.keystore.path}") private val aivenKeystoreLocation: String,
     @Value("\${kafka.credstore.password}") private val aivenCredstorePassword: String,
 ) {
-
     fun commonKafkaAivenConfig(): HashMap<String, Any> {
         return HashMap<String, Any>().apply {
             put(

@@ -1,9 +1,9 @@
 package no.nav.syfo.sykepengedagerinformasjon.kafka.consumers.spleis
 
+import no.nav.syfo.sykepengedagerinformasjon.config.kafka.KafkaConfig
 import no.nav.syfo.sykepengedagerinformasjon.kafka.consumers.spleis.domain.UTBETALING_UTBETALT
 import no.nav.syfo.sykepengedagerinformasjon.kafka.consumers.spleis.domain.UTBETALING_UTEN_UTBETALING
 import no.nav.syfo.sykepengedagerinformasjon.kafka.consumers.spleis.domain.UtbetalingSpleis
-import no.nav.syfo.sykepengedagerinformasjon.config.kafka.KafkaConfig
 import org.apache.kafka.clients.consumer.ConsumerRecord
 import org.apache.kafka.common.serialization.StringDeserializer
 import org.springframework.context.annotation.Bean
@@ -24,19 +24,21 @@ class SpleisKafkaConfig(
         return DefaultKafkaConsumerFactory(
             kafkaConfig.commonKafkaAivenConfig().apply { kafkaConfig.commonKafkaAivenConsumerConfig() },
             StringDeserializer(),
-            JsonDeserializer(UtbetalingSpleis::class.java)
+            JsonDeserializer(UtbetalingSpleis::class.java),
         )
     }
 
+    @Suppress("MaxLineLength")
     @Bean
     fun spleisKafkaListenerWithFilterContainerFactory(): ConcurrentKafkaListenerContainerFactory<String, UtbetalingSpleis> {
         val factory: ConcurrentKafkaListenerContainerFactory<String, UtbetalingSpleis> =
             ConcurrentKafkaListenerContainerFactory<String, UtbetalingSpleis>()
         factory.consumerFactory = spleisConsumerFactory()
         factory.setRecordFilterStrategy { record: ConsumerRecord<String?, UtbetalingSpleis> ->
-            record.value().event.contains(UTBETALING_UTBETALT) || record.value().event.contains(
-                UTBETALING_UTEN_UTBETALING
-            )
+            record.value().event.contains(UTBETALING_UTBETALT) ||
+                record.value().event.contains(
+                    UTBETALING_UTEN_UTBETALING,
+                )
         }
         return factory
     }

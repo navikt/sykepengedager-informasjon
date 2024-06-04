@@ -2,6 +2,7 @@ package no.nav.syfo.sykepengedagerinformasjon.kafka.consumers.spleis.domain
 
 import java.time.LocalDate
 
+@Suppress("ConstructorParameterNaming")
 data class UtbetalingSpleis(
     val fødselsnummer: String,
     val organisasjonsnummer: String? = null,
