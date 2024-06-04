@@ -1,4 +1,4 @@
-package no.nav.syfo.kafka.consumers.utbetaling.domain
+package no.nav.syfo.sykepengedagerinformasjon.kafka.consumers.spleis.domain
 
 import java.time.LocalDate
 

@@ -130,5 +130,4 @@ class KafkaConfig(
         factory.consumerFactory = consumerFactory()!!
         return factory
     }
-
 }

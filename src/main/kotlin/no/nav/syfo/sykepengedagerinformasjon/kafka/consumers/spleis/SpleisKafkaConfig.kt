@@ -1,8 +1,8 @@
 package no.nav.syfo.sykepengedagerinformasjon.kafka.consumers.spleis
 
-import no.nav.syfo.kafka.consumers.utbetaling.domain.UTBETALING_UTBETALT
-import no.nav.syfo.kafka.consumers.utbetaling.domain.UTBETALING_UTEN_UTBETALING
-import no.nav.syfo.kafka.consumers.utbetaling.domain.UtbetalingSpleis
+import no.nav.syfo.sykepengedagerinformasjon.kafka.consumers.spleis.domain.UTBETALING_UTBETALT
+import no.nav.syfo.sykepengedagerinformasjon.kafka.consumers.spleis.domain.UTBETALING_UTEN_UTBETALING
+import no.nav.syfo.sykepengedagerinformasjon.kafka.consumers.spleis.domain.UtbetalingSpleis
 import no.nav.syfo.sykepengedagerinformasjon.config.kafka.KafkaConfig
 import org.apache.kafka.clients.consumer.ConsumerRecord
 import org.apache.kafka.common.serialization.StringDeserializer
@@ -29,8 +29,7 @@ class SpleisKafkaConfig(
     }
 
     @Bean
-    fun spleisKafkaListenerWithFilterContainerFactory()
-            : ConcurrentKafkaListenerContainerFactory<String, UtbetalingSpleis> {
+    fun spleisKafkaListenerWithFilterContainerFactory(): ConcurrentKafkaListenerContainerFactory<String, UtbetalingSpleis> {
         val factory: ConcurrentKafkaListenerContainerFactory<String, UtbetalingSpleis> =
             ConcurrentKafkaListenerContainerFactory<String, UtbetalingSpleis>()
         factory.consumerFactory = spleisConsumerFactory()

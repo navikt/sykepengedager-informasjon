@@ -1,7 +1,7 @@
 package no.nav.syfo.sykepengedagerinformasjon.kafka.consumers.spleis
 
-import no.nav.syfo.kafka.consumers.utbetaling.domain.UtbetalingSpleis
 import no.nav.syfo.sykepengedagerinformasjon.config.kafka.topicUtbetaling
+import no.nav.syfo.sykepengedagerinformasjon.kafka.consumers.spleis.domain.UtbetalingSpleis
 import no.nav.syfo.sykepengedagerinformasjon.logger
 import org.springframework.kafka.annotation.KafkaListener
 
@@ -13,7 +13,8 @@ class SpleisKafkaConsumer {
         log.info("Received record from spleis: $utbetalingSpleis")
         try {
             log.info(
-                "Todo: should process utbetaling record ${utbetalingSpleis.utbetalingId}, ${utbetalingSpleis.event}")
+                "Todo: should process utbetaling record ${utbetalingSpleis.utbetalingId}, ${utbetalingSpleis.event}"
+            )
         } catch (e: Exception) {
             log.error("Exception in [$topicUtbetaling]-listener: $e", e)
         }
