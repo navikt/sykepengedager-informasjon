@@ -23,7 +23,7 @@ spec:
     initialDelay: 10
     periodSeconds: 5
     timeout: 5
-    gcp:
+  gcp:
       sqlInstances:
         - type: POSTGRES_15
           databases:
