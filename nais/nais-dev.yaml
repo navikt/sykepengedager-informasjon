@@ -24,10 +24,12 @@ spec:
     periodSeconds: 5
     timeout: 5
   gcp:
-      sqlInstances:
-        - type: POSTGRES_15
-          databases:
-            - name: sykepengedager-informasjon-db
+    sqlInstances:
+      - type: POSTGRES_15
+        databases:
+          - name: sykepengedager-informasjon-db
+            envVarPrefix: DB
+        diskAutoresize: true
   prometheus:
     enabled: true
     path: /internal/prometheus
