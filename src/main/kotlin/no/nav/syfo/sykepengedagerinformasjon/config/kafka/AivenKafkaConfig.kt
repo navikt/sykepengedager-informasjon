@@ -9,6 +9,7 @@ import org.apache.kafka.common.serialization.StringDeserializer
 import org.springframework.beans.factory.annotation.Value
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
+import org.springframework.context.annotation.Profile
 import org.springframework.kafka.annotation.EnableKafka
 import org.springframework.kafka.config.ConcurrentKafkaListenerContainerFactory
 import org.springframework.kafka.core.DefaultKafkaConsumerFactory
@@ -19,6 +20,7 @@ const val topicUtbetaling = "tbd.utbetaling"
 
 @Configuration
 @EnableKafka
+@Profile("remote")
 class AivenKafkaConfig(
     @Value("\${kafka.brokers}") private val kafkaBrokers: String,
     @Value("\${kafka.truststore.path}") private val kafkaTruststorePath: String,

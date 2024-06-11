@@ -4,12 +4,14 @@ import no.nav.syfo.sykepengedagerinformasjon.config.kafka.topicSykepengedagerInf
 import no.nav.syfo.sykepengedagerinformasjon.config.kafka.topicUtbetaling
 import no.nav.syfo.sykepengedagerinformasjon.logger
 import org.apache.kafka.clients.consumer.ConsumerRecord
+import org.springframework.context.annotation.Profile
 import org.springframework.kafka.annotation.KafkaListener
 import org.springframework.kafka.support.Acknowledgment
 import org.springframework.stereotype.Component
 
 @Suppress("TooGenericExceptionCaught")
 @Component
+@Profile("remote")
 class SykepengedagerInformasjonKafkaConsumer {
     private val log = logger()
 
