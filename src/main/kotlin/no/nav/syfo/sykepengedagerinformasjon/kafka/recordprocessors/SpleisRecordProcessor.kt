@@ -31,7 +31,7 @@ class SpleisRecordProcessor {
 
     private fun processUtbetalingSpleisEvent(utbetaling: UtbetalingSpleis) {
         val fnr = utbetaling.fødselsnummer
-        log.info("TODO: processing fnr $fnr")
+        log.info("TODO: processing fnr")
         // processFodselsdato(fnr)
         // databaseInterface.storeSpleisUtbetaling(utbetaling)
     }

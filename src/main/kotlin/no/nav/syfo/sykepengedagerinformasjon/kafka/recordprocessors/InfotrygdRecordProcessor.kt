@@ -52,7 +52,7 @@ class InfotrygdRecordProcessor {
         source: InfotrygdSource,
     ) {
         log.info(
-            "TODO: processing infotrygd: $fnr, $sykepengerMaxDate, $utbetaltTilDate," +
+            "TODO: processing infotrygd: $sykepengerMaxDate, $utbetaltTilDate," +
                 "$gjenstaendeSykepengedager, $source",
         )
 
