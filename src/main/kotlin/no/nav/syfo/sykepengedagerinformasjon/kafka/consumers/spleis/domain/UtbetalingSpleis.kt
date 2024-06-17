@@ -1,20 +1,18 @@
 package no.nav.syfo.sykepengedagerinformasjon.kafka.consumers.spleis.domain
 
-import java.time.LocalDate
-
 @Suppress("ConstructorParameterNaming")
 data class UtbetalingSpleis(
     val fødselsnummer: String,
     val organisasjonsnummer: String? = null,
     val event: String,
     val type: String? = null,
-    val foreløpigBeregnetSluttPåSykepenger: LocalDate? = null,
+    val foreløpigBeregnetSluttPåSykepenger: String? = null,
     val forbrukteSykedager: Int? = null,
     val gjenståendeSykedager: Int? = null,
     val stønadsdager: Int? = null,
     val antallVedtak: Int? = null,
-    val fom: LocalDate,
-    val tom: LocalDate,
+    val fom: String,
+    val tom: String,
     val utbetalingId: String,
     val korrelasjonsId: String,
 )
