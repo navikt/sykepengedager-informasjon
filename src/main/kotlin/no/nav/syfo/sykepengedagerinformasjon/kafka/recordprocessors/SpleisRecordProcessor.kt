@@ -15,7 +15,7 @@ class SpleisRecordProcessor {
     private val objectMapper = jacksonObjectMapper()
 
     @Suppress("TooGenericExceptionCaught")
-    suspend fun processRecord(record: ConsumerRecord<String, String>) {
+    fun processRecord(record: ConsumerRecord<String, String>) {
         try {
             log.info("TODO: processing Spleis: start")
             val utbetaling = objectMapper.readValue(record.value(), UtbetalingSpleis::class.java)

@@ -17,7 +17,7 @@ class InfotrygdRecordProcessor {
     private val objectMapper = jacksonObjectMapper()
 
     @Suppress("TooGenericExceptionCaught")
-    suspend fun processRecord(record: ConsumerRecord<String, String>) {
+    fun processRecord(record: ConsumerRecord<String, String>) {
         try {
             log.info("TODO: processing infotrygd: start")
             val kInfotrygdSykepengedager = objectMapper.readValue(record.value(), KInfotrygdSykepengedager::class.java)
