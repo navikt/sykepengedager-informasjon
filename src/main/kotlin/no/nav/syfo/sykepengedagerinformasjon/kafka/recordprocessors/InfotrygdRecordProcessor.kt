@@ -20,6 +20,8 @@ class InfotrygdRecordProcessor {
     fun processRecord(record: ConsumerRecord<String, String>) {
         try {
             log.info("TODO: processing infotrygd: start")
+            log.info("TODO: processing Spleis value: ${record.value()}")
+
             val kInfotrygdSykepengedager = objectMapper.readValue(record.value(), KInfotrygdSykepengedager::class.java)
 
             val fnr = kInfotrygdSykepengedager.after.F_NR

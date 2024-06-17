@@ -18,6 +18,7 @@ class SpleisRecordProcessor {
     fun processRecord(record: ConsumerRecord<String, String>) {
         try {
             log.info("TODO: processing Spleis: start")
+            log.info("TODO: processing Spleis value: ${record.value()}")
             val utbetaling = objectMapper.readValue(record.value(), UtbetalingSpleis::class.java)
             if (utbetaling.event == UTBETALING_UTBETALT || utbetaling.event == UTBETALING_UTEN_UTBETALING) {
                 log.info("TODO: About to process ${utbetaling.event}")
