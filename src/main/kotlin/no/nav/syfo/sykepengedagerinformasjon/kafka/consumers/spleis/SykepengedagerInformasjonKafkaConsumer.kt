@@ -18,7 +18,7 @@ class SykepengedagerInformasjonKafkaConsumer {
     @KafkaListener(
         topics = [topicUtbetaling, topicSykepengedagerInfotrygd],
     )
-    suspend fun listen(
+    fun listen(
         record: ConsumerRecord<String, String>,
         ack: Acknowledgment,
     ) {
@@ -28,19 +28,19 @@ class SykepengedagerInformasjonKafkaConsumer {
                 "Todo: received e record from topic $topic",
             )
 
-//            when (topic) {
-//                topicUtbetaling -> {
-//                    log.info("Todo: Going to process record from topicUtbetaling $topic")
-// //                    spleisRecordProcessor.processRecord(record)
-//                }
-//
-//                topicSykepengedagerInfotrygd -> {
-//                    log.info(
-//                        "Todo: Going to process record from topicSykepengedagerInfotrygd $topic",
-//                    )
-// //                    infotrygdRecordProcessor.processRecord(record)
-//                }
-//            }
+            when (topic) {
+                topicUtbetaling -> {
+                    log.info("Todo: Going to process record from topicUtbetaling $topic")
+                    //                    spleisRecordProcessor.processRecord(record)
+                }
+
+                topicSykepengedagerInfotrygd -> {
+                    log.info(
+                        "Todo: Going to process record from topicSykepengedagerInfotrygd $topic",
+                    )
+                    //                    infotrygdRecordProcessor.processRecord(record)
+                }
+            }
             ack.acknowledge()
         } catch (e: Exception) {
             log.error("Exception in ${SykepengedagerInformasjonKafkaConsumer::class.qualifiedName}-listener: $e", e)
