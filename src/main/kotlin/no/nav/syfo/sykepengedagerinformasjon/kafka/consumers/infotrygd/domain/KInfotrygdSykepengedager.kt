@@ -8,6 +8,7 @@ import com.fasterxml.jackson.annotation.JsonProperty
 data class KInfotrygdSykepengedager(
     val after: After,
 ) {
+    @JsonIgnoreProperties(ignoreUnknown = true)
     data class After(
         @JsonProperty("MAX_DATO")
         val MAX_DATO: String,
