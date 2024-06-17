@@ -7,14 +7,17 @@ import no.nav.syfo.sykepengedagerinformasjon.kafka.consumers.spleis.domain.UTBET
 import no.nav.syfo.sykepengedagerinformasjon.kafka.consumers.spleis.domain.UtbetalingSpleis
 import no.nav.syfo.sykepengedagerinformasjon.logger
 import org.apache.kafka.clients.consumer.ConsumerRecord
+import org.springframework.stereotype.Component
 
-class SpleisRecordProcessor : SykepengedagerInformasjonRecordProcessor {
+@Component
+class SpleisRecordProcessor {
     private val log = logger()
     private val objectMapper = jacksonObjectMapper()
 
     @Suppress("TooGenericExceptionCaught")
-    override suspend fun processRecord(record: ConsumerRecord<String, String>) {
+    suspend fun processRecord(record: ConsumerRecord<String, String>) {
         try {
+            log.info("TODO: processing Spleis: start")
             val utbetaling = objectMapper.readValue(record.value(), UtbetalingSpleis::class.java)
             if (utbetaling.event == UTBETALING_UTBETALT || utbetaling.event == UTBETALING_UTEN_UTBETALING) {
                 log.info("TODO: About to process ${utbetaling.event}")

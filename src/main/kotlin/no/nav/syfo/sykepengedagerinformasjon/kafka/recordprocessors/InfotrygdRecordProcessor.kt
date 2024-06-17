@@ -8,15 +8,18 @@ import no.nav.syfo.sykepengedagerinformasjon.kafka.consumers.infotrygd.gjenstaen
 import no.nav.syfo.sykepengedagerinformasjon.kafka.util.parseDate
 import no.nav.syfo.sykepengedagerinformasjon.logger
 import org.apache.kafka.clients.consumer.ConsumerRecord
+import org.springframework.stereotype.Component
 import java.time.LocalDate
 
-class InfotrygdRecordProcessor : SykepengedagerInformasjonRecordProcessor {
+@Component
+class InfotrygdRecordProcessor {
     private val log = logger()
     private val objectMapper = jacksonObjectMapper()
 
     @Suppress("TooGenericExceptionCaught")
-    override suspend fun processRecord(record: ConsumerRecord<String, String>) {
+    suspend fun processRecord(record: ConsumerRecord<String, String>) {
         try {
+            log.info("TODO: processing infotrygd: start")
             val kInfotrygdSykepengedager = objectMapper.readValue(record.value(), KInfotrygdSykepengedager::class.java)
 
             val fnr = kInfotrygdSykepengedager.after.F_NR
@@ -31,7 +34,7 @@ class InfotrygdRecordProcessor : SykepengedagerInformasjonRecordProcessor {
                     sykepengerMaxDate,
                     utbetaltTomDate,
                     utbetaltTomDate.gjenstaendeSykepengedager(sykepengerMaxDate),
-                    InfotrygdSource.AAP_KAFKA_TOPIC
+                    InfotrygdSource.AAP_KAFKA_TOPIC,
                 )
             }
         } catch (e: Exception) {
@@ -47,7 +50,8 @@ class InfotrygdRecordProcessor : SykepengedagerInformasjonRecordProcessor {
         source: InfotrygdSource,
     ) {
         log.info(
-            "TODO: processing infotrygd: $fnr, $sykepengerMaxDate, $utbetaltTilDate, $gjenstaendeSykepengedager"
+            "TODO: processing infotrygd: $fnr, $sykepengerMaxDate, $utbetaltTilDate," +
+                "$gjenstaendeSykepengedager, $source",
         )
 
         //        processFodselsdato(fnr)

@@ -4,7 +4,6 @@ import no.nav.syfo.sykepengedagerinformasjon.config.kafka.topicSykepengedagerInf
 import no.nav.syfo.sykepengedagerinformasjon.config.kafka.topicUtbetaling
 import no.nav.syfo.sykepengedagerinformasjon.kafka.recordprocessors.InfotrygdRecordProcessor
 import no.nav.syfo.sykepengedagerinformasjon.kafka.recordprocessors.SpleisRecordProcessor
-import no.nav.syfo.sykepengedagerinformasjon.kafka.recordprocessors.SykepengedagerInformasjonRecordProcessor
 import no.nav.syfo.sykepengedagerinformasjon.logger
 import org.apache.kafka.clients.consumer.ConsumerRecord
 import org.springframework.context.annotation.Profile
@@ -15,7 +14,10 @@ import org.springframework.stereotype.Component
 @Suppress("TooGenericExceptionCaught")
 @Component
 @Profile("remote")
-class SykepengedagerInformasjonKafkaConsumer {
+class SykepengedagerInformasjonKafkaConsumer(
+    private val spleisRecordProcessor: SpleisRecordProcessor,
+    private val infotrygdRecordProcessor: InfotrygdRecordProcessor,
+) {
     private val log = logger()
 
     @KafkaListener(
@@ -26,7 +28,6 @@ class SykepengedagerInformasjonKafkaConsumer {
         ack: Acknowledgment,
     ) {
         val topic = record.topic()
-        val processor: SykepengedagerInformasjonRecordProcessor
 
         try {
             log.info(
@@ -36,16 +37,14 @@ class SykepengedagerInformasjonKafkaConsumer {
             when (topic) {
                 topicUtbetaling -> {
                     log.info("Todo: Going to process record from topicUtbetaling $topicUtbetaling")
-                    processor = SpleisRecordProcessor()
-                    processor.processRecord(record)
+                    spleisRecordProcessor.processRecord(record)
                 }
 
                 topicSykepengedagerInfotrygd -> {
                     log.info(
-                        "Todo: Going to process record from topicSykepengedagerInfotrygd $topicSykepengedagerInfotrygd"
+                        "Todo: Going to process record from topicSykepengedagerInfotrygd $topicSykepengedagerInfotrygd",
                     )
-                    processor = InfotrygdRecordProcessor()
-                    processor.processRecord(record)
+                    infotrygdRecordProcessor.processRecord(record)
                 }
             }
             ack.acknowledge()
