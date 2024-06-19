@@ -51,7 +51,6 @@ class InfotrygdRecordProcessor {
         gjenstaendeSykepengedager: Int,
         source: InfotrygdSource,
     ) {
-        //        processFodselsdato(fnr) // TODO?
         utbetalingInfotrygdDAO.storeInfotrygdUtbetaling(
             fnr,
             sykepengerMaxDate,

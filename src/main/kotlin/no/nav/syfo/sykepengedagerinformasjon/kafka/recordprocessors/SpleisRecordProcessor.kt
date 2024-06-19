@@ -31,8 +31,6 @@ class SpleisRecordProcessor {
     }
 
     private fun processUtbetalingSpleisEvent(utbetaling: UtbetalingSpleis) {
-        val fnr = utbetaling.fødselsnummer
-        // processFodselsdato(fnr) // TODO?
         utbetalingSpleisDAO.storeSpleisUtbetaling(utbetaling)
     }
 }
