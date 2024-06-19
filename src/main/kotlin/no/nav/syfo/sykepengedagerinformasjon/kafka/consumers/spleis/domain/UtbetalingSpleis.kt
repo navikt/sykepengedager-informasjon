@@ -2,7 +2,6 @@ package no.nav.syfo.sykepengedagerinformasjon.kafka.consumers.spleis.domain
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties
 
-@Suppress("ConstructorParameterNaming")
 @JsonIgnoreProperties(ignoreUnknown = true)
 data class UtbetalingSpleis(
     val fødselsnummer: String,

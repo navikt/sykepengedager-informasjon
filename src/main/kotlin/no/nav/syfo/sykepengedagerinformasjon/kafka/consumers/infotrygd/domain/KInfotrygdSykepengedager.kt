@@ -3,7 +3,6 @@ package no.nav.syfo.sykepengedagerinformasjon.kafka.consumers.infotrygd.domain
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties
 import com.fasterxml.jackson.annotation.JsonProperty
 
-@Suppress("ConstructorParameterNaming")
 @JsonIgnoreProperties(ignoreUnknown = true)
 data class KInfotrygdSykepengedager(
     val after: After,

@@ -1,6 +1,18 @@
 style:
   MagicNumber:
     active: false
+naming:
+  ConstructorParameterNaming:
+    active: false
+exceptions:
+  TooGenericExceptionCaught:
+    active: false
+  SwallowedException:
+    active: false
+complexity:
+  LongMethod:
+    active: false
+
 config:
   validation: true
   warningsAsErrors: true

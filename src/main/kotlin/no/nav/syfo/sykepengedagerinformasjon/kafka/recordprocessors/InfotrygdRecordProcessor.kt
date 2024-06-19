@@ -2,12 +2,14 @@ package no.nav.syfo.sykepengedagerinformasjon.kafka.recordprocessors
 
 import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
 import no.nav.syfo.sykepengedagerinformasjon.config.kafka.topicSykepengedagerInfotrygd
+import no.nav.syfo.sykepengedagerinformasjon.db.UtbetalingInfotrygdDAO
 import no.nav.syfo.sykepengedagerinformasjon.kafka.consumers.infotrygd.domain.InfotrygdSource
 import no.nav.syfo.sykepengedagerinformasjon.kafka.consumers.infotrygd.domain.KInfotrygdSykepengedager
 import no.nav.syfo.sykepengedagerinformasjon.kafka.consumers.infotrygd.gjenstaendeSykepengedager
 import no.nav.syfo.sykepengedagerinformasjon.kafka.util.parseDate
 import no.nav.syfo.sykepengedagerinformasjon.logger
 import org.apache.kafka.clients.consumer.ConsumerRecord
+import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Component
 import java.time.LocalDate
 
@@ -16,13 +18,12 @@ class InfotrygdRecordProcessor {
     private val log = logger()
     private val objectMapper = jacksonObjectMapper()
 
-    @Suppress("TooGenericExceptionCaught")
+    @Autowired
+    private lateinit var utbetalingInfotrygdDAO: UtbetalingInfotrygdDAO
+
     fun processRecord(record: ConsumerRecord<String, String>) {
         try {
-            log.info("TODO: processing infotrygd: start")
-
             val kInfotrygdSykepengedager = objectMapper.readValue(record.value(), KInfotrygdSykepengedager::class.java)
-
             val fnr = kInfotrygdSykepengedager.after.F_NR
             val sykepengerMaxDate = parseDate(kInfotrygdSykepengedager.after.MAX_DATO)
             val utbetaltTom = kInfotrygdSykepengedager.after.UTBET_TOM
@@ -50,13 +51,13 @@ class InfotrygdRecordProcessor {
         gjenstaendeSykepengedager: Int,
         source: InfotrygdSource,
     ) {
-        log.info(
-            "TODO: processing infotrygd: $sykepengerMaxDate, $utbetaltTilDate," +
-                "$gjenstaendeSykepengedager, $source",
+        //        processFodselsdato(fnr) // TODO?
+        utbetalingInfotrygdDAO.storeInfotrygdUtbetaling(
+            fnr,
+            sykepengerMaxDate,
+            utbetaltTilDate,
+            gjenstaendeSykepengedager,
+            source,
         )
-
-        //        processFodselsdato(fnr)
-        // databaseInterface.storeInfotrygdUtbetaling(fnr,
-        // sykepengerMaxDate, utbetaltTilDate, gjenstaendeSykepengedager, source)
     }
 }
