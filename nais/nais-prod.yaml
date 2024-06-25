@@ -56,3 +56,12 @@ spec:
       claims:
         extra:
           - "NAVident"
+  accessPolicy:
+    inbound:
+      rules:
+        - application: syfomodiaperson
+          namespace: teamsykefravr
+          cluster: prod-gcp
+        - application: meroppfolging-frontend
+        - application: ditt-sykefravaer
+          namespace: flex

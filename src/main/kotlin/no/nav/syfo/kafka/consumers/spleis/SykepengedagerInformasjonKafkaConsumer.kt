@@ -1,10 +1,10 @@
 package no.nav.syfo.kafka.consumers.spleis
 
-import no.nav.syfo.sykepengedagerinformasjon.config.kafka.topicSykepengedagerInfotrygd
-import no.nav.syfo.sykepengedagerinformasjon.config.kafka.topicUtbetaling
-import no.nav.syfo.sykepengedagerinformasjon.kafka.recordprocessors.InfotrygdRecordProcessor
-import no.nav.syfo.sykepengedagerinformasjon.kafka.recordprocessors.SpleisRecordProcessor
-import no.nav.syfo.sykepengedagerinformasjon.logger
+import no.nav.syfo.config.kafka.topicSykepengedagerInfotrygd
+import no.nav.syfo.config.kafka.topicUtbetaling
+import no.nav.syfo.kafka.recordprocessors.InfotrygdRecordProcessor
+import no.nav.syfo.kafka.recordprocessors.SpleisRecordProcessor
+import no.nav.syfo.logger
 import org.apache.kafka.clients.consumer.ConsumerRecord
 import org.springframework.context.annotation.Profile
 import org.springframework.kafka.annotation.KafkaListener

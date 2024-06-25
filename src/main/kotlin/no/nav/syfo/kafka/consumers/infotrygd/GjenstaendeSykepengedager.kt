@@ -1,6 +1,6 @@
 package no.nav.syfo.kafka.consumers.infotrygd
 
-import no.nav.syfo.sykepengedagerinformasjon.kafka.util.isEqualOrBefore
+import no.nav.syfo.kafka.util.isEqualOrBefore
 import java.time.DayOfWeek
 import java.time.LocalDate
 

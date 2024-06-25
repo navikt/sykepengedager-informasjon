@@ -29,6 +29,7 @@ val springKotestExtensionVersion = "1.1.3"
 val mockkVersion = "1.13.11"
 val wiremockVersion = "3.6.0"
 val wiremockKotestExtensionVersion = "3.0.1"
+val tokenSupportVersion = "4.1.7"
 
 dependencies {
     implementation("org.springframework.boot:spring-boot-starter")
@@ -42,6 +43,8 @@ dependencies {
     implementation("org.jetbrains.kotlin:kotlin-reflect")
     implementation("org.springframework.kafka:spring-kafka")
     implementation("com.fasterxml.jackson.module:jackson-module-kotlin")
+    implementation("no.nav.security:token-client-spring:$tokenSupportVersion")
+    implementation("no.nav.security:token-validation-spring:$tokenSupportVersion")
     runtimeOnly("io.micrometer:micrometer-registry-prometheus")
     implementation("net.logstash.logback:logstash-logback-encoder:$logstashLogbackEncoderVersion")
     runtimeOnly("org.postgresql:postgresql")
@@ -55,6 +58,7 @@ dependencies {
     testImplementation("io.kotest.extensions:kotest-extensions-wiremock:$wiremockKotestExtensionVersion")
     testImplementation("org.springframework.kafka:spring-kafka-test")
     testImplementation("com.h2database:h2")
+    testImplementation("no.nav.security:token-validation-spring-test:$tokenSupportVersion")
     testRuntimeOnly("org.junit.platform:junit-platform-launcher")
 
     detektPlugins("io.gitlab.arturbosch.detekt:detekt-formatting:$detektVersion")

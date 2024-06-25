@@ -1,6 +1,6 @@
 package no.nav.syfo.db
 
-import no.nav.syfo.sykepengedagerinformasjon.kafka.consumers.spleis.domain.UtbetalingSpleis
+import no.nav.syfo.kafka.consumers.spleis.domain.UtbetalingSpleis
 import org.springframework.dao.EmptyResultDataAccessException
 import org.springframework.jdbc.core.RowMapper
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource

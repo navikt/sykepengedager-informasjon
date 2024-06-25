@@ -5,9 +5,9 @@ import io.kotest.core.test.TestCase
 import io.kotest.extensions.spring.SpringExtension
 import io.kotest.matchers.shouldBe
 import io.kotest.matchers.shouldNotBe
-import no.nav.syfo.sykepengedagerinformasjon.LocalApplication
-import no.nav.syfo.sykepengedagerinformasjon.db.util.DatabaseCleaner
-import no.nav.syfo.sykepengedagerinformasjon.kafka.consumers.spleis.domain.UtbetalingSpleis
+import no.nav.syfo.LocalApplication
+import no.nav.syfo.db.util.DatabaseCleaner
+import no.nav.syfo.kafka.consumers.spleis.domain.UtbetalingSpleis
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.context.SpringBootTest
 import java.time.LocalDate

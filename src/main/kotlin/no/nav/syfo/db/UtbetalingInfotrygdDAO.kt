@@ -1,6 +1,6 @@
 package no.nav.syfo.db
 
-import no.nav.syfo.sykepengedagerinformasjon.kafka.consumers.infotrygd.domain.InfotrygdSource
+import no.nav.syfo.kafka.consumers.infotrygd.domain.InfotrygdSource
 import org.springframework.dao.EmptyResultDataAccessException
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate

@@ -6,3 +6,12 @@ kafka.schema.registry.user: "kafka.schema.registry.user"
 kafka.schema.registry.password: "kafka.schema.registry.password"
 kafka.schema.registry: "kafka.schema.registry"
 spring.flyway.clean-disabled: "false"
+azure:
+  app:
+    client:
+      id: "client-id"
+      secret: "client-secret"
+  openid:
+    config:
+      token:
+        endpoint: "https://token-endpoint"

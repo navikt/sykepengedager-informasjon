@@ -1,12 +1,12 @@
 package no.nav.syfo.kafka.recordprocessors
 
 import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
-import no.nav.syfo.sykepengedagerinformasjon.config.kafka.topicUtbetaling
-import no.nav.syfo.sykepengedagerinformasjon.db.UtbetalingSpleisDAO
-import no.nav.syfo.sykepengedagerinformasjon.kafka.consumers.spleis.domain.UTBETALING_UTBETALT
-import no.nav.syfo.sykepengedagerinformasjon.kafka.consumers.spleis.domain.UTBETALING_UTEN_UTBETALING
-import no.nav.syfo.sykepengedagerinformasjon.kafka.consumers.spleis.domain.UtbetalingSpleis
-import no.nav.syfo.sykepengedagerinformasjon.logger
+import no.nav.syfo.config.kafka.topicUtbetaling
+import no.nav.syfo.db.UtbetalingSpleisDAO
+import no.nav.syfo.kafka.consumers.spleis.domain.UTBETALING_UTBETALT
+import no.nav.syfo.kafka.consumers.spleis.domain.UTBETALING_UTEN_UTBETALING
+import no.nav.syfo.kafka.consumers.spleis.domain.UtbetalingSpleis
+import no.nav.syfo.logger
 import org.apache.kafka.clients.consumer.ConsumerRecord
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Component
