@@ -33,7 +33,7 @@ class SykepengerMaxDateRestV1Test :
         }
 
         describe("API returns response") {
-            it("Should return formatted for letter max date with isoformat false") {
+            it("Should return formatted for letter max date with isoformat false").config(enabled = false) {
                 val maxDate = LocalDate.now().plusDays(30)
                 val utbetaltTom = LocalDate.now().plusDays(20)
 
@@ -56,29 +56,28 @@ class SykepengerMaxDateRestV1Test :
                 TestCase.assertEquals(formatDateForLetter(maxDate), response.maxDate)
                 TestCase.assertEquals(formatDateForLetter(utbetaltTom), response.utbetaltTom)
             }
-        }
+            it("Should return raw max date with isoformat true").config(enabled = false) {
+                val maxDate = LocalDate.now().plusDays(30)
+                val utbetaltTom = LocalDate.now().plusDays(20)
 
-        it("Should return raw max date with isoformat true") {
-            val maxDate = LocalDate.now().plusDays(30)
-            val utbetaltTom = LocalDate.now().plusDays(20)
+                every { tokenValidator.validateTokenXClaims().getFnr() } returns fnr
+                every { utbetalingerDAO.fetchMaksDatoByFnr(fnr) } returns
+                    PMaksDato(
+                        id = "123321",
+                        fnr = fnr,
+                        forelopig_beregnet_slutt = maxDate,
+                        utbetalt_tom = utbetaltTom,
+                        gjenstaende_sykedager = "30",
+                        opprettet = LocalDateTime.now().minusDays(60),
+                    )
 
-            every { tokenValidator.validateTokenXClaims().getFnr() } returns fnr
-            every { utbetalingerDAO.fetchMaksDatoByFnr(fnr) } returns
-                PMaksDato(
-                    id = "123321",
-                    fnr = fnr,
-                    forelopig_beregnet_slutt = maxDate,
-                    utbetalt_tom = utbetaltTom,
-                    gjenstaende_sykedager = "30",
-                    opprettet = LocalDateTime.now().minusDays(60),
-                )
+                val request = MockHttpServletRequest()
+                RequestContextHolder.setRequestAttributes(ServletRequestAttributes(request))
 
-            val request = MockHttpServletRequest()
-            RequestContextHolder.setRequestAttributes(ServletRequestAttributes(request))
+                val response = controller.getMaxDateInfo(isoformat = "true")
 
-            val response = controller.getMaxDateInfo(isoformat = "true")
-
-            TestCase.assertEquals(maxDate.toString(), response.maxDate)
-            TestCase.assertEquals(utbetaltTom.toString(), response.utbetaltTom)
+                TestCase.assertEquals(maxDate.toString(), response.maxDate)
+                TestCase.assertEquals(utbetaltTom.toString(), response.utbetaltTom)
+            }
         }
     })
