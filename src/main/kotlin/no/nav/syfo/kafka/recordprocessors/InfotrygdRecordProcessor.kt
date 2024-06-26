@@ -28,7 +28,6 @@ class InfotrygdRecordProcessor {
             val sykepengerMaxDate = parseDate(kInfotrygdSykepengedager.after.MAX_DATO)
             val utbetaltTom = kInfotrygdSykepengedager.after.UTBET_TOM
 
-            log.info("TODO: fnr: $fnr")
             if (utbetaltTom != null) {
                 val utbetaltTomDate = parseDate(utbetaltTom)
 

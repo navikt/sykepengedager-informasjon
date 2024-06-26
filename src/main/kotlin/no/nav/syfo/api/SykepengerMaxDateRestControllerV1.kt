@@ -27,7 +27,7 @@ class SykepengerMaxDateRestControllerV1(val utbetalingerDAO: UtbetalingerDAO) {
     fun getMaxDateInfo(
         @RequestParam isoformat: String?,
     ): SykepengerMaxDateResponse {
-        log.info("TODO: requesting max date rest endpoint")
+        log.info("Todo: requesting max date rest endpoint")
         val personIdent = tokenValidator.validateTokenXClaims().getFnr()
         val isoFormat = isoformat?.toBoolean() ?: false
 
@@ -49,7 +49,8 @@ class SykepengerMaxDateRestControllerV1(val utbetalingerDAO: UtbetalingerDAO) {
                 }
             }
         log.info("Fetched sykepengerMaxDate from database: ${sykepengerMaxDate?.forelopig_beregnet_slutt}")
-        return SykepengerMaxDateResponse(maxDate = maxDate, utbetaltTom = utbetaltTom)
+        return SykepengerMaxDateResponse(maxDate = "2024-10-10", utbetaltTom = "2024-11-11")
+//        return SykepengerMaxDateResponse(maxDate = maxDate, utbetaltTom = utbetaltTom)
     }
 }
 
