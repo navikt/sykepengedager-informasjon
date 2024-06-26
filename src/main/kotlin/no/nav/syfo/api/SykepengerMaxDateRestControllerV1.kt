@@ -59,8 +59,7 @@ class SykepengerMaxDateRestControllerV1(
                 }
             }
         log.info("Fetched sykepengerMaxDate from database: ${sykepengerMaxDate?.forelopig_beregnet_slutt}")
-        return SykepengerMaxDateResponse(maxDate = "2024-10-10", utbetaltTom = "2024-11-11")
-//        return SykepengerMaxDateResponse(maxDate = maxDate, utbetaltTom = utbetaltTom)
+        return SykepengerMaxDateResponse(maxDate = maxDate, utbetaltTom = utbetaltTom)
     }
 }
 

@@ -37,7 +37,7 @@ class SykepengerMaxDateRestV1Test :
         }
 
         describe("API returns response") {
-            it("Should return formatted for letter max date with isoformat false").config(enabled = false) {
+            it("Should return formatted for letter max date with isoformat false") {
                 val maxDate = LocalDate.now().plusDays(30)
                 val utbetaltTom = LocalDate.now().plusDays(20)
 
@@ -60,7 +60,7 @@ class SykepengerMaxDateRestV1Test :
                 TestCase.assertEquals(formatDateForLetter(maxDate), response.maxDate)
                 TestCase.assertEquals(formatDateForLetter(utbetaltTom), response.utbetaltTom)
             }
-            it("Should return raw max date with isoformat true").config(enabled = false) {
+            it("Should return raw max date with isoformat true") {
                 val maxDate = LocalDate.now().plusDays(30)
                 val utbetaltTom = LocalDate.now().plusDays(20)
 
