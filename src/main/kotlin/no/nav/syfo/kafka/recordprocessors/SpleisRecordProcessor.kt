@@ -22,6 +22,7 @@ class SpleisRecordProcessor {
     fun processRecord(record: ConsumerRecord<String, String>) {
         try {
             val utbetaling = objectMapper.readValue(record.value(), UtbetalingSpleis::class.java)
+            log.info("todo: event ${utbetaling.event} , fnr = ${utbetaling.fødselsnummer}")
             if (utbetaling.event == UTBETALING_UTBETALT || utbetaling.event == UTBETALING_UTEN_UTBETALING) {
                 processUtbetalingSpleisEvent(utbetaling)
             }
