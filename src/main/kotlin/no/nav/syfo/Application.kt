@@ -6,7 +6,6 @@ import org.springframework.boot.runApplication
 
 @SpringBootApplication
 @EnableJwtTokenValidation
-
 class Application
 
 @Suppress("SpreadOperator")
