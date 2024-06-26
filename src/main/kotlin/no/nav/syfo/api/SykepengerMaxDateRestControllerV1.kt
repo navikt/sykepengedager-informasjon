@@ -1,6 +1,8 @@
 package no.nav.syfo.api
 
+import jakarta.annotation.PostConstruct
 import no.nav.security.token.support.core.api.ProtectedWithClaims
+import no.nav.security.token.support.core.context.TokenValidationContextHolder
 import no.nav.syfo.auth.TokenValidator
 import no.nav.syfo.auth.getFnr
 import no.nav.syfo.db.UtbetalingerDAO
@@ -18,9 +20,17 @@ import java.io.Serializable
 @Suppress("LongParameterList")
 @RequestMapping("/")
 @ProtectedWithClaims(issuer = "tokenx", combineWithOr = true, claimMap = ["acr=Level4", "acr=idporten-loa-high"])
-class SykepengerMaxDateRestControllerV1(val utbetalingerDAO: UtbetalingerDAO) {
+class SykepengerMaxDateRestControllerV1(
+    val utbetalingerDAO: UtbetalingerDAO,
+    val tokenValidationContextHolder: TokenValidationContextHolder,
+) {
     private val log = logger()
     lateinit var tokenValidator: TokenValidator
+
+    @PostConstruct
+    fun init() {
+        tokenValidator = TokenValidator(tokenValidationContextHolder)
+    }
 
     @GetMapping("api/v1/sykepenger/maxdate", produces = [MediaType.APPLICATION_JSON_VALUE])
     @ResponseBody
