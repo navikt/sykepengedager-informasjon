@@ -31,6 +31,7 @@ class SpleisRecordProcessor {
     }
 
     private fun processUtbetalingSpleisEvent(utbetaling: UtbetalingSpleis) {
+        log.info("TODO: fnr ${utbetaling.fødselsnummer}")
         utbetalingSpleisDAO.storeSpleisUtbetaling(utbetaling)
     }
 }
