@@ -5,6 +5,7 @@ import io.mockk.clearAllMocks
 import io.mockk.every
 import io.mockk.mockk
 import junit.framework.TestCase
+import no.nav.security.token.support.core.context.TokenValidationContextHolder
 import no.nav.syfo.auth.TokenValidator
 import no.nav.syfo.auth.getFnr
 import no.nav.syfo.db.PMaksDato
@@ -20,10 +21,13 @@ class SykepengerMaxDateRestV1Test :
     DescribeSpec({
         val utbetalingerDAO = mockk<UtbetalingerDAO>(relaxed = true)
         val tokenValidator = mockk<TokenValidator>(relaxed = true)
+        val tokenValidationContextHolder = mockk<TokenValidationContextHolder>(relaxed = true)
+
         val fnr = "12121212121"
         val controller =
             SykepengerMaxDateRestControllerV1(
                 utbetalingerDAO = utbetalingerDAO,
+                tokenValidationContextHolder = tokenValidationContextHolder,
             ).apply {
                 this.tokenValidator = tokenValidator
             }
