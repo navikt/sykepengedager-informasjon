@@ -15,3 +15,7 @@ azure:
     config:
       token:
         endpoint: "https://token-endpoint"
+
+
+istilgangskontroll.url": "http://istilgangskontrollUrl:9099"
+istilgangskontroll.scope: "istilgangskontrollScope"
