@@ -56,12 +56,20 @@ spec:
       claims:
         extra:
           - "NAVident"
+  env:
+    - name: ISTILGANGSKONTROLL_URL
+      value: http://istilgangskontroll.teamsykefravr
+    - name: ISTILGANGSKONTROLL_SCOPE
+      value: api://prod-gcp.teamsykefravr.istilgangskontroll/.default
+    - name: ISTILGANGSKONTROLL_ID
+      value: prod-gcp.teamsykefravr.istilgangskontroll
   accessPolicy:
     inbound:
       rules:
+        - application: meroppfolging-frontend
+        - application: meroppfolging-backend
         - application: syfomodiaperson
           namespace: teamsykefravr
           cluster: prod-gcp
-        - application: meroppfolging-frontend
         - application: ditt-sykefravaer
           namespace: flex

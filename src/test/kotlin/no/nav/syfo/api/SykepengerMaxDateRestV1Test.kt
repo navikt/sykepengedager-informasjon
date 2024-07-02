@@ -9,7 +9,7 @@ import no.nav.syfo.auth.TokenValidator
 import no.nav.syfo.auth.getFnr
 import no.nav.syfo.db.PMaksDato
 import no.nav.syfo.db.UtbetalingerDAO
-import no.nav.syfo.kafka.util.formatDateForLetter
+import no.nav.syfo.utils.formatDateForLetter
 import org.springframework.mock.web.MockHttpServletRequest
 import org.springframework.web.context.request.RequestContextHolder
 import org.springframework.web.context.request.ServletRequestAttributes

@@ -4,8 +4,8 @@ import no.nav.security.token.support.core.api.ProtectedWithClaims
 import no.nav.syfo.auth.TokenValidator
 import no.nav.syfo.auth.getFnr
 import no.nav.syfo.db.UtbetalingerDAO
-import no.nav.syfo.kafka.util.formatDateForLetter
 import no.nav.syfo.logger
+import no.nav.syfo.utils.formatDateForLetter
 import org.springframework.http.MediaType
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.RequestMapping

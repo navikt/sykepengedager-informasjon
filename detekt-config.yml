@@ -1,6 +1,10 @@
 style:
   MagicNumber:
     active: false
+  ThrowsCount:
+    active: false
+  ReturnCount:
+    active: false
 naming:
   ConstructorParameterNaming:
     active: false
@@ -12,7 +16,6 @@ exceptions:
 complexity:
   LongMethod:
     active: false
-
 config:
   validation: true
   warningsAsErrors: true

@@ -6,8 +6,8 @@ import no.nav.syfo.db.UtbetalingInfotrygdDAO
 import no.nav.syfo.kafka.consumers.infotrygd.domain.InfotrygdSource
 import no.nav.syfo.kafka.consumers.infotrygd.domain.KInfotrygdSykepengedager
 import no.nav.syfo.kafka.consumers.infotrygd.gjenstaendeSykepengedager
-import no.nav.syfo.kafka.util.parseDate
 import no.nav.syfo.logger
+import no.nav.syfo.utils.parseDate
 import org.apache.kafka.clients.consumer.ConsumerRecord
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Component

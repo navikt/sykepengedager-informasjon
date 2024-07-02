@@ -11,7 +11,6 @@ import org.springframework.util.LinkedMultiValueMap
 import org.springframework.util.MultiValueMap
 import org.springframework.web.client.RestClientResponseException
 import org.springframework.web.client.RestTemplate
-import java.util.concurrent.ConcurrentHashMap
 
 @Component
 class AzureAdClient(
@@ -20,73 +19,72 @@ class AzureAdClient(
     @Value("\${azure.openid.config.token.endpoint}") private val azureTokenEndpoint: String,
     private val restTemplate: RestTemplate,
 ) {
+    fun onBehalfOfTokenEntity(
+        scope: String,
+        token: String,
+    ): HttpEntity<MultiValueMap<String, String>> {
+        val headers = HttpHeaders()
 
-    fun getSystemToken(
-        scopeClientId: String,
-    ): String {
-        val cachedToken = systemTokenCache[scopeClientId]
+        headers.contentType = MediaType.MULTIPART_FORM_DATA
+        val body: MultiValueMap<String, String> = LinkedMultiValueMap()
 
-        return if (cachedToken?.isExpired() == false) {
-            cachedToken.accessToken
-        } else {
-            try {
-                log.debug("Requesting new token for scope: $scopeClientId")
-                val requestEntity = systemTokenRequestEntity(
-                    scopeClientId = scopeClientId,
+        body.add(CLIENT_ID, azureAppClientId)
+        body.add(SCOPE, scope)
+        body.add(GRANT_TYPE, "urn:ietf:params:oauth:grant-type:jwt-bearer")
+        body.add(CLIENT_SECRET, azureAppClientSecret)
+        body.add(ASSERTION, token)
+        body.add(CLIENT_ASSERTION_TYPE, "urn:ietf:params:oauth:grant-type:jwt-bearer")
+        body.add(REQUESTED_TOKEN_USE, "on_behalf_of")
+
+        return HttpEntity(body, headers)
+    }
+
+    fun getOnBehalfOfToken(
+        scope: String,
+        token: String,
+    ): String =
+        try {
+            log.debug("Requesting new token for scope: $scope")
+            val requestEntity =
+                onBehalfOfTokenEntity(
+                    scope = scope,
+                    token = token,
                 )
-                val response = restTemplate.exchange(
+            val response =
+                restTemplate.exchange(
                     azureTokenEndpoint,
                     HttpMethod.POST,
                     requestEntity,
                     AzureAdTokenResponse::class.java,
                 )
-                val tokenResponse = response.body!!
+            val tokenResponse = response.body!!
 
-                val azureAdToken = tokenResponse.toAzureAdToken()
+            val azureAdToken = tokenResponse.toAzureAdToken()
 
-                systemTokenCache[scopeClientId] = azureAdToken
-                log.info("Successfully retrieved new token for scope: $scopeClientId")
-                azureAdToken.accessToken
-            } catch (e: RestClientResponseException) {
-                log.error(
-                    "Call to get AzureADToken from AzureAD as system for scope: " +
-                        "$scopeClientId with status: ${e.statusCode} and message: ${e.responseBodyAsString}",
-                    e,
-                )
-                throw AzureAdClientException("Failed to get AzureADToken for scope: $scopeClientId", e)
-            }
+            azureAdToken.accessToken
+        } catch (e: RestClientResponseException) {
+            log.error(
+                "Could not get obo-token from Azure AD for scope: " +
+                    "$scope with status: ${e.statusCode} and message: ${e.responseBodyAsString}",
+                e,
+            )
+            throw AzureAdClientException("Failed to get AzureADToken for scope: $scope", e)
         }
-    }
-
-    fun systemTokenRequestEntity(
-        scopeClientId: String,
-    ): HttpEntity<MultiValueMap<String, String>> {
-        val headers = HttpHeaders()
-        headers.contentType = MediaType.MULTIPART_FORM_DATA
-        val body: MultiValueMap<String, String> = LinkedMultiValueMap()
-        body.add(CLIENT_ID, azureAppClientId)
-        body.add(SCOPE, "api://$scopeClientId/.default")
-        body.add(GRANT_TYPE, CLIENT_CREDENTIALS)
-        body.add(CLIENT_SECRET, azureAppClientSecret)
-
-        return HttpEntity(body, headers)
-    }
 
     companion object {
         private const val CLIENT_ID = "client_id"
         private const val SCOPE = "scope"
         private const val GRANT_TYPE = "grant_type"
-        private const val CLIENT_CREDENTIALS = "client_credentials"
         private const val CLIENT_SECRET = "client_secret"
+        private const val ASSERTION = "assertion"
+        private const val CLIENT_ASSERTION_TYPE = "client_assertion_type"
+        private const val REQUESTED_TOKEN_USE = "requested_token_use"
 
-        val systemTokenCache = ConcurrentHashMap<String, AzureAdToken>()
         private val log = LoggerFactory.getLogger(AzureAdClient::class.java)
-    }
-
-    // For testing
-    fun clearTokenCache() {
-        systemTokenCache.clear()
     }
 }
 
-class AzureAdClientException(message: String, cause: Throwable) : RuntimeException(message, cause)
+class AzureAdClientException(
+    message: String,
+    cause: Throwable,
+) : RuntimeException(message, cause)
