@@ -15,6 +15,8 @@ import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.ResponseBody
 import org.springframework.web.bind.annotation.RestController
 import java.io.Serializable
+import java.time.LocalDate
+import java.time.LocalDateTime
 
 @RestController
 @RequestMapping("/")
@@ -32,7 +34,7 @@ class SykepengerMaxDateAzureApiV2(
         val personIdent =
             headers[NAV_PERSONIDENT_HEADER]
                 ?: throw IllegalArgumentException(
-                    "Failed to get maxDate: No $NAV_PERSONIDENT_HEADER supplied in request header"
+                    "Failed to get maxDate: No $NAV_PERSONIDENT_HEADER supplied in request header",
                 )
 
         val token =
@@ -45,7 +47,18 @@ class SykepengerMaxDateAzureApiV2(
             val sykepengerMaxDate = utbetalingerDAO.fetchMaksDatoByFnr(personIdent)
 
             log.info("Fetched sykepengerMaxDate from database: ${sykepengerMaxDate?.forelopig_beregnet_slutt}")
-            return SykepengerMaxDateAzureV2Response(maxDate = sykepengerMaxDate)
+            return SykepengerMaxDateAzureV2Response(
+                maxDate =
+                PMaksDato(
+                    id = "123",
+                    fnr = "26918198953",
+                    forelopig_beregnet_slutt = LocalDate.now().plusDays(33),
+                    utbetalt_tom = LocalDate.now().plusDays(32),
+                    gjenstaende_sykedager = "44",
+                    opprettet = LocalDateTime.now().minusDays(99),
+                ),
+            )
+            //   TODO         return SykepengerMaxDateAzureV2Response(maxDate = sykepengerMaxDate)
         } else {
             throw VeilederNoAccessException()
         }
