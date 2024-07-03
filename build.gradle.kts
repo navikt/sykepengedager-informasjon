@@ -60,6 +60,7 @@ dependencies {
     testImplementation("com.h2database:h2")
     testImplementation("no.nav.security:token-validation-spring-test:$tokenSupportVersion")
     testRuntimeOnly("org.junit.platform:junit-platform-launcher")
+    runtimeOnly("org.jetbrains.kotlinx:kotlinx-coroutines-core")
 
     detektPlugins("io.gitlab.arturbosch.detekt:detekt-formatting:$detektVersion")
 }
