@@ -31,16 +31,16 @@ class SykepengerMaxDateAzureApiV2(
     suspend fun getMaxDateInfo(
         @RequestHeader headers: Map<String, String>,
     ): SykepengerMaxDateAzureV2Response {
-        log.info("TODO headers: $headers")
+        log.info("TODO AUTHORIZATION: ${headers[HttpHeaders.AUTHORIZATION]}")
+        log.info("TODO authorization: ${headers["authorization"]}")
         val personIdent =
             headers[NAV_PERSONIDENT_HEADER]
                 ?: throw IllegalArgumentException(
                     "Failed to get maxDate: No $NAV_PERSONIDENT_HEADER supplied in request header",
                 )
 
-        val token =
-            headers[HttpHeaders.AUTHORIZATION]?.removePrefix("Bearer ")
-                ?: throw IllegalArgumentException("Failed to get maxDate: No Authorization header supplied")
+        val token = headers["authorization"]?.removePrefix("Bearer ")
+            ?: throw IllegalArgumentException("Failed to get maxDate: No Authorization header supplied")
 
         val callId = headers[NAV_CALL_ID_HEADER].toString()
 
