@@ -30,6 +30,7 @@ val mockkVersion = "1.13.11"
 val wiremockVersion = "3.6.0"
 val wiremockKotestExtensionVersion = "3.0.1"
 val tokenSupportVersion = "4.1.7"
+val kotlinxCoroutinesVersion = "1.8.1"
 
 dependencies {
     implementation("org.springframework.boot:spring-boot-starter")
@@ -61,7 +62,8 @@ dependencies {
     testImplementation("com.h2database:h2")
     testImplementation("no.nav.security:token-validation-spring-test:$tokenSupportVersion")
     testRuntimeOnly("org.junit.platform:junit-platform-launcher")
-    runtimeOnly("org.jetbrains.kotlinx:kotlinx-coroutines-core")
+    runtimeOnly("org.jetbrains.kotlinx:kotlinx-coroutines-core:${kotlinxCoroutinesVersion}")
+    runtimeOnly("org.jetbrains.kotlinx:kotlinx-coroutines-reactor:${kotlinxCoroutinesVersion}")
 
     detektPlugins("io.gitlab.arturbosch.detekt:detekt-formatting:$detektVersion")
 }
