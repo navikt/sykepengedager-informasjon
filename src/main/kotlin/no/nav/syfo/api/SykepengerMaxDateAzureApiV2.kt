@@ -1,5 +1,8 @@
 package no.nav.syfo.api
 
+import java.io.Serializable
+import java.time.LocalDate
+import java.time.LocalDateTime
 import no.nav.syfo.consumer.veiledertilgang.VeilederNoAccessException
 import no.nav.syfo.consumer.veiledertilgang.VeilederTilgangskontrollClient
 import no.nav.syfo.db.PMaksDato
@@ -7,16 +10,12 @@ import no.nav.syfo.db.UtbetalingerDAO
 import no.nav.syfo.logger
 import no.nav.syfo.utils.NAV_CALL_ID_HEADER
 import no.nav.syfo.utils.NAV_PERSONIDENT_HEADER
-import org.springframework.http.HttpHeaders
 import org.springframework.http.MediaType
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.RequestHeader
 import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.ResponseBody
 import org.springframework.web.bind.annotation.RestController
-import java.io.Serializable
-import java.time.LocalDate
-import java.time.LocalDateTime
 
 @RestController
 @RequestMapping("/")
@@ -31,8 +30,6 @@ class SykepengerMaxDateAzureApiV2(
     suspend fun getMaxDateInfo(
         @RequestHeader headers: Map<String, String>,
     ): SykepengerMaxDateAzureV2Response {
-        log.info("TODO AUTHORIZATION: ${headers[HttpHeaders.AUTHORIZATION]}")
-        log.info("TODO authorization: ${headers["authorization"]}")
         val personIdent =
             headers[NAV_PERSONIDENT_HEADER]
                 ?: throw IllegalArgumentException(
