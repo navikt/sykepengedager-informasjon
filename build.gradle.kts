@@ -62,8 +62,8 @@ dependencies {
     testImplementation("com.h2database:h2")
     testImplementation("no.nav.security:token-validation-spring-test:$tokenSupportVersion")
     testRuntimeOnly("org.junit.platform:junit-platform-launcher")
-    runtimeOnly("org.jetbrains.kotlinx:kotlinx-coroutines-core:${kotlinxCoroutinesVersion}")
-    runtimeOnly("org.jetbrains.kotlinx:kotlinx-coroutines-reactor:${kotlinxCoroutinesVersion}")
+    runtimeOnly("org.jetbrains.kotlinx:kotlinx-coroutines-core:$kotlinxCoroutinesVersion")
+    runtimeOnly("or//g.jetbrains.kotlinx:kotlinx-coroutines-reactor:$kotlinxCoroutinesVersion")
 
     detektPlugins("io.gitlab.arturbosch.detekt:detekt-formatting:$detektVersion")
 }
@@ -75,7 +75,7 @@ tasks.named<org.springframework.boot.gradle.tasks.bundling.BootJar>("bootJar") {
 tasks.withType<KotlinCompile> {
     kotlinOptions {
         freeCompilerArgs += "-Xjsr305=strict"
-        jvmTarget = "17"
+        jvmTarget = "17" //
     }
 }
 

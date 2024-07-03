@@ -31,6 +31,7 @@ class SykepengerMaxDateAzureApiV2(
     suspend fun getMaxDateInfo(
         @RequestHeader headers: Map<String, String>,
     ): SykepengerMaxDateAzureV2Response {
+        log.info("TODO headers: $headers")
         val personIdent =
             headers[NAV_PERSONIDENT_HEADER]
                 ?: throw IllegalArgumentException(
