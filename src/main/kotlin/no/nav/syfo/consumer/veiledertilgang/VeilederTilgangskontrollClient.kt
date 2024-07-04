@@ -58,7 +58,7 @@ class VeilederTilgangskontrollClient(
             if (e.statusCode == HttpStatusCode.valueOf(403)) { // Forbidden
                 log.warn("Denied veileder access to person: ${e.message}")
             } else {
-                log.error("Encountered exception during call to tilgangskontroll: ${e.message}")
+                log.error("Encountered RestClientResponseException during call to tilgangskontroll: ${e.message}")
             }
             return false
         } catch (e: Exception) {
