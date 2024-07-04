@@ -73,3 +73,8 @@ spec:
           cluster: dev-gcp
         - application: ditt-sykefravaer
           namespace: flex
+    outbound:
+      rules:
+        - application: istilgangskontroll
+          namespace: teamsykefravr
+
