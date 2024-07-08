@@ -6,7 +6,6 @@ import no.nav.syfo.db.UtbetalingerDAO
 import no.nav.syfo.logger
 import no.nav.syfo.utils.NAV_CALL_ID_HEADER
 import no.nav.syfo.utils.NAV_PERSONIDENT_HEADER
-import org.springframework.http.HttpHeaders
 import org.springframework.http.MediaType
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.RequestHeader
@@ -32,11 +31,11 @@ class SykepengerMaxDateAzureApiV1(
         val personIdent =
             headers[NAV_PERSONIDENT_HEADER]
                 ?: throw IllegalArgumentException(
-                    "Failed to get maxDate: No $NAV_PERSONIDENT_HEADER supplied in request header"
+                    "Failed to get maxDate: No $NAV_PERSONIDENT_HEADER supplied in request header",
                 )
 
         val token =
-            headers[HttpHeaders.AUTHORIZATION]?.removePrefix("Bearer ")
+            headers["authorization"]?.removePrefix("Bearer ")
                 ?: throw IllegalArgumentException("Failed to get maxDate: No Authorization header supplied")
 
         val callId = headers[NAV_CALL_ID_HEADER].toString()

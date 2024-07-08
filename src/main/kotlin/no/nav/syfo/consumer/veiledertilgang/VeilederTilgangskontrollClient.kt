@@ -52,7 +52,6 @@ class VeilederTilgangskontrollClient(
                     HttpEntity<String>(headers),
                     Tilgang::class.java,
                 )
-            log.info("TODO response veileder tilg: ${response.body}")
             return response.body!!.erGodkjent
         } catch (e: RestClientResponseException) {
             if (e.statusCode == HttpStatusCode.valueOf(403)) { // Forbidden

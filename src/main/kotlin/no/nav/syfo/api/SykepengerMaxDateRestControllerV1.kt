@@ -27,7 +27,7 @@ class SykepengerMaxDateRestControllerV1(val utbetalingerDAO: UtbetalingerDAO) {
     fun getMaxDateInfo(
         @RequestParam isoformat: String?,
     ): SykepengerMaxDateResponse {
-        log.info("TODO: requesting max date rest endpoint")
+        log.info("Got request in SykepengerMaxDateRestControllerV1")
         val personIdent = tokenValidator.validateTokenXClaims().getFnr()
         val isoFormat = isoformat?.toBoolean() ?: false
 

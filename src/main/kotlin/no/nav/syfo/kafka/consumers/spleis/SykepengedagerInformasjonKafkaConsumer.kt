@@ -30,18 +30,18 @@ class SykepengedagerInformasjonKafkaConsumer(
         try {
             val topic = record.topic()
             log.info(
-                "Todo: received e record from topic $topic",
+                "Received e record from topic $topic",
             )
 
             when (topic) {
                 topicUtbetaling -> {
-                    log.info("Todo: Going to process record from topicUtbetaling $topic")
+                    log.info("Going to process record from topicUtbetaling $topic")
                     spleisRecordProcessor.processRecord(record)
                 }
 
                 topicSykepengedagerInfotrygd -> {
                     log.info(
-                        "Todo: Going to process record from topicSykepengedagerInfotrygd $topic",
+                        "Going to process record from topicSykepengedagerInfotrygd $topic",
                     )
                     infotrygdRecordProcessor.processRecord(record)
                 }
