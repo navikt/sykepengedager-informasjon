@@ -1,5 +1,7 @@
 package no.nav.syfo.db
 
+import no.nav.syfo.metric.Metric
+import no.nav.syfo.metric.TimerBuilderName
 import org.springframework.dao.EmptyResultDataAccessException
 import org.springframework.jdbc.core.RowMapper
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource
@@ -10,6 +12,7 @@ import java.sql.ResultSet
 @Repository
 class UtbetalingerDAO(
     private val namedParameterJdbcTemplate: NamedParameterJdbcTemplate,
+    private val metric: Metric,
 ) {
     fun fetchMaksDatoByFnr(fnr: String): PMaksDato? {
         val queryStatement =
@@ -25,21 +28,25 @@ class UtbetalingerDAO(
             AND FNR = :FNR
             """.trimIndent()
 
-        val mapQueryStatement =
-            MapSqlParameterSource()
-                .addValue("FNR", fnr)
+        val timer = metric.createTimer("utbetalinger_view", TimerBuilderName.DATABASE_QUERY_LATENCY.name)
 
-        val resultList =
-            try {
-                namedParameterJdbcTemplate.query(queryStatement, mapQueryStatement, MaxDateRowMapper())
-            } catch (e: EmptyResultDataAccessException) {
-                emptyList()
+        return timer.record<PMaksDato> {
+            val mapQueryStatement =
+                MapSqlParameterSource()
+                    .addValue("FNR", fnr)
+
+            val resultList =
+                try {
+                    namedParameterJdbcTemplate.query(queryStatement, mapQueryStatement, MaxDateRowMapper())
+                } catch (e: EmptyResultDataAccessException) {
+                    emptyList()
+                }
+
+            return@record if (resultList.isNotEmpty()) {
+                resultList.first()
+            } else {
+                null
             }
-
-        return if (resultList.isNotEmpty()) {
-            resultList.first()
-        } else {
-            null
         }
     }
 }

@@ -9,6 +9,7 @@ import no.nav.syfo.auth.TokenValidator
 import no.nav.syfo.auth.getFnr
 import no.nav.syfo.db.PMaksDato
 import no.nav.syfo.db.UtbetalingerDAO
+import no.nav.syfo.metric.Metric
 import no.nav.syfo.utils.formatDateForLetter
 import org.springframework.mock.web.MockHttpServletRequest
 import org.springframework.web.context.request.RequestContextHolder
@@ -19,11 +20,13 @@ import java.time.LocalDateTime
 class SykepengerMaxDateRestV1Test :
     DescribeSpec({
         val utbetalingerDAO = mockk<UtbetalingerDAO>(relaxed = true)
+        val metric = mockk<Metric>(relaxed = true)
         val tokenValidator = mockk<TokenValidator>(relaxed = true)
         val fnr = "12121212121"
         val controller =
-            SykepengerMaxDateRestControllerV1(
+            SykepengerMaxDateRestApiV1(
                 utbetalingerDAO = utbetalingerDAO,
+                metric,
             ).apply {
                 this.tokenValidator = tokenValidator
             }
@@ -53,8 +56,8 @@ class SykepengerMaxDateRestV1Test :
 
                 val response = controller.getMaxDateInfo(isoformat = "false")
 
-                TestCase.assertEquals(formatDateForLetter(maxDate), response.maxDate)
-                TestCase.assertEquals(formatDateForLetter(utbetaltTom), response.utbetaltTom)
+                TestCase.assertEquals(formatDateForLetter(maxDate), response?.maxDate)
+                TestCase.assertEquals(formatDateForLetter(utbetaltTom), response?.utbetaltTom)
             }
         }
 
@@ -78,7 +81,7 @@ class SykepengerMaxDateRestV1Test :
 
             val response = controller.getMaxDateInfo(isoformat = "true")
 
-            TestCase.assertEquals(maxDate.toString(), response.maxDate)
-            TestCase.assertEquals(utbetaltTom.toString(), response.utbetaltTom)
+            TestCase.assertEquals(maxDate.toString(), response?.maxDate)
+            TestCase.assertEquals(utbetaltTom.toString(), response?.utbetaltTom)
         }
     })
