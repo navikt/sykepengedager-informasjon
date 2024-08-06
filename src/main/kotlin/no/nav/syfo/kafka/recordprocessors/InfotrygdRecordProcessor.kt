@@ -59,6 +59,8 @@ class InfotrygdRecordProcessor {
                 gjenstaendeSykepengedager,
                 source,
             )
+        } else {
+            log.info("Infotrygd utbetaling with the same fnr, sykepengerMaxDate and  utbetaltTilDate already exists")
         }
     }
 }

@@ -21,7 +21,7 @@ class SykepengedagerInformasjonKafkaConsumer(
 
     @KafkaListener(
         topics = [topicUtbetaling, topicSykepengedagerInfotrygd],
-        autoStartup = "false" // TODO reenable when ready
+        autoStartup = "true" // TODO check if it works
     )
     fun listen(
         record: ConsumerRecord<String, String>,
