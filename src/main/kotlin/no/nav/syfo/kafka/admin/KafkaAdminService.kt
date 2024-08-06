@@ -165,7 +165,7 @@ class KafkaAdminService(
 
         val endTime = System.currentTimeMillis()
         val consumptionTimeMillis = endTime - startTime
-        log.info("[MAX_DATE_RECORDS] measureConsumptionRate 5 $topic")
+        log.info("[MAX_DATE_RECORDS] measureConsumptionRate 5 consumedRecords ${consumedRecords.toDouble()}  $topic")
 
         return consumedRecords.toDouble() / consumptionTimeMillis
     }
