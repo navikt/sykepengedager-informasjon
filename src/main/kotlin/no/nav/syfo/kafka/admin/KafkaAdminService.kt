@@ -152,9 +152,10 @@ class KafkaAdminService(
         log.info("[MAX_DATE_RECORDS] measureConsumptionRate 2 $topic")
 
         while (consumedRecords < testRecords) {
-            log.info("[MAX_DATE_RECORDS] measureConsumptionRate 4 $topic")
+            log.info("[MAX_DATE_RECORDS] measureConsumptionRate  4 consumedRecords $consumedRecords $topic")
 
             val records = kafkaConsumer.poll(Duration.ofMillis(100))
+            log.info("[MAX_DATE_RECORDS] measureConsumptionRate 4 records count ${records.count()} $topic")
             consumedRecords += records.count()
         }
 
