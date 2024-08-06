@@ -139,21 +139,28 @@ class KafkaAdminService(
     }
 
     private fun measureConsumptionRate(topic: String, kafkaConsumer: Consumer<String, String>): Double {
+        log.info("[MAX_DATE_RECORDS] measureConsumptionRate $topic")
         val testRecords = 100L // Number of records to consume for testing
         val testPartition = kafkaConsumer.partitionsFor(topic).first()
+        log.info("[MAX_DATE_RECORDS] measureConsumptionRate 1 $topic")
 
         val startTime = System.currentTimeMillis()
 
         kafkaConsumer.assign(listOf(TopicPartition(testPartition.topic(), testPartition.partition())))
         var consumedRecords = 0L
 
+        log.info("[MAX_DATE_RECORDS] measureConsumptionRate 2 $topic")
+
         while (consumedRecords < testRecords) {
+            log.info("[MAX_DATE_RECORDS] measureConsumptionRate 4 $topic")
+
             val records = kafkaConsumer.poll(Duration.ofMillis(100))
             consumedRecords += records.count()
         }
 
         val endTime = System.currentTimeMillis()
         val consumptionTimeMillis = endTime - startTime
+        log.info("[MAX_DATE_RECORDS] measureConsumptionRate 5 $topic")
 
         return consumedRecords.toDouble() / consumptionTimeMillis
     }
