@@ -155,8 +155,12 @@ class KafkaAdminService(
             log.info("[MAX_DATE_RECORDS] measureConsumptionRate  4 consumedRecords $consumedRecords $topic")
 
             val records = kafkaConsumer.poll(Duration.ofMillis(100))
-            log.info("[MAX_DATE_RECORDS] measureConsumptionRate 4 records count ${records.count()} $topic")
-            consumedRecords += records.count()
+            if (records.count() > 0) {
+                log.info("[MAX_DATE_RECORDS] measureConsumptionRate 4 records count ${records.count()} $topic")
+                consumedRecords += records.count()
+            } else {
+                break
+            }
         }
 
         val endTime = System.currentTimeMillis()
