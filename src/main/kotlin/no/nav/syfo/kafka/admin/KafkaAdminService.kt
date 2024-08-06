@@ -33,7 +33,7 @@ class KafkaAdminService(
         log.info("[MAX_DATE_RECORDS] Created AC, about to loop topic")
 
         for (topic in listOf(topicInfotrygd, topicSpleis)) {
-            log.info("[MAX_DATE_RECORDS] Start to estimate remaining records to consume")
+            log.info("[MAX_DATE_RECORDS] Start to estimate remaining records to consume from $topic")
             adminClient.use { client ->
                 val partitions = kafkaSykepengedagerInformasjonConsumer.partitionsFor(topic)
                     .map { TopicPartition(it.topic(), it.partition()) }
