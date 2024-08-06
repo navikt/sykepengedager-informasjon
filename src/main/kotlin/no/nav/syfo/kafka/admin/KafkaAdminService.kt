@@ -1,5 +1,6 @@
 package no.nav.syfo.kafka.admin
 
+import no.nav.syfo.config.kafka.AivenKafkaConfig
 import no.nav.syfo.config.kafka.topicSykepengedagerInfotrygd
 import no.nav.syfo.config.kafka.topicUtbetaling
 import no.nav.syfo.logger
@@ -17,17 +18,22 @@ import java.time.Duration
 @Profile("remote")
 class KafkaAdminService(
     private val kafkaSykepengedagerInformasjonConsumer: Consumer<String, String>,
-    private val kafkaAdmin: KafkaAdmin
+    private val kafkaAdmin: KafkaAdmin,
+    avienKafkaConfig: AivenKafkaConfig,
 ) {
     private val log = logger()
     private val topicInfotrygd = topicSykepengedagerInfotrygd
     private val topicSpleis = topicUtbetaling
 
+    val commonConfig = avienKafkaConfig.commonConfig()
+
     @Scheduled(fixedRate = 60000) // Runs every 60 seconds
     fun run() {
-        val adminClient = AdminClient.create(kafkaAdmin.configurationProperties)
+        val adminClient = AdminClient.create(kafkaAdmin.configurationProperties + commonConfig)
+        log.info("[MAX_DATE_RECORDS] Created AC, about to loop topic")
 
         for (topic in listOf(topicInfotrygd, topicSpleis)) {
+            log.info("[MAX_DATE_RECORDS] Start to estimate remaining records to consume")
             adminClient.use { client ->
                 val partitions = kafkaSykepengedagerInformasjonConsumer.partitionsFor(topic)
                     .map { TopicPartition(it.topic(), it.partition()) }
