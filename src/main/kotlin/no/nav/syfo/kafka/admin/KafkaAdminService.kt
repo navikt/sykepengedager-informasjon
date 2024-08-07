@@ -96,7 +96,8 @@ class KafkaAdminService(
 
         val testPartition = kafkaConsumer.partitionsFor(topic).first()
         log.info(
-            "[MAX_DATE_RECORDS] measureConsumptionRate 1 testPartition.partition(): ${testPartition.partition()},,, ${testPartition.topic()}"
+            "[MAX_DATE_RECORDS] measureConsumptionRate 1 testPartition.partition():" +
+                " ${testPartition.partition()},,, ${testPartition.topic()}"
         )
 
         val startTime = System.currentTimeMillis()
