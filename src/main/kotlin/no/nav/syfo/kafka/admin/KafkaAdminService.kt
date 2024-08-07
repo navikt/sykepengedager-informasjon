@@ -50,9 +50,6 @@ class KafkaAdminService(
                     val currentOffset = currentOffsets[partition]?.offset() ?: 0
                     val endOffset = endOffsets[partition]?.offset() ?: 0
                     val recordsToConsume = endOffset - currentOffset
-
-                    log.info("[MAX_DATE_RECORDS] Partition: $partition, Records to consume: $recordsToConsume")
-
                     totalRecordsToConsume += recordsToConsume
                     totalUnconsumedRecords += if (recordsToConsume > 0) recordsToConsume else 0
                 }
@@ -89,38 +86,27 @@ class KafkaAdminService(
 
                 val allConsumed = totalRecordsToConsume == 0L
 
-                if (allConsumed) {
+                /*if (allConsumed) {
                     log.info("[MAX_DATE_RECORDS] All data from topic $topic is consumed.")
                 } else {
                     log.info("[MAX_DATE_RECORDS] There is still data to be consumed from topic $topic.")
-                }
+                }*/
             }
         }
     }
 
     private fun measureConsumptionRate(topic: String, kafkaConsumer: Consumer<String, String>): Double {
-        val testRecords = 100L // Number of records to consume for testing
+        val testRecords = 3L // Number of records to consume for testing
 
         val testPartition = kafkaConsumer.partitionsFor(topic).first()
-        log.info(
-            "[MAX_DATE_RECORDS] measureConsumptionRate 1 testPartition.partition():" +
-                " ${testPartition.partition()},,, ${testPartition.topic()}"
-        )
-
         val startTime = System.currentTimeMillis()
 
         kafkaConsumer.assign(listOf(TopicPartition(testPartition.topic(), testPartition.partition())))
         var consumedRecords = 0L
 
-        log.info("[MAX_DATE_RECORDS] measureConsumptionRate 2 $topic")
-
         while (consumedRecords < testRecords) {
-            log.info("[MAX_DATE_RECORDS] measureConsumptionRate  4 consumedRecords $consumedRecords $topic")
-
-            val records = kafkaConsumer.poll(Duration.ofMillis(100))
-            log.info("[MAX_DATE_RECORDS] measureConsumptionRate  polled records ${records.count()} $topic")
+            val records = kafkaConsumer.poll(Duration.ofMillis(3))
             if (records.count() > 0) {
-                log.info("[MAX_DATE_RECORDS] measureConsumptionRate 4 records count ${records.count()} $topic")
                 consumedRecords += records.count()
             } else {
                 break
@@ -129,7 +115,10 @@ class KafkaAdminService(
 
         val endTime = System.currentTimeMillis()
         val consumptionTimeMillis = endTime - startTime
-        log.info("[MAX_DATE_RECORDS] measureConsumptionRate 5 consumedRecords ${consumedRecords.toDouble()}  $topic")
+        log.info(
+            "[MAX_DATE_RECORDS] measureConsumptionRate  during test ${consumedRecords.toDouble()}  " +
+                "from topic $topic"
+        )
 
         return consumedRecords.toDouble() / consumptionTimeMillis
     }
