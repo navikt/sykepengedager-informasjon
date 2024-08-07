@@ -37,6 +37,7 @@ class KafkaAdminService(
                 val partitions = kafkaSykepengedagerInformasjonConsumer.partitionsFor(topic)
                     .map { TopicPartition(it.topic(), it.partition()) }
                     .toSet()
+                kafkaSykepengedagerInformasjonConsumer.seekToBeginning(partitions)
 
                 val currentOffsets = kafkaSykepengedagerInformasjonConsumer.committed(partitions)
                 val endOffsets = client.listOffsets(
