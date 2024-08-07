@@ -32,7 +32,7 @@ class KafkaAdminService(
         val adminClient = AdminClient.create(kafkaAdmin.configurationProperties + commonConfig)
 
         for (topic in listOf(topicInfotrygd, topicSpleis)) {
-            log.info("[MAX_DATE_RECORDS] Start to estimate remaining records to consume from $topic")
+            log.info("[MAX_DATE_RECORDS1] Start to estimate remaining records to consume from $topic")
             adminClient.use { client ->
                 val partitions = kafkaSykepengedagerInformasjonConsumer.partitionsFor(topic)
                     .map { TopicPartition(it.topic(), it.partition()) }
@@ -54,9 +54,9 @@ class KafkaAdminService(
                     totalUnconsumedRecords += if (recordsToConsume > 0) recordsToConsume else 0
                 }
 
-                log.info("[MAX_DATE_RECORDS] Total partitions: ${partitions.size}")
-                log.info("[MAX_DATE_RECORDS] Total records to consume: $totalRecordsToConsume")
-                log.info("[MAX_DATE_RECORDS] Total unconsumed records: $totalUnconsumedRecords")
+                log.info("[MAX_DATE_RECORDS1] Total partitions: ${partitions.size}")
+                log.info("[MAX_DATE_RECORDS1] Total records to consume: $totalRecordsToConsume")
+                log.info("[MAX_DATE_RECORDS1] Total unconsumed records: $totalUnconsumedRecords")
 
                 if (partitions.isNotEmpty()) {
                     // Measure consumption rate
@@ -72,24 +72,24 @@ class KafkaAdminService(
                         val estimatedTimeHours = estimatedTimeMinutes / 60
 
                         log.info(
-                            "[MAX_DATE_RECORDS] Estimated time to consume remaining records from topic $topic:" +
+                            "[MAX_DATE_RECORDS1] Estimated time to consume remaining records from topic $topic:" +
                                 " $estimatedTimeHours hours"
                         )
                     } else {
-                        log.info("[MAX_DATE_RECORDS] consumptionRate of topic $topic is 0.")
+                        log.info("[MAX_DATE_RECORDS1] consumptionRate of topic $topic is 0.")
                     }
                 } else {
                     log.info(
-                        "[MAX_DATE_RECORDS] There are 0 partitions in $topic topic"
+                        "[MAX_DATE_RECORDS1] There are 0 partitions in $topic topic"
                     )
                 }
 
 //                val allConsumed = totalRecordsToConsume == 0L
 
                 /*if (allConsumed) {
-                    log.info("[MAX_DATE_RECORDS] All data from topic $topic is consumed.")
+                    log.info("[MAX_DATE_RECORDS1] All data from topic $topic is consumed.")
                 } else {
-                    log.info("[MAX_DATE_RECORDS] There is still data to be consumed from topic $topic.")
+                    log.info("[MAX_DATE_RECORDS1] There is still data to be consumed from topic $topic.")
                 }*/
             }
         }
@@ -107,7 +107,7 @@ class KafkaAdminService(
         while (consumedRecords < testRecords) {
             val records = kafkaConsumer.poll(Duration.ofMillis(3))
             log.info(
-                "[MAX_DATE_RECORDS] Polled records $records in $topic topic"
+                "[MAX_DATE_RECORDS1] Polled records $records in $topic topic"
             )
             if (records.count() > 0) {
                 consumedRecords += records.count()
@@ -119,7 +119,7 @@ class KafkaAdminService(
         val endTime = System.currentTimeMillis()
         val consumptionTimeMillis = endTime - startTime
         log.info(
-            "[MAX_DATE_RECORDS] measureConsumptionRate  during test ${consumedRecords.toDouble()}  " +
+            "[MAX_DATE_RECORDS1] measureConsumptionRate  during test ${consumedRecords.toDouble()}  " +
                 "from topic $topic"
         )
 
