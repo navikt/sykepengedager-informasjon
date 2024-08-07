@@ -84,7 +84,7 @@ class KafkaAdminService(
                     )
                 }
 
-                val allConsumed = totalRecordsToConsume == 0L
+//                val allConsumed = totalRecordsToConsume == 0L
 
                 /*if (allConsumed) {
                     log.info("[MAX_DATE_RECORDS] All data from topic $topic is consumed.")
@@ -106,6 +106,9 @@ class KafkaAdminService(
 
         while (consumedRecords < testRecords) {
             val records = kafkaConsumer.poll(Duration.ofMillis(3))
+            log.info(
+                "[MAX_DATE_RECORDS] Polled records $records in $topic topic"
+            )
             if (records.count() > 0) {
                 consumedRecords += records.count()
             } else {
