@@ -31,118 +31,73 @@ class KafkaAdminService(
     fun run() {
         val adminClient = AdminClient.create(kafkaAdmin.configurationProperties + commonConfig)
 
-        log.info("[MAX_DATE_RECORDS] Start to estimate remaining records to consume from $topicSpleis")
-        adminClient.use { client ->
-            val partitions = kafkaSykepengedagerInformasjonConsumer.partitionsFor(topicSpleis)
-                .map { TopicPartition(it.topic(), it.partition()) }
-                .toSet()
+        for (topic in listOf(topicInfotrygd, topicSpleis)) {
+            log.info("[MAX_DATE_RECORDS] Start to estimate remaining records to consume from $topic")
+            adminClient.use { client ->
+                val partitions = kafkaSykepengedagerInformasjonConsumer.partitionsFor(topic)
+                    .map { TopicPartition(it.topic(), it.partition()) }
+                    .toSet()
 
-            val currentOffsets = kafkaSykepengedagerInformasjonConsumer.committed(partitions)
-            val endOffsets = client.listOffsets(
-                partitions.associateWith { OffsetSpec.latest() }
-            ).all().get()
+                val currentOffsets = kafkaSykepengedagerInformasjonConsumer.committed(partitions)
+                val endOffsets = client.listOffsets(
+                    partitions.associateWith { OffsetSpec.latest() }
+                ).all().get()
 
-            var totalRecordsToConsume = 0L
-            var totalUnconsumedRecords = 0L
+                var totalRecordsToConsume = 0L
+                var totalUnconsumedRecords = 0L
 
-            partitions.forEach { partition ->
-                val currentOffset = currentOffsets[partition]?.offset() ?: 0
-                val endOffset = endOffsets[partition]?.offset() ?: 0
-                val recordsToConsume = endOffset - currentOffset
+                partitions.forEach { partition ->
+                    val currentOffset = currentOffsets[partition]?.offset() ?: 0
+                    val endOffset = endOffsets[partition]?.offset() ?: 0
+                    val recordsToConsume = endOffset - currentOffset
 
-                log.info("[MAX_DATE_RECORDS] Partition: $partition, Records to consume: $recordsToConsume")
+                    log.info("[MAX_DATE_RECORDS] Partition: $partition, Records to consume: $recordsToConsume")
 
-                totalRecordsToConsume += recordsToConsume
-                totalUnconsumedRecords += if (recordsToConsume > 0) recordsToConsume else 0
-            }
+                    totalRecordsToConsume += recordsToConsume
+                    totalUnconsumedRecords += if (recordsToConsume > 0) recordsToConsume else 0
+                }
 
-            log.info("[MAX_DATE_RECORDS] Total partitions: ${partitions.size}")
-            log.info("[MAX_DATE_RECORDS] Total records to consume: $totalRecordsToConsume")
-            log.info("[MAX_DATE_RECORDS] Total unconsumed records: $totalUnconsumedRecords")
+                log.info("[MAX_DATE_RECORDS] Total partitions: ${partitions.size}")
+                log.info("[MAX_DATE_RECORDS] Total records to consume: $totalRecordsToConsume")
+                log.info("[MAX_DATE_RECORDS] Total unconsumed records: $totalUnconsumedRecords")
 
-            // Measure consumption rate
-            val consumptionRate = measureConsumptionRate(topicSpleis, kafkaSykepengedagerInformasjonConsumer)
+                // Measure consumption rate
+                val consumptionRate = measureConsumptionRate(topic, kafkaSykepengedagerInformasjonConsumer)
 
-            // Estimate time to consume remaining records (in milliseconds)
-            val estimatedTimeMillis = totalUnconsumedRecords / consumptionRate * 1000
+                if (consumptionRate > 0) {
+                    // Estimate time to consume remaining records (in milliseconds)
+                    val estimatedTimeMillis = totalUnconsumedRecords / consumptionRate * 1000
 
-            // Convert milliseconds to a human-readable format
-            val estimatedTimeSeconds = estimatedTimeMillis / 1000
-            val estimatedTimeMinutes = estimatedTimeSeconds / 60
-            val estimatedTimeHours = estimatedTimeMinutes / 60
+                    // Convert milliseconds to a human-readable format
+                    val estimatedTimeSeconds = estimatedTimeMillis / 1000
+                    val estimatedTimeMinutes = estimatedTimeSeconds / 60
+                    val estimatedTimeHours = estimatedTimeMinutes / 60
 
-            log.info(
-                "Estimated time to consume remaining records from topic $topicSpleis: $estimatedTimeHours hours"
-            )
+                    log.info(
+                        "Estimated time to consume remaining records from topic $topic: $estimatedTimeHours hours"
+                    )
+                } else {
+                    log.info("[MAX_DATE_RECORDS] consumptionRate of topic $topic is 0.")
+                }
 
-            val allConsumed = totalRecordsToConsume == 0L
+                val allConsumed = totalRecordsToConsume == 0L
 
-            if (allConsumed) {
-                log.info("[MAX_DATE_RECORDS] All data from topic $topicSpleis is consumed.")
-            } else {
-                log.info("[MAX_DATE_RECORDS] There is still data to be consumed from topic $topicSpleis.")
-            }
-        }
-
-        log.info("[MAX_DATE_RECORDS] Start to estimate remaining records to consume from $topicInfotrygd")
-        adminClient.use { client ->
-            val partitions = kafkaSykepengedagerInformasjonConsumer.partitionsFor(topicInfotrygd)
-                .map { TopicPartition(it.topic(), it.partition()) }
-                .toSet()
-
-            val currentOffsets = kafkaSykepengedagerInformasjonConsumer.committed(partitions)
-            val endOffsets = client.listOffsets(
-                partitions.associateWith { OffsetSpec.latest() }
-            ).all().get()
-
-            var totalRecordsToConsume = 0L
-            var totalUnconsumedRecords = 0L
-
-            partitions.forEach { partition ->
-                val currentOffset = currentOffsets[partition]?.offset() ?: 0
-                val endOffset = endOffsets[partition]?.offset() ?: 0
-                val recordsToConsume = endOffset - currentOffset
-
-                log.info("[MAX_DATE_RECORDS] Partition: $partition, Records to consume: $recordsToConsume")
-
-                totalRecordsToConsume += recordsToConsume
-                totalUnconsumedRecords += if (recordsToConsume > 0) recordsToConsume else 0
-            }
-
-            log.info("[MAX_DATE_RECORDS] Total partitions: ${partitions.size}")
-            log.info("[MAX_DATE_RECORDS] Total records to consume: $totalRecordsToConsume")
-            log.info("[MAX_DATE_RECORDS] Total unconsumed records: $totalUnconsumedRecords")
-
-            // Measure consumption rate
-            val consumptionRate = measureConsumptionRate(topicInfotrygd, kafkaSykepengedagerInformasjonConsumer)
-
-            // Estimate time to consume remaining records (in milliseconds)
-            val estimatedTimeMillis = totalUnconsumedRecords / consumptionRate * 1000
-
-            // Convert milliseconds to a human-readable format
-            val estimatedTimeSeconds = estimatedTimeMillis / 1000
-            val estimatedTimeMinutes = estimatedTimeSeconds / 60
-            val estimatedTimeHours = estimatedTimeMinutes / 60
-
-            log.info(
-                "Estimated time to consume remaining records from topic $topicInfotrygd: $estimatedTimeHours hours"
-            )
-
-            val allConsumed = totalRecordsToConsume == 0L
-
-            if (allConsumed) {
-                log.info("[MAX_DATE_RECORDS] All data from topic $topicInfotrygd is consumed.")
-            } else {
-                log.info("[MAX_DATE_RECORDS] There is still data to be consumed from topic $topicInfotrygd.")
+                if (allConsumed) {
+                    log.info("[MAX_DATE_RECORDS] All data from topic $topic is consumed.")
+                } else {
+                    log.info("[MAX_DATE_RECORDS] There is still data to be consumed from topic $topic.")
+                }
             }
         }
     }
 
     private fun measureConsumptionRate(topic: String, kafkaConsumer: Consumer<String, String>): Double {
-        log.info("[MAX_DATE_RECORDS] measureConsumptionRate $topic")
         val testRecords = 100L // Number of records to consume for testing
+
         val testPartition = kafkaConsumer.partitionsFor(topic).first()
-        log.info("[MAX_DATE_RECORDS] measureConsumptionRate 1 $topic")
+        log.info(
+            "[MAX_DATE_RECORDS] measureConsumptionRate 1 testPartition.partition(): ${testPartition.partition()},,, ${testPartition.topic()}"
+        )
 
         val startTime = System.currentTimeMillis()
 
