@@ -37,8 +37,6 @@ class KafkaAdminService(
                 val partitions = kafkaSykepengedagerInformasjonConsumer.partitionsFor(topic)
                     .map { TopicPartition(it.topic(), it.partition()) }
                     .toSet()
-                val partitions2 = kafkaSykepengedagerInformasjonConsumer.assignment()
-                kafkaSykepengedagerInformasjonConsumer.seekToBeginning(partitions2)
 
                 val currentOffsets = kafkaSykepengedagerInformasjonConsumer.committed(partitions)
                 val endOffsets = client.listOffsets(
@@ -62,7 +60,8 @@ class KafkaAdminService(
 
                 if (partitions.isNotEmpty()) {
                     // Measure consumption rate
-                    val consumptionRate = measureConsumptionRate(topic, kafkaSykepengedagerInformasjonConsumer)
+                    val consumptionRate =
+                        measureConsumptionRate(topic, kafkaSykepengedagerInformasjonConsumer, partitions)
 
                     if (consumptionRate > 0) {
                         // Estimate time to consume remaining records (in milliseconds)
@@ -97,10 +96,15 @@ class KafkaAdminService(
         }
     }
 
-    private fun measureConsumptionRate(topic: String, kafkaConsumer: Consumer<String, String>): Double {
+    private fun measureConsumptionRate(
+        topic: String,
+        kafkaConsumer: Consumer<String, String>,
+        partitions: Set<TopicPartition>
+    ): Double {
         val testRecords = 3L // Number of records to consume for testing
+        kafkaConsumer.seekToBeginning(partitions) // Start from the very beginning
 
-        val testPartition = kafkaConsumer.partitionsFor(topic).first()
+        val testPartition = partitions.first()
         val startTime = System.currentTimeMillis()
 
         kafkaConsumer.assign(listOf(TopicPartition(testPartition.topic(), testPartition.partition())))
@@ -109,7 +113,7 @@ class KafkaAdminService(
         while (consumedRecords < testRecords) {
             val records = kafkaConsumer.poll(Duration.ofMillis(3))
             log.info(
-                "[MAX_DATE_RECORDS2] Polled records $records in $topic topic"
+                "[MAX_DATE_RECORDS2] Polled records ${records.count()} in $topic topic"
             )
             if (records.count() > 0) {
                 consumedRecords += records.count()
