@@ -27,7 +27,7 @@ class KafkaAdminService(
 
     val commonConfig = avienKafkaConfig.commonConfig()
 
-    @Scheduled(fixedRate = 60000) // Runs every 60 seconds
+    @Scheduled(fixedRate = 60 * 60 * 1000) // Runs every 60 minutes
     fun run() {
         val adminClient = AdminClient.create(kafkaAdmin.configurationProperties + commonConfig)
 
