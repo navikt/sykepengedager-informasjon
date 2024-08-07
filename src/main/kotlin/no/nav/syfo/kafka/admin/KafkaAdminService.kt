@@ -61,23 +61,30 @@ class KafkaAdminService(
                 log.info("[MAX_DATE_RECORDS] Total records to consume: $totalRecordsToConsume")
                 log.info("[MAX_DATE_RECORDS] Total unconsumed records: $totalUnconsumedRecords")
 
-                // Measure consumption rate
-                val consumptionRate = measureConsumptionRate(topic, kafkaSykepengedagerInformasjonConsumer)
+                if (partitions.isNotEmpty()) {
+                    // Measure consumption rate
+                    val consumptionRate = measureConsumptionRate(topic, kafkaSykepengedagerInformasjonConsumer)
 
-                if (consumptionRate > 0) {
-                    // Estimate time to consume remaining records (in milliseconds)
-                    val estimatedTimeMillis = totalUnconsumedRecords / consumptionRate * 1000
+                    if (consumptionRate > 0) {
+                        // Estimate time to consume remaining records (in milliseconds)
+                        val estimatedTimeMillis = totalUnconsumedRecords / consumptionRate * 1000
 
-                    // Convert milliseconds to a human-readable format
-                    val estimatedTimeSeconds = estimatedTimeMillis / 1000
-                    val estimatedTimeMinutes = estimatedTimeSeconds / 60
-                    val estimatedTimeHours = estimatedTimeMinutes / 60
+                        // Convert milliseconds to a human-readable format
+                        val estimatedTimeSeconds = estimatedTimeMillis / 1000
+                        val estimatedTimeMinutes = estimatedTimeSeconds / 60
+                        val estimatedTimeHours = estimatedTimeMinutes / 60
 
-                    log.info(
-                        "Estimated time to consume remaining records from topic $topic: $estimatedTimeHours hours"
-                    )
+                        log.info(
+                            "[MAX_DATE_RECORDS] Estimated time to consume remaining records from topic $topic:" +
+                                " $estimatedTimeHours hours"
+                        )
+                    } else {
+                        log.info("[MAX_DATE_RECORDS] consumptionRate of topic $topic is 0.")
+                    }
                 } else {
-                    log.info("[MAX_DATE_RECORDS] consumptionRate of topic $topic is 0.")
+                    log.info(
+                        "[MAX_DATE_RECORDS] There are 0 partitions in $topic topic"
+                    )
                 }
 
                 val allConsumed = totalRecordsToConsume == 0L
