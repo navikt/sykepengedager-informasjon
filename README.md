@@ -31,3 +31,8 @@ For further reference, please consider the following sections:
 * [Prometheus](https://docs.spring.io/spring-boot/docs/3.3.0/reference/htmlsingle/index.html#actuator.metrics.export.prometheus)
 
 
+## Contact
+
+### For NAV employees
+
+We are available at the Slack channel `#esyfo`
