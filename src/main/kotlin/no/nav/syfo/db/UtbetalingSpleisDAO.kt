@@ -111,32 +111,6 @@ class UtbetalingSpleisDAO(
             null
         }
     }
-
-    fun isSpleisUtbetalingExists(
-        fnr: String,
-        utbetalingId: String,
-    ): Boolean {
-        val queryStatement =
-            """
-            SELECT *
-            FROM UTBETALING_SPLEIS
-            WHERE  FNR = :FNR AND UTBETALING_ID = :UTBETALING_ID
-            """.trimIndent()
-
-        val mapQueryStatement =
-            MapSqlParameterSource()
-                .addValue("FNR", fnr)
-                .addValue("UTBETALING_ID", utbetalingId)
-
-        val resultList =
-            try {
-                namedParameterJdbcTemplate.query(queryStatement, mapQueryStatement, UtbetalingSpleisRowMapper())
-            } catch (e: EmptyResultDataAccessException) {
-                emptyList()
-            }
-
-        return resultList.isNotEmpty()
-    }
 }
 
 private class UtbetalingSpleisRowMapper : RowMapper<UtbetalingSpleis> {

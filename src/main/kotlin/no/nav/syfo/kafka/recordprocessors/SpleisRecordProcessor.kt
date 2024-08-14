@@ -31,10 +31,6 @@ class SpleisRecordProcessor {
     }
 
     private fun processUtbetalingSpleisEvent(utbetaling: UtbetalingSpleis) {
-        if (!utbetalingSpleisDAO.isSpleisUtbetalingExists(utbetaling.fødselsnummer, utbetaling.utbetalingId)) {
-            utbetalingSpleisDAO.storeSpleisUtbetaling(utbetaling)
-        } else {
-            log.info("Spleis utbetaling with the same fnr and id already exists")
-        }
+        utbetalingSpleisDAO.storeSpleisUtbetaling(utbetaling)
     }
 }
