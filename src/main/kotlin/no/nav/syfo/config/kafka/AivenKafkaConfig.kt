@@ -3,6 +3,7 @@
 package no.nav.syfo.config.kafka
 
 import org.apache.kafka.clients.CommonClientConfigs
+import org.apache.kafka.clients.consumer.Consumer
 import org.apache.kafka.clients.consumer.ConsumerConfig
 import org.apache.kafka.common.config.SslConfigs
 import org.apache.kafka.common.serialization.StringDeserializer
@@ -64,5 +65,19 @@ class AivenKafkaConfig(
         factory.setCommonErrorHandler(aivenKafkaErrorHandler)
         factory.containerProperties.ackMode = ContainerProperties.AckMode.MANUAL_IMMEDIATE
         return factory
+    }
+
+    @Bean
+    fun kafkaSykepengedagerInformasjonConsumer(
+        kafkaListenerContainerFactory: ConcurrentKafkaListenerContainerFactory<String, String>
+    ): Consumer<String, String> {
+        val consumerFactory = kafkaListenerContainerFactory.consumerFactory
+        val consumerProps = consumerFactory.configurationProperties
+
+        return DefaultKafkaConsumerFactory(
+            consumerProps,
+            StringDeserializer(),
+            StringDeserializer()
+        ).createConsumer()
     }
 }
