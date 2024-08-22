@@ -59,6 +59,40 @@ class UtbetalingInfotrygdDAO(
         return uuid
     }
 
+    fun isInfotrygdUtbetalingExists(
+        fnr: String,
+        sykepengerMaxDate: LocalDate,
+        utbetaltTilDate: LocalDate,
+    ): Boolean {
+        val queryStatement =
+            """
+            SELECT *
+            FROM UTBETALING_INFOTRYGD
+            WHERE  FNR = :FNR AND MAX_DATE = :MAX_DATE AND GJENSTAENDE_SYKEDAGER = :GJENSTAENDE_SYKEDAGER
+            """.trimIndent()
+
+        val mapQueryStatement =
+            MapSqlParameterSource()
+                .addValue("FNR", fnr)
+                .addValue("MAX_DATE", sykepengerMaxDate)
+                .addValue("UTBET_TOM", utbetaltTilDate)
+
+        val resultList =
+            try {
+                namedParameterJdbcTemplate.query(queryStatement, mapQueryStatement) { rs, _ ->
+                    Triple<String, String, Int>(
+                        rs.getString("FNR"),
+                        rs.getDate("MAX_DATE").toString(),
+                        rs.getInt("GJENSTAENDE_SYKEDAGER"),
+                    )
+                }
+            } catch (e: EmptyResultDataAccessException) {
+                emptyList()
+            }
+
+        return resultList.isNotEmpty()
+    }
+
     fun fetchInfotrygdUtbetalingByFnr(fnr: String): Triple<String, String, Int>? {
         val queryStatement =
             """

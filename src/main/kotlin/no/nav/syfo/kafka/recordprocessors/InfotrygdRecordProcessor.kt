@@ -51,12 +51,16 @@ class InfotrygdRecordProcessor {
         gjenstaendeSykepengedager: Int,
         source: InfotrygdSource,
     ) {
-        utbetalingInfotrygdDAO.storeInfotrygdUtbetaling(
-            fnr,
-            sykepengerMaxDate,
-            utbetaltTilDate,
-            gjenstaendeSykepengedager,
-            source,
-        )
+        if (!utbetalingInfotrygdDAO.isInfotrygdUtbetalingExists(fnr, sykepengerMaxDate, utbetaltTilDate)) {
+            utbetalingInfotrygdDAO.storeInfotrygdUtbetaling(
+                fnr,
+                sykepengerMaxDate,
+                utbetaltTilDate,
+                gjenstaendeSykepengedager,
+                source,
+            )
+        } else {
+            log.info("Infotrygd utbetaling with the same fnr, sykepengerMaxDate and  utbetaltTilDate already exists")
+        }
     }
 }
