@@ -28,16 +28,6 @@ class InfotrygdRecordProcessor {
             val sykepengerMaxDate = parseDate(kInfotrygdSykepengedager.after.MAX_DATO)
             val utbetaltTom = kInfotrygdSykepengedager.after.UTBET_TOM
 
-            log.info("[INFOTRYGD]: processRecord sykepengerMaxDate $sykepengerMaxDate")
-            log.info("[INFOTRYGD]: processRecord utbetaltTom $utbetaltTom")
-            log.info("[INFOTRYGD]: processRecord utbetaltTomDate ${utbetaltTom?.let { parseDate(it) }}")
-            log.info(
-                "[INFOTRYGD]: processRecord gjenstaendeSykepengedager ${utbetaltTom?.let { parseDate(
-                    it
-                ).gjenstaendeSykepengedager(sykepengerMaxDate)
-                }}"
-            )
-
             if (utbetaltTom != null) {
                 val utbetaltTomDate = parseDate(utbetaltTom)
 
@@ -61,8 +51,6 @@ class InfotrygdRecordProcessor {
         gjenstaendeSykepengedager: Int,
         source: InfotrygdSource,
     ) {
-        log.info("[INFOTRYGD]: processInfotrygdEvent gjenstaendeSykepengedager $gjenstaendeSykepengedager")
-
         if (!utbetalingInfotrygdDAO.isInfotrygdUtbetalingExists(fnr, sykepengerMaxDate, utbetaltTilDate)) {
             utbetalingInfotrygdDAO.storeInfotrygdUtbetaling(
                 fnr,
