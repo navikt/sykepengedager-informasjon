@@ -1,6 +1,7 @@
 package no.nav.syfo.db
 
 import no.nav.syfo.kafka.consumers.infotrygd.domain.InfotrygdSource
+import no.nav.syfo.logger
 import org.springframework.dao.EmptyResultDataAccessException
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate
@@ -10,7 +11,6 @@ import java.sql.Timestamp
 import java.time.LocalDate
 import java.time.LocalDateTime
 import java.util.*
-import no.nav.syfo.logger
 
 @Repository
 class UtbetalingInfotrygdDAO(
@@ -56,6 +56,9 @@ class UtbetalingInfotrygdDAO(
                 .addValue("GJENSTAENDE_SYKEDAGER", gjenstaendeSykepengedager)
                 .addValue("OPPRETTET", Timestamp.valueOf(LocalDateTime.now()))
                 .addValue("SOURCE", source.name)
+
+        // Log parameters to verify everything is added correctly
+        log.info("[INFOTRYGD]: SQL Parameters - $params")
 
         namedParameterJdbcTemplate.update(sql, params)
 
