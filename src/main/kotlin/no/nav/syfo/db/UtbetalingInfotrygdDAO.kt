@@ -10,11 +10,13 @@ import java.sql.Timestamp
 import java.time.LocalDate
 import java.time.LocalDateTime
 import java.util.*
+import no.nav.syfo.logger
 
 @Repository
 class UtbetalingInfotrygdDAO(
     private val namedParameterJdbcTemplate: NamedParameterJdbcTemplate,
 ) {
+    private val log = logger()
     fun storeInfotrygdUtbetaling(
         fnr: String,
         sykepengerMaxDate: LocalDate,
@@ -22,6 +24,7 @@ class UtbetalingInfotrygdDAO(
         gjenstaendeSykepengedager: Int,
         source: InfotrygdSource,
     ): UUID {
+        log.info("[INFOTRYGD]: gjenstaendeSykepengedager $gjenstaendeSykepengedager")
         val sql =
             """
             INSERT INTO UTBETALING_INFOTRYGD  (
