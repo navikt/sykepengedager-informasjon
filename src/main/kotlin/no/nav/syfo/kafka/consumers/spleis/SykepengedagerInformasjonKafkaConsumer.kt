@@ -30,7 +30,7 @@ class SykepengedagerInformasjonKafkaConsumer(
         try {
             val topic = record.topic()
             log.info(
-                "Received e record from topic $topic",
+                "Received a record from topic $topic",
             )
 
             when (topic) {
