@@ -1,7 +1,6 @@
 package no.nav.syfo.db
 
 import no.nav.syfo.kafka.consumers.infotrygd.domain.InfotrygdSource
-import no.nav.syfo.logger
 import org.springframework.dao.EmptyResultDataAccessException
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate
@@ -11,13 +10,11 @@ import java.sql.Timestamp
 import java.time.LocalDate
 import java.time.LocalDateTime
 import java.util.*
-import no.nav.syfo.logger
 
 @Repository
 class UtbetalingInfotrygdDAO(
     private val namedParameterJdbcTemplate: NamedParameterJdbcTemplate,
 ) {
-    private val log = logger()
     fun storeInfotrygdUtbetaling(
         fnr: String,
         sykepengerMaxDate: LocalDate,
@@ -25,7 +22,6 @@ class UtbetalingInfotrygdDAO(
         gjenstaendeSykepengedager: Int,
         source: InfotrygdSource,
     ): UUID {
-        log.info("[INFOTRYGD]: dao gjenstaendeSykepengedager $gjenstaendeSykepengedager")
         val sql =
             """
             INSERT INTO UTBETALING_INFOTRYGD  (
@@ -58,9 +54,6 @@ class UtbetalingInfotrygdDAO(
                 .addValue("OPPRETTET", Timestamp.valueOf(LocalDateTime.now()))
                 .addValue("SOURCE", source.name)
 
-        // Log parameters to verify everything is added correctly
-        log.info("[INFOTRYGD]: dao SQL Parameters - $params")
-
         namedParameterJdbcTemplate.update(sql, params)
 
         return uuid
@@ -75,7 +68,7 @@ class UtbetalingInfotrygdDAO(
             """
             SELECT *
             FROM UTBETALING_INFOTRYGD
-            WHERE  FNR = :FNR AND MAX_DATE = :MAX_DATE AND GJENSTAENDE_SYKEDAGER = :GJENSTAENDE_SYKEDAGER
+            WHERE  FNR = :FNR AND MAX_DATE = :MAX_DATE AND UTBET_TOM = :UTBET_TOM
             """.trimIndent()
 
         val mapQueryStatement =
@@ -87,10 +80,10 @@ class UtbetalingInfotrygdDAO(
         val resultList =
             try {
                 namedParameterJdbcTemplate.query(queryStatement, mapQueryStatement) { rs, _ ->
-                    Triple<String, String, Int>(
+                    Triple<String, String, String>(
                         rs.getString("FNR"),
                         rs.getDate("MAX_DATE").toString(),
-                        rs.getInt("GJENSTAENDE_SYKEDAGER"),
+                        rs.getDate("UTBET_TOM").toString(),
                     )
                 }
             } catch (e: EmptyResultDataAccessException) {
