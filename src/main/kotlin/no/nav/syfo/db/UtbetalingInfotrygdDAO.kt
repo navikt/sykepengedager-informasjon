@@ -24,7 +24,7 @@ class UtbetalingInfotrygdDAO(
         gjenstaendeSykepengedager: Int,
         source: InfotrygdSource,
     ): UUID {
-        log.info("[INFOTRYGD]: gjenstaendeSykepengedager $gjenstaendeSykepengedager")
+        log.info("[INFOTRYGD]: dao gjenstaendeSykepengedager $gjenstaendeSykepengedager")
         val sql =
             """
             INSERT INTO UTBETALING_INFOTRYGD  (
@@ -58,7 +58,7 @@ class UtbetalingInfotrygdDAO(
                 .addValue("SOURCE", source.name)
 
         // Log parameters to verify everything is added correctly
-        log.info("[INFOTRYGD]: SQL Parameters - $params")
+        log.info("[INFOTRYGD]: dao SQL Parameters - $params")
 
         namedParameterJdbcTemplate.update(sql, params)
 
