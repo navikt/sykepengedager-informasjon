@@ -1,6 +1,7 @@
 package no.nav.syfo.db
 
 import no.nav.syfo.kafka.consumers.infotrygd.domain.InfotrygdSource
+import org.slf4j.LoggerFactory
 import org.springframework.dao.EmptyResultDataAccessException
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate
@@ -15,13 +16,15 @@ import java.util.*
 class UtbetalingInfotrygdDAO(
     private val namedParameterJdbcTemplate: NamedParameterJdbcTemplate,
 ) {
+    private val log = LoggerFactory.getLogger(UtbetalingInfotrygdDAO::class.qualifiedName)
+
     fun storeInfotrygdUtbetaling(
         fnr: String,
         sykepengerMaxDate: LocalDate,
         utbetaltTilDate: LocalDate,
         gjenstaendeSykepengedager: Int,
         source: InfotrygdSource,
-    ): UUID {
+    ): UUID? {
         val sql =
             """
             INSERT INTO UTBETALING_INFOTRYGD  (
@@ -48,15 +51,18 @@ class UtbetalingInfotrygdDAO(
             MapSqlParameterSource()
                 .addValue("UUID", uuid)
                 .addValue("FNR", fnr)
-                .addValue("MAX_DATE", Date.valueOf(sykepengerMaxDate))
+                .addValue("MAX_DATE", Date.valueOf(sykepengerMaxDate)) // Local date
                 .addValue("UTBET_TOM", Date.valueOf(utbetaltTilDate))
                 .addValue("GJENSTAENDE_SYKEDAGER", gjenstaendeSykepengedager)
                 .addValue("OPPRETTET", Timestamp.valueOf(LocalDateTime.now()))
                 .addValue("SOURCE", source.name)
-
-        namedParameterJdbcTemplate.update(sql, params)
-
-        return uuid
+        try {
+            namedParameterJdbcTemplate.update(sql, params)
+            return uuid
+        } catch (e: Exception) {
+            log.error("Could not execute insert a message for infotrygd, message: ${e.message}")
+            return null
+        }
     }
 
     fun isInfotrygdUtbetalingExists(
@@ -86,6 +92,9 @@ class UtbetalingInfotrygdDAO(
                         rs.getDate("UTBET_TOM").toString(),
                     )
                 }
+            } catch (e: Exception) {
+                log.error("Could not execute select statement for UTBETALING_INFOTRYGD , message: ${e.message}")
+                emptyList()
             } catch (e: EmptyResultDataAccessException) {
                 emptyList()
             }
