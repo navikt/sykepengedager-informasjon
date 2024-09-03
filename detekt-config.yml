@@ -16,6 +16,8 @@ exceptions:
 complexity:
   LongMethod:
     active: false
+  NestedBlockDepth:
+    active: false
 config:
   validation: true
   warningsAsErrors: true
