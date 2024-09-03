@@ -97,10 +97,14 @@ class AivenKafkaConfig(
     }
 
     @Bean
-    fun infotrygdKafkaListenerContainerFactory(): ConcurrentKafkaListenerContainerFactory<String, String> {
+    fun infotrygdKafkaListenerContainerFactory(
+        aivenKafkaErrorHandler: AivenKafkaErrorHandler,
+    ): ConcurrentKafkaListenerContainerFactory<String, String> {
         val factory =
             ConcurrentKafkaListenerContainerFactory<String, String>()
         factory.consumerFactory = infotrygdConsumerFactory()
+        factory.setCommonErrorHandler(aivenKafkaErrorHandler)
+        factory.containerProperties.ackMode = ContainerProperties.AckMode.MANUAL_IMMEDIATE
         return factory
     }
 }
