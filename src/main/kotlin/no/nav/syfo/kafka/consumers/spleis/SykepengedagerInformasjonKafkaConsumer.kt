@@ -20,7 +20,7 @@ class SykepengedagerInformasjonKafkaConsumer(
     private val log = logger()
 
     @KafkaListener(
-        topics = [topicUtbetaling, topicSykepengedagerInfotrygd],
+        topics = [topicUtbetaling],
         autoStartup = "true" // Enable consuming
     )
     fun listen(
@@ -30,7 +30,7 @@ class SykepengedagerInformasjonKafkaConsumer(
         try {
             val topic = record.topic()
             log.info(
-                "Received a record from topic $topic",
+                "Received a record from topic $topicUtbetaling",
             )
 
             when (topic) {
@@ -38,7 +38,29 @@ class SykepengedagerInformasjonKafkaConsumer(
                     log.info("Going to process record from topicUtbetaling $topic")
                     spleisRecordProcessor.processRecord(record)
                 }
+            }
+            ack.acknowledge()
+        } catch (e: Exception) {
+            log.error("Exception in ${SykepengedagerInformasjonKafkaConsumer::class.qualifiedName}-listener: $e", e)
+        }
+    }
 
+    @KafkaListener(
+        topics = [ topicSykepengedagerInfotrygd],
+        autoStartup = "true", // Enable consuming
+        containerFactory = "infotrygdKafkaListenerContainerFactory",
+    )
+    fun listenTopicSykepengedagerInfotrygd(
+        record: ConsumerRecord<String, String>,
+        ack: Acknowledgment,
+    ) {
+        try {
+            val topic = record.topic()
+            log.info(
+                "Received a record from topic $topicSykepengedagerInfotrygd",
+            )
+
+            when (topic) {
                 topicSykepengedagerInfotrygd -> {
                     log.info(
                         "Going to process record from topicSykepengedagerInfotrygd $topic",
