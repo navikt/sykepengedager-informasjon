@@ -13,6 +13,7 @@ import org.springframework.context.annotation.Configuration
 import org.springframework.context.annotation.Profile
 import org.springframework.kafka.annotation.EnableKafka
 import org.springframework.kafka.config.ConcurrentKafkaListenerContainerFactory
+import org.springframework.kafka.core.ConsumerFactory
 import org.springframework.kafka.core.DefaultKafkaConsumerFactory
 import org.springframework.kafka.listener.ContainerProperties
 
@@ -45,19 +46,22 @@ class AivenKafkaConfig(
         SslConfigs.SSL_KEY_PASSWORD_CONFIG to kafkaCredstorePassword
     )
 
+    fun listenerContainerConfig() = mapOf(
+        ConsumerConfig.GROUP_ID_CONFIG to "sykepengedager-informasjon-group-v1",
+        ConsumerConfig.AUTO_OFFSET_RESET_CONFIG to "earliest",
+        ConsumerConfig.KEY_DESERIALIZER_CLASS_CONFIG to StringDeserializer::class.java,
+        ConsumerConfig.VALUE_DESERIALIZER_CLASS_CONFIG to StringDeserializer::class.java,
+        ConsumerConfig.ENABLE_AUTO_COMMIT_CONFIG to false,
+        ConsumerConfig.MAX_POLL_RECORDS_CONFIG to "1",
+        ConsumerConfig.MAX_POLL_INTERVAL_MS_CONFIG to "600000"
+    ) + commonConfig()
+
     @Bean
     fun kafkaListenerContainerFactory(
         aivenKafkaErrorHandler: AivenKafkaErrorHandler,
     ): ConcurrentKafkaListenerContainerFactory<String, String> {
-        val config = mapOf(
-            ConsumerConfig.GROUP_ID_CONFIG to "sykepengedager-informasjon-group-v1",
-            ConsumerConfig.AUTO_OFFSET_RESET_CONFIG to "earliest",
-            ConsumerConfig.KEY_DESERIALIZER_CLASS_CONFIG to StringDeserializer::class.java,
-            ConsumerConfig.VALUE_DESERIALIZER_CLASS_CONFIG to StringDeserializer::class.java,
-            ConsumerConfig.ENABLE_AUTO_COMMIT_CONFIG to false,
-            ConsumerConfig.MAX_POLL_RECORDS_CONFIG to "1",
-            ConsumerConfig.MAX_POLL_INTERVAL_MS_CONFIG to "600000"
-        ) + commonConfig()
+        val config = listenerContainerConfig()
+
         val consumerFactory = DefaultKafkaConsumerFactory<String, String>(config)
 
         val factory = ConcurrentKafkaListenerContainerFactory<String, String>()
@@ -69,7 +73,7 @@ class AivenKafkaConfig(
 
     @Bean
     fun kafkaSykepengedagerInformasjonConsumer(
-        kafkaListenerContainerFactory: ConcurrentKafkaListenerContainerFactory<String, String>
+        kafkaListenerContainerFactory: ConcurrentKafkaListenerContainerFactory<String, String>,
     ): Consumer<String, String> {
         val consumerFactory = kafkaListenerContainerFactory.consumerFactory
         val consumerProps = consumerFactory.configurationProperties
@@ -79,5 +83,24 @@ class AivenKafkaConfig(
             StringDeserializer(),
             StringDeserializer()
         ).createConsumer()
+    }
+
+    @Bean
+    fun infotrygdConsumerFactory(): ConsumerFactory<String, String> {
+        val config = listenerContainerConfig().toMutableMap()
+        config.remove(ConsumerConfig.AUTO_OFFSET_RESET_CONFIG)
+        config.remove(ConsumerConfig.GROUP_ID_CONFIG)
+        config[ConsumerConfig.AUTO_OFFSET_RESET_CONFIG] = "latest"
+        config[ConsumerConfig.GROUP_ID_CONFIG] = "sykepengedager-informasjon-group-v2"
+
+        return DefaultKafkaConsumerFactory(config as Map<String, Any>)
+    }
+
+    @Bean
+    fun infotrygdKafkaListenerContainerFactory(): ConcurrentKafkaListenerContainerFactory<String, String> {
+        val factory =
+            ConcurrentKafkaListenerContainerFactory<String, String>()
+        factory.consumerFactory = infotrygdConsumerFactory()
+        return factory
     }
 }
