@@ -27,7 +27,7 @@ class SykepengedagerInformasjonKafkaService(
             )
         } else {
             log.error("Could not map utbetalinger to KSykepengedagerInformasjonDTO, should not happen in prod.")
-            throw Exception("Could not map utbetalinger to KSykepengedagerInformasjonDTO")
+            throw IllegalArgumentException("Could not map utbetalinger to KSykepengedagerInformasjonDTO")
         }
     }
 
