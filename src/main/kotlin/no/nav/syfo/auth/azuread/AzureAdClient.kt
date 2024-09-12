@@ -1,6 +1,6 @@
 package no.nav.syfo.auth.azuread
 
-import org.slf4j.LoggerFactory
+import no.nav.syfo.logger
 import org.springframework.beans.factory.annotation.Value
 import org.springframework.http.HttpEntity
 import org.springframework.http.HttpHeaders
@@ -80,7 +80,7 @@ class AzureAdClient(
         private const val CLIENT_ASSERTION_TYPE = "client_assertion_type"
         private const val REQUESTED_TOKEN_USE = "requested_token_use"
 
-        private val log = LoggerFactory.getLogger(AzureAdClient::class.java)
+        private val log = logger()
     }
 }
 

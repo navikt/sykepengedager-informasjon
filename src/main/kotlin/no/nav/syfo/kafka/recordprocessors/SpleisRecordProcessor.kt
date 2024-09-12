@@ -6,13 +6,16 @@ import no.nav.syfo.db.UtbetalingSpleisDAO
 import no.nav.syfo.kafka.consumers.spleis.domain.UTBETALING_UTBETALT
 import no.nav.syfo.kafka.consumers.spleis.domain.UTBETALING_UTEN_UTBETALING
 import no.nav.syfo.kafka.consumers.spleis.domain.UtbetalingSpleis
+import no.nav.syfo.kafka.producers.SykepengedagerInformasjonKafkaService
 import no.nav.syfo.logger
 import org.apache.kafka.clients.consumer.ConsumerRecord
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Component
 
 @Component
-class SpleisRecordProcessor {
+class SpleisRecordProcessor(
+    val sykepengedagerInformasjonKafkaService: SykepengedagerInformasjonKafkaService,
+) {
     private val log = logger()
     private val objectMapper = jacksonObjectMapper()
 
@@ -32,5 +35,6 @@ class SpleisRecordProcessor {
 
     private fun processUtbetalingSpleisEvent(utbetaling: UtbetalingSpleis) {
         utbetalingSpleisDAO.storeSpleisUtbetaling(utbetaling)
+        sykepengedagerInformasjonKafkaService.publishSykepengedagerInformasjonEvent(utbetaling.fødselsnummer)
     }
 }
