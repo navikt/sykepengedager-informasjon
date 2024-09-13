@@ -30,6 +30,7 @@ class SykepengedagerInformasjonProducer(
                 ),
             ).get()
             sentSykepengedagerInformasjonDAO.storeSentSykepengedagerInformasjon(event, event.createdAt)
+            log.info("Successfully sent event to sykepengedager-informasjon-topic")
         } catch (e: ExecutionException) {
             log.error(
                 "ExecutionException was thrown when attempting to " +

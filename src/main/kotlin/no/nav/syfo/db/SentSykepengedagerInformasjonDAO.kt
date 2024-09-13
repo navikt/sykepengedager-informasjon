@@ -40,7 +40,7 @@ class SentSykepengedagerInformasjonDAO(private val namedParameterJdbcTemplate: N
             namedParameterJdbcTemplate.update(sql, params)
             return uuid
         } catch (e: Exception) {
-            log.error("Could not execute insert a message for infotrygd, message: ${e.message}")
+            log.error("Could not execute insert in SENT_SYKEPENGEDAGER_INFORMASJON, error message: ${e.message}")
             return null
         }
     }
