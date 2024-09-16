@@ -20,5 +20,5 @@ spec:
     retentionHours: -1  # Messages will never be timed out
   acl:
     - team: team-esyfo
-      application: meroppfolging-backend
+      application: sykepengedager-informasjon
       access: read
