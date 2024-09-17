@@ -22,3 +22,6 @@ spec:
     - team: team-esyfo
       application: sykepengedager-informasjon
       access: write
+    - team: team-esyfo
+      application: meroppfolging-backend
+      access: read
