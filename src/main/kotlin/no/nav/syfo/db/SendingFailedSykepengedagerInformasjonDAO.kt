@@ -21,7 +21,7 @@ class SendingFailedSykepengedagerInformasjonDAO(private val namedParameterJdbcTe
     ): UUID? {
         val sql =
             """
-            INSERT INTO SENDING_FEILED_SYKEPENGEDAGER_INFORMASJON  (
+            INSERT INTO SENDING_FAILED_SYKEPENGEDAGER_INFORMASJON  (
             UUID, 
             EVENT_ID,
             CREATED_AT,
@@ -46,7 +46,7 @@ class SendingFailedSykepengedagerInformasjonDAO(private val namedParameterJdbcTe
             return uuid
         } catch (e: Exception) {
             log.error(
-                "Could not execute insert in SENDING_FEILED_SYKEPENGEDAGER_INFORMASJON, error message: ${e.message}"
+                "Could not execute insert in SENDING_FAILED_SYKEPENGEDAGER_INFORMASJON, error message: ${e.message}"
             )
             return null
         }
@@ -56,7 +56,7 @@ class SendingFailedSykepengedagerInformasjonDAO(private val namedParameterJdbcTe
         val queryStatement =
             """
             SELECT *
-            FROM SENDING_FEILED_SYKEPENGEDAGER_INFORMASJON
+            FROM SENDING_FAILED_SYKEPENGEDAGER_INFORMASJON
             WHERE  EVENT_ID = :EVENT_ID
             """.trimIndent()
 
