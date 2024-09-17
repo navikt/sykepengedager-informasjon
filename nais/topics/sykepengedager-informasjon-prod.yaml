@@ -21,4 +21,4 @@ spec:
   acl:
     - team: team-esyfo
       application: sykepengedager-informasjon
-      access: read
+      access: write
