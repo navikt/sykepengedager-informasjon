@@ -21,7 +21,9 @@ class SykepengedagerInformasjonProducer(
         event: KSykepengedagerInformasjonDTO,
     ) {
         try {
-            log.info("SykepengedagerInformasjonProducer: Publiserer sykepengedager-informasjon-topic")
+            log.info(
+                "SykepengedagerInformasjonProducer: Publishing sykepengedager-informasjon-topic with id: ${event.id}"
+            )
             kafkaTemplate.send(
                 ProducerRecord(
                     SYKEPENGEDAGER_INFORMASJON_TOPIC,
