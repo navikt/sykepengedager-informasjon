@@ -32,4 +32,4 @@ jobs:
         uses: nais/deploy/actions/deploy@v2
         env:
           CLUSTER: prod-gcp
-          RESOURCE: nais/topics/sykepengedager-informasjon-dev.yaml
+          RESOURCE: nais/topics/sykepengedager-informasjon-prod.yaml
