@@ -4,7 +4,7 @@ Core functions of this application:
 
 1. Listens to topics: Monitors the **aap.sykepengedager.infotrygd.v1** and **tbd.utbetaling** topics, capturing payments data for storage in the database.
 2. Serves data via REST endpoints: Provides access to the maximum date and other relevant data like "gjenstaende_sykedager" or creation date through RESTful API endpoints.
-3. Writes data to topic: Publishes the maximum date and other relevant information like "gjenstaende_sykedager" or creation date to the **InsertNameHere** topic. // TODO
+3. Writes data to topic: Publishes the maximum date and other relevant information like "gjenstaende_sykedager" or creation date to the **'sykepengedager-informasjon-topic'** topic.
 
 ## Technologies used
 
