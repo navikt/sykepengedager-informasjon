@@ -1,7 +1,7 @@
 package no.nav.syfo.db
 
 import no.nav.syfo.kafka.consumers.infotrygd.domain.InfotrygdSource
-import org.slf4j.LoggerFactory
+import no.nav.syfo.logger
 import org.springframework.dao.EmptyResultDataAccessException
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate
@@ -16,7 +16,7 @@ import java.util.*
 class UtbetalingInfotrygdDAO(
     private val namedParameterJdbcTemplate: NamedParameterJdbcTemplate,
 ) {
-    private val log = LoggerFactory.getLogger(UtbetalingInfotrygdDAO::class.qualifiedName)
+    private val log = logger()
 
     fun storeInfotrygdUtbetaling(
         fnr: String,

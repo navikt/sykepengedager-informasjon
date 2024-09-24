@@ -1,4 +1,4 @@
-package no.nav.syfo.kafka.consumers.spleis
+package no.nav.syfo.kafka.consumers
 
 import no.nav.syfo.config.kafka.topicSykepengedagerInfotrygd
 import no.nav.syfo.config.kafka.topicUtbetaling

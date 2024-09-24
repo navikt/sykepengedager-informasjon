@@ -2,11 +2,14 @@
 
 package no.nav.syfo.config.kafka
 
+import no.nav.syfo.kafka.producers.domain.KSykepengedagerInformasjonDTO
 import org.apache.kafka.clients.CommonClientConfigs
 import org.apache.kafka.clients.consumer.Consumer
 import org.apache.kafka.clients.consumer.ConsumerConfig
+import org.apache.kafka.clients.producer.ProducerConfig
 import org.apache.kafka.common.config.SslConfigs
 import org.apache.kafka.common.serialization.StringDeserializer
+import org.apache.kafka.common.serialization.StringSerializer
 import org.springframework.beans.factory.annotation.Value
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
@@ -15,6 +18,9 @@ import org.springframework.kafka.annotation.EnableKafka
 import org.springframework.kafka.config.ConcurrentKafkaListenerContainerFactory
 import org.springframework.kafka.core.ConsumerFactory
 import org.springframework.kafka.core.DefaultKafkaConsumerFactory
+import org.springframework.kafka.core.DefaultKafkaProducerFactory
+import org.springframework.kafka.core.KafkaTemplate
+import org.springframework.kafka.core.ProducerFactory
 import org.springframework.kafka.listener.ContainerProperties
 
 const val topicSykepengedagerInfotrygd = "aap.sykepengedager.infotrygd.v1"
@@ -107,4 +113,30 @@ class AivenKafkaConfig(
         factory.containerProperties.ackMode = ContainerProperties.AckMode.MANUAL_IMMEDIATE
         return factory
     }
+
+    fun commonKafkaAivenProducerConfig(): HashMap<String, Any> {
+        return HashMap<String, Any>().apply {
+            putAll(commonConfig())
+            put(
+                ProducerConfig.ACKS_CONFIG,
+                "all",
+            )
+            put(
+                ProducerConfig.KEY_SERIALIZER_CLASS_CONFIG,
+                StringSerializer::class.java,
+            )
+            put(
+                ProducerConfig.VALUE_SERIALIZER_CLASS_CONFIG,
+                JacksonKafkaSerializer::class.java,
+            )
+        }
+    }
+
+    @Bean
+    fun sykepengedagerInformasjonProducerFactory(): ProducerFactory<String, KSykepengedagerInformasjonDTO> =
+        DefaultKafkaProducerFactory(commonKafkaAivenProducerConfig())
+
+    @Bean
+    fun sykepengedagerInformasjonKafkaTemplate(producerFactory: ProducerFactory<String, KSykepengedagerInformasjonDTO>):
+        KafkaTemplate<String, KSykepengedagerInformasjonDTO> = KafkaTemplate(producerFactory)
 }

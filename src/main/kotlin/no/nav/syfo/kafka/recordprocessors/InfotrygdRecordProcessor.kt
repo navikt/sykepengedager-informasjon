@@ -6,6 +6,7 @@ import no.nav.syfo.db.UtbetalingInfotrygdDAO
 import no.nav.syfo.kafka.consumers.infotrygd.domain.InfotrygdSource
 import no.nav.syfo.kafka.consumers.infotrygd.domain.KInfotrygdSykepengedager
 import no.nav.syfo.kafka.consumers.infotrygd.gjenstaendeSykepengedager
+import no.nav.syfo.kafka.producers.SykepengedagerInformasjonKafkaService
 import no.nav.syfo.logger
 import no.nav.syfo.utils.parseDate
 import org.apache.kafka.clients.consumer.ConsumerRecord
@@ -14,7 +15,9 @@ import org.springframework.stereotype.Component
 import java.time.LocalDate
 
 @Component
-class InfotrygdRecordProcessor {
+class InfotrygdRecordProcessor(
+    val sykepengedagerInformasjonKafkaService: SykepengedagerInformasjonKafkaService,
+) {
     private val log = logger()
     private val objectMapper = jacksonObjectMapper()
 
@@ -59,6 +62,7 @@ class InfotrygdRecordProcessor {
                 gjenstaendeSykepengedager,
                 source,
             )
+            sykepengedagerInformasjonKafkaService.publishSykepengedagerInformasjonEvent(fnr)
         } else {
             log.info("Infotrygd utbetaling with the same fnr, sykepengerMaxDate and  utbetaltTilDate already exists")
         }
