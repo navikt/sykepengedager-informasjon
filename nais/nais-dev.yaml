@@ -64,6 +64,8 @@ spec:
       value: api://dev-gcp.teamsykefravr.istilgangskontroll/.default
     - name: ISTILGANGSKONTROLL_ID
       value: dev-gcp.teamsykefravr.istilgangskontroll
+    - name: DITT_SYKEFRAVAER_CLIENT_ID
+      value: "dev-gcp:flex:ditt-sykefravaer"
   accessPolicy:
     inbound:
       rules:
