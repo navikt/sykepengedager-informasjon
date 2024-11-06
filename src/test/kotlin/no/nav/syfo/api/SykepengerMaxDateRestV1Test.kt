@@ -30,6 +30,7 @@ class SykepengerMaxDateRestV1Test :
                 utbetalingerDAO = utbetalingerDAO,
                 metric,
                 "123",
+                "123",
                 tokenValidationContextHolder
             ).apply {
                 this.tokenValidator = tokenValidator

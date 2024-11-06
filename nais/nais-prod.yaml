@@ -66,6 +66,8 @@ spec:
       value: prod-gcp.teamsykefravr.istilgangskontroll
     - name: DITT_SYKEFRAVAER_CLIENT_ID
       value: "prod-gcp:flex:ditt-sykefravaer"
+    - name: MEROPPFOLGING-BACKEND_CLIENT_ID
+      value: "prod-gcp:team-esyfo:meroppfolging-backend"
   accessPolicy:
     inbound:
       rules:
