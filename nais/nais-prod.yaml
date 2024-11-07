@@ -68,6 +68,8 @@ spec:
       value: "prod-gcp:flex:ditt-sykefravaer"
     - name: MEROPPFOLGING-BACKEND_CLIENT_ID
       value: "prod-gcp:team-esyfo:meroppfolging-backend"
+    - name: MEROPPFOLGING-FRONTEND_CLIENT_ID
+      value: "prod-gcp:team-esyfo:meroppfolging-frontend"
   accessPolicy:
     inbound:
       rules:
