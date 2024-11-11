@@ -24,6 +24,7 @@ import java.time.Duration
 import java.time.Instant
 
 @RestController
+@ProtectedWithClaims(issuer = AZUREAD)
 @RequestMapping("/")
 class SykepengerMaxDateAzureApiV2(
     private val veilederTilgangskontrollClient: VeilederTilgangskontrollClient,
@@ -33,7 +34,6 @@ class SykepengerMaxDateAzureApiV2(
 ) {
     private val log = logger()
 
-    @ProtectedWithClaims(issuer = AZUREAD)
     @GetMapping("/api/azure/v2/sykepenger/maxdate", produces = [MediaType.APPLICATION_JSON_VALUE])
     @ResponseBody
     suspend fun getMaxDateInfo(
