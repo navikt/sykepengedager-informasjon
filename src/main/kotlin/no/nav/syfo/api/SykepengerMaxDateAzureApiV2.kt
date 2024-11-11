@@ -1,6 +1,9 @@
 package no.nav.syfo.api
 
 import no.nav.security.token.support.core.api.ProtectedWithClaims
+import no.nav.security.token.support.core.context.TokenValidationContextHolder
+import no.nav.syfo.auth.TokenUtil
+import no.nav.syfo.auth.TokenUtil.TokenIssuer.AZUREAD
 import no.nav.syfo.consumer.veiledertilgang.VeilederNoAccessException
 import no.nav.syfo.consumer.veiledertilgang.VeilederTilgangskontrollClient
 import no.nav.syfo.db.PMaksDato
@@ -26,10 +29,11 @@ class SykepengerMaxDateAzureApiV2(
     private val veilederTilgangskontrollClient: VeilederTilgangskontrollClient,
     val utbetalingerDAO: UtbetalingerDAO,
     private val metric: Metric,
+    val tokenValidationContextHolder: TokenValidationContextHolder,
 ) {
     private val log = logger()
 
-    @ProtectedWithClaims(issuer = "azuread")
+    @ProtectedWithClaims(issuer = AZUREAD)
     @GetMapping("/api/azure/v2/sykepenger/maxdate", produces = [MediaType.APPLICATION_JSON_VALUE])
     @ResponseBody
     suspend fun getMaxDateInfo(
@@ -48,9 +52,7 @@ class SykepengerMaxDateAzureApiV2(
                         "Failed to get maxDate: No $NAV_PERSONIDENT_HEADER supplied in request header",
                     )
 
-            val token =
-                headers["authorization"]?.removePrefix("Bearer ")
-                    ?: throw IllegalArgumentException("Failed to get maxDate: No Authorization header supplied")
+            val token = TokenUtil.getIssuerToken(tokenValidationContextHolder, AZUREAD)
 
             val callId = headers[NAV_CALL_ID_HEADER].toString()
 
