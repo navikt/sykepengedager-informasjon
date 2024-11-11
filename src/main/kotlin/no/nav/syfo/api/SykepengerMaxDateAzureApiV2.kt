@@ -1,5 +1,6 @@
 package no.nav.syfo.api
 
+import no.nav.security.token.support.core.api.ProtectedWithClaims
 import no.nav.syfo.consumer.veiledertilgang.VeilederNoAccessException
 import no.nav.syfo.consumer.veiledertilgang.VeilederTilgangskontrollClient
 import no.nav.syfo.db.PMaksDato
@@ -28,6 +29,7 @@ class SykepengerMaxDateAzureApiV2(
 ) {
     private val log = logger()
 
+    @ProtectedWithClaims(issuer = "azuread")
     @GetMapping("/api/azure/v2/sykepenger/maxdate", produces = [MediaType.APPLICATION_JSON_VALUE])
     @ResponseBody
     suspend fun getMaxDateInfo(
