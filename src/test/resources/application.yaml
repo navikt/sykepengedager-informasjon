@@ -1,3 +1,12 @@
+no.nav.security.jwt:
+  issuer:
+    tokenx:
+      discoveryurl: http://localhost:${mock-oauth2-server.port}/tokenx/.well-known/openid-configuration
+      accepted_audience: sykepengedager-informasjon-client-id
+    azureator:
+      discoveryurl: http://localhost:${mock-oauth2-server.port}/azuread/.well-known/openid-configuration
+      accepted_audience: sykepengedager-informasjon-client-id
+
 kafka.brokers: localhost://9092
 kafka.truststore.path: /truststore
 kafka.keystore.path: /keystore
@@ -22,3 +31,4 @@ istilgangskontroll.scope: "istilgangskontrollScope"
 ditt.sykefravaer.client.id: "dittSykefravaerClientId"
 meroppfolging.backend.client.id: "meroppfolgingBackendClientId"
 meroppfolging.frontend.client.id: "meroppfolgingFrontendClientId"
+
