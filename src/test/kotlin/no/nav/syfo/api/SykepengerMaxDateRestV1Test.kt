@@ -31,7 +31,6 @@ class SykepengerMaxDateRestV1Test :
                 metric,
                 "123",
                 "123",
-                "123",
                 tokenValidationContextHolder
             ).apply {
                 this.tokenValidator = tokenValidator
