@@ -30,8 +30,6 @@ class SykepengerMaxDateRestApiV1(
     private val metric: Metric,
     @Value("\${ditt.sykefravaer.client.id}")
     val dittSykefravaerClientId: String,
-    @Value("\${meroppfolging.backend.client.id}")
-    val meroppfolgingBackendClientId: String,
     @Value("\${meroppfolging.frontend.client.id}")
     val meroppfolgingFrontendClientId: String,
     val tokenValidationContextHolder: TokenValidationContextHolder,
@@ -43,7 +41,7 @@ class SykepengerMaxDateRestApiV1(
     fun init() {
         tokenValidator = TokenValidator(
             tokenValidationContextHolder,
-            listOf(dittSykefravaerClientId, meroppfolgingBackendClientId, meroppfolgingFrontendClientId)
+            listOf(dittSykefravaerClientId, meroppfolgingFrontendClientId)
         )
     }
 

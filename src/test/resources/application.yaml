@@ -20,6 +20,5 @@ azure:
 istilgangskontroll.url": "http://istilgangskontrollUrl:9099"
 istilgangskontroll.scope: "istilgangskontrollScope"
 ditt.sykefravaer.client.id: "dittSykefravaerClientId"
-meroppfolging.backend.client.id: "meroppfolgingBackendClientId"
 meroppfolging.frontend.client.id: "meroppfolgingFrontendClientId"
 
