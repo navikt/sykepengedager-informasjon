@@ -81,7 +81,11 @@ class SykepengerMaxDateRestApiV1(
                     }
                 }
             log.info("Fetched sykepengerMaxDate from database: ${sykepengerMaxDate?.forelopig_beregnet_slutt}")
-            return SykepengerMaxDateResponse(maxDate = maxDate, utbetaltTom = utbetaltTom)
+            return SykepengerMaxDateResponse(
+                maxDate = maxDate,
+                utbetaltTom = utbetaltTom,
+                gjenstaendeSykedager = sykepengerMaxDate?.gjenstaende_sykedager
+            )
         } finally {
             val end = Instant.now()
             val duration = Duration.between(start, end)
@@ -92,7 +96,8 @@ class SykepengerMaxDateRestApiV1(
 
 data class SykepengerMaxDateResponse(
     val maxDate: String?,
-    val utbetaltTom: String?
+    val utbetaltTom: String?,
+    val gjenstaendeSykedager: String?
 ) : Serializable {
     companion object {
         private const val serialVersionUID: Long = 1L
