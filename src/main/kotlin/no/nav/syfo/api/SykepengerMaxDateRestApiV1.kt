@@ -1,6 +1,8 @@
 package no.nav.syfo.api
 
+import jakarta.annotation.PostConstruct
 import no.nav.security.token.support.core.api.ProtectedWithClaims
+import no.nav.security.token.support.core.context.TokenValidationContextHolder
 import no.nav.syfo.auth.TokenValidator
 import no.nav.syfo.auth.getFnr
 import no.nav.syfo.db.UtbetalingerDAO
@@ -8,6 +10,7 @@ import no.nav.syfo.logger
 import no.nav.syfo.metric.Metric
 import no.nav.syfo.metric.TimerBuilderName
 import no.nav.syfo.utils.formatDateForLetter
+import org.springframework.beans.factory.annotation.Value
 import org.springframework.http.MediaType
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.RequestMapping
@@ -25,9 +28,22 @@ import java.time.Instant
 class SykepengerMaxDateRestApiV1(
     val utbetalingerDAO: UtbetalingerDAO,
     private val metric: Metric,
+    @Value("\${ditt.sykefravaer.client.id}")
+    val dittSykefravaerClientId: String,
+    @Value("\${meroppfolging.frontend.client.id}")
+    val meroppfolgingFrontendClientId: String,
+    val tokenValidationContextHolder: TokenValidationContextHolder,
 ) {
     private val log = logger()
     lateinit var tokenValidator: TokenValidator
+
+    @PostConstruct
+    fun init() {
+        tokenValidator = TokenValidator(
+            tokenValidationContextHolder,
+            listOf(dittSykefravaerClientId, meroppfolgingFrontendClientId)
+        )
+    }
 
     @GetMapping("api/v1/sykepenger/maxdate", produces = [MediaType.APPLICATION_JSON_VALUE])
     @ResponseBody
@@ -65,7 +81,11 @@ class SykepengerMaxDateRestApiV1(
                     }
                 }
             log.info("Fetched sykepengerMaxDate from database: ${sykepengerMaxDate?.forelopig_beregnet_slutt}")
-            return SykepengerMaxDateResponse(maxDate = maxDate, utbetaltTom = utbetaltTom)
+            return SykepengerMaxDateResponse(
+                maxDate = maxDate,
+                utbetaltTom = utbetaltTom,
+                gjenstaendeSykedager = sykepengerMaxDate?.gjenstaende_sykedager
+            )
         } finally {
             val end = Instant.now()
             val duration = Duration.between(start, end)
@@ -76,7 +96,8 @@ class SykepengerMaxDateRestApiV1(
 
 data class SykepengerMaxDateResponse(
     val maxDate: String?,
-    val utbetaltTom: String?
+    val utbetaltTom: String?,
+    val gjenstaendeSykedager: String?
 ) : Serializable {
     companion object {
         private const val serialVersionUID: Long = 1L

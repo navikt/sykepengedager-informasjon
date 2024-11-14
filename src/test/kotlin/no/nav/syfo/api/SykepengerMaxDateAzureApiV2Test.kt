@@ -6,6 +6,7 @@ import io.mockk.clearAllMocks
 import io.mockk.every
 import io.mockk.mockk
 import junit.framework.TestCase
+import no.nav.security.token.support.core.context.TokenValidationContextHolder
 import no.nav.syfo.consumer.veiledertilgang.VeilederNoAccessException
 import no.nav.syfo.consumer.veiledertilgang.VeilederTilgangskontrollClient
 import no.nav.syfo.db.PMaksDato
@@ -23,11 +24,14 @@ class SykepengerMaxDateAzureApiV2Test :
         val utbetalingerDAO = mockk<UtbetalingerDAO>(relaxed = true)
         val veilederTilgangskontrollClient = mockk<VeilederTilgangskontrollClient>(relaxed = true)
         val metric = mockk<Metric>(relaxed = true)
+        val tokenValidationContextHolder = mockk<TokenValidationContextHolder>(relaxed = true)
+
         val fnr = "12121212121"
         val controller = SykepengerMaxDateAzureApiV2(
             veilederTilgangskontrollClient,
             utbetalingerDAO = utbetalingerDAO,
             metric,
+            tokenValidationContextHolder,
         )
 
         beforeTest {
