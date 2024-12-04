@@ -29,6 +29,8 @@ jobs:
       - name: Deploy ${{ matrix.name }} to ${{ matrix.cluster }}
         uses: nais/deploy/actions/deploy@v2
         env:
+          TEAM: team-esyfo
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           APIKEY: ${{ secrets.NAIS_DEPLOY_APIKEY }}
           CLUSTER: ${{ matrix.cluster }}
           RESOURCE: .nais/${{ matrix.name }}
