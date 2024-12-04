@@ -19,9 +19,9 @@ jobs:
           - prod-gcp
         include:
           - cluster: dev-gcp
-            vars: nais-dev.yml
+            vars: nais-dev.yaml
           - cluster: prod-gcp
-            vars: nais-prod.yml
+            vars: nais-prod.yaml
     name: Deploy ${{ matrix.name }} to ${{ matrix.cluster }}
     runs-on: ubuntu-latest
     permissions:
