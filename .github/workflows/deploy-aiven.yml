@@ -29,8 +29,13 @@ jobs:
         id: docker-build-push
         uses: docker/build-push-action@v4
         with:
+          team: team-esyfo
+          identity_provider: ${{ secrets.NAIS_WORKLOAD_IDENTITY_PROVIDER }}
+          project_id: ${{ vars.NAIS_MANAGEMENT_PROJECT_ID }}
           context: .
           push: true
+#          tags: ${{ secrets.DOCKER_REGISTRY }}/team-esyfo/${{ matrix.name }}:${{ github.sha }}
+
 
       - name: Deploy ${{ matrix.name }} to ${{ matrix.cluster }}
         uses: nais/deploy/actions/deploy@v2
