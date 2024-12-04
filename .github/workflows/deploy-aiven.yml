@@ -1,4 +1,4 @@
-name: Deploy AivenApplication
+name: Deploy Aiven Application
 
 on:
   push:
@@ -16,43 +16,43 @@ jobs:
     secrets: inherit
     with:
       app: aiven-sykepengedager-infotrygd
-#  deploy:
-#    strategy:
-#      matrix:
-#        name:
-#          - aiven-sykepengedager-infotrygd.yml
-#        cluster:
-#          - dev-gcp
-#          - prod-gcp
-#        include:
-#          - cluster: dev-gcp
-#            vars: nais-dev.yaml
-#          - cluster: prod-gcp
-#            vars: nais-prod.yaml
-#    name: Deploy ${{ matrix.name }} to ${{ matrix.cluster }}
-#    runs-on: ubuntu-latest
-#    permissions:
-#      id-token: write
-#    steps:
-#      - uses: actions/checkout@v4
-##      - name: 'Build and push image'
-##        uses: nais/docker-build-push@v0
-##        id: docker-build-push
-##        with:
-##          team: 'team-esyfo'
-##          identity_provider: ${{ secrets.NAIS_WORKLOAD_IDENTITY_PROVIDER }}
-##          project_id: ${{ vars.NAIS_MANAGEMENT_PROJECT_ID }}
-#
-#      - name: Deploy ${{ matrix.name }} to ${{ matrix.cluster }}
-#        uses: nais/deploy/actions/deploy@v2
-#        env:
-#          TEAM: 'team-esyfo'
-#          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-#          APIKEY: ${{ secrets.NAIS_DEPLOY_APIKEY }}
-#          CLUSTER: ${{ matrix.cluster }}
-#          RESOURCE: nais/${{ matrix.name }}
-#          VARS: nais/${{ matrix.vars }}
-#          PRINT_PAYLOAD: true
-#          VAR: image=${{ steps.docker-build-push.outputs.image }}
-#          TELEMETRY: ${{ steps.docker-build-push.outputs.telemetry }}
-#          DEPLOY_SERVER: deploy.nav.cloud.nais.io:443
+  deploy:
+    strategy:
+      matrix:
+        name:
+          - aiven-sykepengedager-infotrygd.yml
+        cluster:
+          - dev-gcp
+          - prod-gcp
+        include:
+          - cluster: dev-gcp
+            vars: nais-dev.yaml
+          - cluster: prod-gcp
+            vars: nais-prod.yaml
+    name: Deploy ${{ matrix.name }} to ${{ matrix.cluster }}
+    runs-on: ubuntu-latest
+    permissions:
+      id-token: write
+    steps:
+      - uses: actions/checkout@v4
+#      - name: 'Build and push image'
+#        uses: nais/docker-build-push@v0
+#        id: docker-build-push
+#        with:
+#          team: 'team-esyfo'
+#          identity_provider: ${{ secrets.NAIS_WORKLOAD_IDENTITY_PROVIDER }}
+#          project_id: ${{ vars.NAIS_MANAGEMENT_PROJECT_ID }}
+
+      - name: Deploy ${{ matrix.name }} to ${{ matrix.cluster }}
+        uses: nais/deploy/actions/deploy@v2
+        env:
+          TEAM: 'team-esyfo'
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          APIKEY: ${{ secrets.NAIS_DEPLOY_APIKEY }}
+          CLUSTER: ${{ matrix.cluster }}
+          RESOURCE: nais/${{ matrix.name }}
+          VARS: nais/${{ matrix.vars }}
+          PRINT_PAYLOAD: true
+          VAR: image=${{ steps.docker-build-push.outputs.image }}
+          TELEMETRY: ${{ steps.docker-build-push.outputs.telemetry }}
+          DEPLOY_SERVER: deploy.nav.cloud.nais.io:443
