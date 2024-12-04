@@ -44,6 +44,7 @@ spec:
     enabled: false
   kafka:
     pool: nav-dev
+    sykepengedagerInfotrygdSecretName: aiven-sykepengedager-infotrygd-dev-8g7hjk3w
   ingresses:
     - "https://sykepengedager-informasjon.intern.dev.nav.no"
   leaderElection: true

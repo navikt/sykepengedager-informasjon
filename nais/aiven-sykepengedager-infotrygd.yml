@@ -1,0 +1,12 @@
+apiVersion: aiven.nais.io/v1
+kind: AivenApplication
+metadata:
+  name: aiven-sykepengedager-infotrygd
+  namespace: team-esyfo
+  labels:
+    team: team-esyfo
+spec:
+  kafka:
+    pool: {{kafka.pool}}
+  secretName: {{kafka.sykepengedagerInfotrygdSecretName}}
+  protected: true

@@ -1,0 +1,27 @@
+apiVersion: kafka.nais.io/v1
+kind: Topic
+metadata:
+  name: sykepengedager.infotrygd.v1
+  namespace: team-esyfo
+  labels:
+    team: team-esyfo
+  annotations:
+    kafka.nais.io/removeDataWhenResourceIsDeleted: "{{kafka.permanent-delete-topics}}"
+    kafka.format: json
+    kafka.state: "false"
+    github.url: https://github.com/navikt/sykepengedager-informasjon
+    dcat.data.nav.no/title: "Sykepengedager Infotrygd topic"
+    dcat.data.nav.no/description: >-
+      Topic som inneholder data fra Infotrygd.
+spec:
+  pool: nav-prod
+  config:
+    cleanupPolicy: compact
+    partitions: 12
+  acl:
+    - team: team-esyfo
+      application: sykepengedager-infotrygd-aiven
+      access: write
+    - team: team-esyfo
+      application: sykepengedager-informasjon
+      access: read
