@@ -36,5 +36,5 @@ jobs:
           APIKEY: ${{ secrets.NAIS_DEPLOY_APIKEY }}
           CLUSTER: ${{ matrix.cluster }}
           RESOURCE: nais/${{ matrix.name }}
-          VARS: .nais/${{ matrix.vars }}
+          VARS: nais/${{ matrix.vars }}
           PRINT_PAYLOAD: true
