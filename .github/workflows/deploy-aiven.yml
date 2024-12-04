@@ -31,8 +31,6 @@ jobs:
         with:
           context: .
           push: true
-          tags: ${{ secrets.DOCKER_REGISTRY }}/team-esyfo/${{ matrix.name }}:${{ github.sha }}
-
 
       - name: Deploy ${{ matrix.name }} to ${{ matrix.cluster }}
         uses: nais/deploy/actions/deploy@v2
