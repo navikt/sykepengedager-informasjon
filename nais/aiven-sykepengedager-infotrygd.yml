@@ -1,7 +1,7 @@
 apiVersion: aiven.nais.io/v1
 kind: AivenApplication
 metadata:
-  name: aiven-sykepengedager-infotrygd
+  name: aiven-sykepengedager
   namespace: team-esyfo
   labels:
     team: team-esyfo
