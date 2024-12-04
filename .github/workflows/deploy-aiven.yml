@@ -18,19 +18,21 @@ jobs:
             vars: nais-dev.yaml
           - cluster: prod-gcp
             vars: nais-prod.yaml
+
     name: Deploy ${{ matrix.name }} to ${{ matrix.cluster }}
     runs-on: ubuntu-latest
     permissions:
       id-token: write
     steps:
       - uses: actions/checkout@v4
-#      - name: 'Build and push image'
-#        uses: nais/docker-build-push@v0
-#        id: docker-build-push
-#        with:
-#          team: 'team-esyfo'
-#          identity_provider: ${{ secrets.NAIS_WORKLOAD_IDENTITY_PROVIDER }}
-#          project_id: ${{ vars.NAIS_MANAGEMENT_PROJECT_ID }}
+      - name: Build and Push Docker Image
+        id: docker-build-push
+        uses: docker/build-push-action@v4
+        with:
+          context: .
+          push: true
+          tags: ${{ secrets.DOCKER_REGISTRY }}/team-esyfo/${{ matrix.name }}:${{ github.sha }}
+
 
       - name: Deploy ${{ matrix.name }} to ${{ matrix.cluster }}
         uses: nais/deploy/actions/deploy@v2
