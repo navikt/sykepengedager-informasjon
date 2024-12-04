@@ -38,4 +38,4 @@ jobs:
           RESOURCE: nais/${{ matrix.name }}
           VARS: nais/${{ matrix.vars }}
           PRINT_PAYLOAD: true
-          IMAGE: {{ image }}
+          IMAGE: ${{ image }}
