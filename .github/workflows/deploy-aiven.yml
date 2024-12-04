@@ -24,6 +24,8 @@ jobs:
             vars: nais-prod.yml
     name: Deploy ${{ matrix.name }} to ${{ matrix.cluster }}
     runs-on: ubuntu-latest
+    permissions:
+      id-token: write
     steps:
       - uses: actions/checkout@v4
       - name: Deploy ${{ matrix.name }} to ${{ matrix.cluster }}
