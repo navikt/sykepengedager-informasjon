@@ -8,15 +8,43 @@ on:
       - 'nais/nais-prod.yaml'
       - 'nais/nais-dev.yaml'
 
+
 jobs:
-  jar-app:
-    uses: navikt/teamesyfo-github-actions-workflows/.github/workflows/jar-app.yaml@main
-    permissions:
-      actions: read
-      contents: write
-      security-events: write
-      packages: write
-      id-token: write
-    secrets: inherit
-    with:
-      app: sykepengedager-informasjon
+  deploy:
+    strategy:
+      matrix:
+        name:
+          - aiven-sykepengedager-infotrygd.yml
+        cluster:
+          - dev-gcp
+          - prod-gcp
+        include:
+          - cluster: dev-gcp
+            vars: dev.yml
+          - cluster: prod-gcp
+            vars: prod.yml
+    name: Deploy ${{ matrix.name }} to ${{ matrix.cluster }}
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Deploy ${{ matrix.name }} to ${{ matrix.cluster }}
+        uses: nais/deploy/actions/deploy@v2
+        env:
+          APIKEY: ${{ secrets.NAIS_DEPLOY_APIKEY }}
+          CLUSTER: ${{ matrix.cluster }}
+          RESOURCE: .nais/${{ matrix.name }}
+          VARS: .nais/${{ matrix.vars }}
+          PRINT_PAYLOAD: true
+
+#
+#      - name: Deploy ${{ matrix.name }} to ${{ matrix.cluster }}
+#        uses: nais/deploy/actions/deploy@v2
+#        env:
+#          TEAM: 'team-esyfo'
+#          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+#          APIKEY: ${{ secrets.NAIS_DEPLOY_APIKEY }}
+#          CLUSTER: ${{ matrix.cluster }}
+#          RESOURCE: nais/${{ matrix.name }}
+#          VARS: nais/${{ matrix.vars }}
+#          PRINT_PAYLOAD: true
+#          VAR: image=${{ steps.docker-build-push.outputs.image }}
