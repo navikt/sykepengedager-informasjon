@@ -20,7 +20,7 @@ spec:
     partitions: 12
   acl:
     - team: team-esyfo
-      application: sykepengedager-infotrygd-aiven
+      application: sykepengedager-infotrygd
       access: write
     - team: team-esyfo
       application: sykepengedager-informasjon

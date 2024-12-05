@@ -3,47 +3,20 @@ name: Deploy Aiven Application
 on:
   push:
     paths:
-      - 'nais/aiven-*.yml'
+      - 'nais/aiven-sykepengedager-infotrygd.yml'
       - '.github/workflows/deploy-aiven.yml'
       - 'nais/nais-prod.yaml'
       - 'nais/nais-dev.yaml'
 
 jobs:
-  deploy:
-    strategy:
-      matrix:
-        name:
-          - aiven-sykepengedager-infotrygd.yml
-        cluster:
-          - dev-gcp
-          - prod-gcp
-        include:
-          - cluster: dev-gcp
-            vars: nais-dev.yaml
-          - cluster: prod-gcp
-            vars: nais-prod.yaml
-    name: Deploy ${{ matrix.name }} to ${{ matrix.cluster }}
-    runs-on: ubuntu-latest
+  jar-app:
+    uses: navikt/teamesyfo-github-actions-workflows/.github/workflows/jar-app.yaml@main
     permissions:
+      actions: read
+      contents: write
+      security-events: write
+      packages: write
       id-token: write
-    steps:
-      - uses: actions/checkout@v4
-      - name: 'Build and push image and SBOM to OCI registry'
-        uses: nais/docker-build-push@v0
-        id: docker-build-push
-        with:
-          team: 'team-esyfo'
-          identity_provider: ${{ secrets.NAIS_WORKLOAD_IDENTITY_PROVIDER }}
-          project_id: ${{ vars.NAIS_MANAGEMENT_PROJECT_ID }}
-
-      - name: Deploy ${{ matrix.name }} to ${{ matrix.cluster }}
-        uses: nais/deploy/actions/deploy@v2
-        env:
-          TEAM: 'team-esyfo'
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          APIKEY: ${{ secrets.NAIS_DEPLOY_APIKEY }}
-          CLUSTER: ${{ matrix.cluster }}
-          RESOURCE: nais/${{ matrix.name }}
-          VARS: nais/${{ matrix.vars }}
-          PRINT_PAYLOAD: true
-          VAR: image=${{ steps.docker-build-push.outputs.image }}
+    secrets: inherit
+    with:
+      app: sykepengedager-informasjon
