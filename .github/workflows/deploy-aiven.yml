@@ -24,9 +24,9 @@ jobs:
           - prod-gcp
         include:
           - cluster: dev-gcp
-            vars: dev.yml
+            vars: nais-dev.yaml
           - cluster: prod-gcp
-            vars: prod.yml
+            vars: nais-prod.yaml
     name: Deploy ${{ matrix.name }} to ${{ matrix.cluster }}
     runs-on: ubuntu-latest
     steps:
@@ -36,8 +36,8 @@ jobs:
         env:
           APIKEY: ${{ secrets.NAIS_DEPLOY_APIKEY }}
           CLUSTER: ${{ matrix.cluster }}
-          RESOURCE: .nais/${{ matrix.name }}
-          VARS: .nais/${{ matrix.vars }}
+          RESOURCE: nais/${{ matrix.name }}
+          VARS: nais/${{ matrix.vars }}
           PRINT_PAYLOAD: true
 
 #
