@@ -11,6 +11,10 @@ on:
 
 jobs:
   deploy:
+    permissions:
+      id-token: write
+      contents: write
+
     strategy:
       matrix:
         name:
