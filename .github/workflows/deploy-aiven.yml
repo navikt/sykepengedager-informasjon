@@ -5,8 +5,8 @@ on:
     paths:
       - 'nais/aiven-*.yml'
       - '.github/workflows/deploy-aiven.yml'
-      - 'nais/nais-prod.yml'
-      - 'nais/nais-dev.yml'
+      - 'nais/nais-prod.yaml'
+      - 'nais/nais-dev.yaml'
 
 jobs:
   deploy:
