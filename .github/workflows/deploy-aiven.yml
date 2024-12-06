@@ -39,7 +39,7 @@ jobs:
           RESOURCE: nais/${{ matrix.name }}
           VARS: nais/${{ matrix.vars }}
           PRINT_PAYLOAD: true
-#          VAR: image=${{ steps.docker-build-push.outputs.image }}
+          VAR: image=${{ steps.docker-build-push.outputs.image }}
 
 
 #
