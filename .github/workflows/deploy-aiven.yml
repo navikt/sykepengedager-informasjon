@@ -31,15 +31,21 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+      - name: Build and push Docker image
+        uses: docker/build-push-action@v4
+        with:
+          context: .
+          push: true
+
       - name: Deploy ${{ matrix.name }} to ${{ matrix.cluster }}
         uses: nais/deploy/actions/deploy@v2
         env:
-          APIKEY: ${{ secrets.NAIS_DEPLOY_APIKEY }}
-          CLUSTER: ${{ matrix.cluster }}
-          RESOURCE: nais/${{ matrix.name }}
-          VARS: nais/${{ matrix.vars }}
-          PRINT_PAYLOAD: true
-          VAR: image=${{ steps.docker-build-push.outputs.image }}
+            APIKEY: ${{ secrets.NAIS_DEPLOY_APIKEY }}
+            CLUSTER: ${{ matrix.cluster }}
+            RESOURCE: nais/${{ matrix.name }}
+            VARS: nais/${{ matrix.vars }}
+            PRINT_PAYLOAD: true
+            VAR: image=${{ steps.build-and-push-docker-image.outputs.image }}
 
 
 #
