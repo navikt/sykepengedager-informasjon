@@ -36,7 +36,8 @@ jobs:
         with:
           context: .
           push: true
-          tags: ${{ github.sha }}
+          tags:
+            application: sykepengedager-infotrygd
 
       - name: Deploy ${{ matrix.name }} to ${{ matrix.cluster }}
         uses: nais/deploy/actions/deploy@v2
