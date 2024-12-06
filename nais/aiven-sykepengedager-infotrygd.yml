@@ -10,3 +10,4 @@ spec:
     pool: {{kafka.pool}}
   secretName: {{kafka.sykepengedagerInfotrygdSecretName}}
   protected: true
+  image: {{ image }}
