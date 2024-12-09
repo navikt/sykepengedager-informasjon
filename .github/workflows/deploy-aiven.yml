@@ -41,7 +41,7 @@ jobs:
         uses: nais/deploy/actions/deploy@v2
         env:
           CLUSTER:  ${{ matrix.cluster }}
-          RESOURCE: .nais/${{ matrix.name }}
+          RESOURCE: nais/${{ matrix.name }}
           VAR: image=${{ steps.docker-build-push.outputs.image }}
           TELEMETRY: ${{ steps.docker-build-push.outputs.telemetry }}
           DEPLOY_SERVER: deploy.nav.cloud.nais.io:443
