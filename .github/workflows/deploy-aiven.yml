@@ -3,7 +3,8 @@ name: Deploy Aiven Application
 on:
   push:
     paths:
-      - nais/aiven-sykepengedager-infotrygd.yml
+      - nais/aiven-sykepengedager-infotrygd-dev.yml
+      - ../../nais/aiven-sykepengedager-infotrygd-dev.yml
       - .github/workflows/deploy-aiven.yml
       - nais/nais-prod.yaml
       - nais/nais-dev.yaml
@@ -16,8 +17,23 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
-      - name: Deploy topic sykepengedager-informasjon-aiven to dev
+      - name: Deploy sykepengedager-informasjon-aiven to dev
         uses: nais/deploy/actions/deploy@v2
         env:
           CLUSTER: dev-gcp
-          RESOURCE: nais/aiven-sykepengedager-infotrygd.yml
+          RESOURCE: nais/aiven-sykepengedager-infotrygd-dev.yml
+
+  deploy-to-prod:
+    if: github.ref == 'refs/heads/main'
+    name: Deploy to prod
+    permissions:
+      id-token: write
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+      - name: Deploy sykepengedager-informasjon-aiven to prod
+        uses: nais/deploy/actions/deploy@v2
+        env:
+          CLUSTER: prod-gcp
+          RESOURCE: nais/aiven-sykepengedager-infotrygd-prod.yml
