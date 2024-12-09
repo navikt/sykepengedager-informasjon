@@ -3,11 +3,8 @@ kind: AivenApplication
 metadata:
   name: sykepengedager-infotrygd
   namespace: team-esyfo
-  labels:
-    team: team-esyfo
 spec:
   kafka:
     pool: {{kafka.pool}}
   secretName: {{kafka.sykepengedagerInfotrygdSecretName}}
   protected: true
-  image: {{ image }}

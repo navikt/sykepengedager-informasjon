@@ -7,14 +7,12 @@ on:
       - '.github/workflows/deploy-aiven.yml'
       - 'nais/nais-prod.yaml'
       - 'nais/nais-dev.yaml'
-
-
 jobs:
-  deploy:
+  build_and_deploy:
+    runs-on: ubuntu-latest
     permissions:
+      contents: read
       id-token: write
-      contents: write
-
     strategy:
       matrix:
         name:
@@ -28,37 +26,24 @@ jobs:
           - cluster: prod-gcp
             vars: nais-prod.yaml
     name: Deploy ${{ matrix.name }} to ${{ matrix.cluster }}
-    runs-on: ubuntu-latest
+
     steps:
       - uses: actions/checkout@v4
-      - name: Build and push Docker image
-        uses: docker/build-push-action@v4
-        with:
-          context: ../sykepengedager-informasjon
-#          file: ./Dockerfile
-          push: true
-          tags: 'ghcr.io/navikt/aiven-sykepengedager-infotrygd:latest'
+#      - name: Build and push image and SBOM to OCI registry
+#        uses: nais/docker-build-push@v0
+#        id: docker-build-push
+#        with:
+#          team: <MY-TEAM> # Replace
+#          identity_provider: ${{ secrets.NAIS_WORKLOAD_IDENTITY_PROVIDER }} # Provided as Organization Secret
+#          project_id: ${{ vars.NAIS_MANAGEMENT_PROJECT_ID }} # Provided as Organization Variable
 
       - name: Deploy ${{ matrix.name }} to ${{ matrix.cluster }}
         uses: nais/deploy/actions/deploy@v2
         env:
-            APIKEY: ${{ secrets.NAIS_DEPLOY_APIKEY }}
-            CLUSTER: ${{ matrix.cluster }}
-            RESOURCE: nais/${{ matrix.name }}
-            VARS: nais/${{ matrix.vars }}
-            PRINT_PAYLOAD: true
-            VAR: image=${{ steps.build-and-push-docker-image.outputs.image }}
-
-
-#
-#      - name: Deploy ${{ matrix.name }} to ${{ matrix.cluster }}
-#        uses: nais/deploy/actions/deploy@v2
-#        env:
-#          TEAM: 'team-esyfo'
-#          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-#          APIKEY: ${{ secrets.NAIS_DEPLOY_APIKEY }}
-#          CLUSTER: ${{ matrix.cluster }}
-#          RESOURCE: nais/${{ matrix.name }}
-#          VARS: nais/${{ matrix.vars }}
-#          PRINT_PAYLOAD: true
-#          VAR: image=${{ steps.docker-build-push.outputs.image }}
+          CLUSTER:  ${{ matrix.cluster }}
+          RESOURCE: .nais/${{ matrix.name }}
+          VAR: image=${{ steps.docker-build-push.outputs.image }}
+          TELEMETRY: ${{ steps.docker-build-push.outputs.telemetry }}
+          DEPLOY_SERVER: deploy.nav.cloud.nais.io:443
+          VARS: .nais/${{ matrix.vars }}
+          PRINT_PAYLOAD: true
