@@ -86,7 +86,7 @@ class SykepengedagerInformasjonKafkaConsumer(
     ) {
         try {
             log.info(
-                "Received a record from topic $topicSykepengedagerInfotrygd",
+                "Received a record with key ${record.key()} from topic $topicSykepengedagerInfotrygd",
             )
 
             ack.acknowledge()
