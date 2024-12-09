@@ -5,6 +5,6 @@ metadata:
   namespace: team-esyfo
 spec:
   kafka:
-    pool: {{kafka.pool}}
-  secretName: {{kafka.sykepengedagerInfotrygdSecretName}}
+    pool: nav-dev
+  secretName:  aiven-sykepengedager-infotrygd-dev-8g7hjk3w
   protected: true

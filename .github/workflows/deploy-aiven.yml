@@ -3,47 +3,21 @@ name: Deploy Aiven Application
 on:
   push:
     paths:
-      - 'nais/aiven-sykepengedager-infotrygd.yml'
-      - '.github/workflows/deploy-aiven.yml'
-      - 'nais/nais-prod.yaml'
-      - 'nais/nais-dev.yaml'
+      - nais/aiven-sykepengedager-infotrygd.yml
+      - .github/workflows/deploy-aiven.yml
+      - nais/nais-prod.yaml
+      - nais/nais-dev.yaml
 jobs:
-  build_and_deploy:
-    runs-on: ubuntu-latest
+  deploy-to-dev:
+    name: Deploy to dev
     permissions:
-      contents: read
       id-token: write
-    strategy:
-      matrix:
-        name:
-          - aiven-sykepengedager-infotrygd.yml
-        cluster:
-          - dev-gcp
-          - prod-gcp
-        include:
-          - cluster: dev-gcp
-            vars: nais-dev.yaml
-          - cluster: prod-gcp
-            vars: nais-prod.yaml
-    name: Deploy ${{ matrix.name }} to ${{ matrix.cluster }}
-
+    runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
-#      - name: Build and push image and SBOM to OCI registry
-#        uses: nais/docker-build-push@v0
-#        id: docker-build-push
-#        with:
-#          team: <MY-TEAM> # Replace
-#          identity_provider: ${{ secrets.NAIS_WORKLOAD_IDENTITY_PROVIDER }} # Provided as Organization Secret
-#          project_id: ${{ vars.NAIS_MANAGEMENT_PROJECT_ID }} # Provided as Organization Variable
-
-      - name: Deploy ${{ matrix.name }} to ${{ matrix.cluster }}
+      - name: Checkout code
+        uses: actions/checkout@v4
+      - name: Deploy topic sykepengedager-informasjon-aiven to dev
         uses: nais/deploy/actions/deploy@v2
         env:
-          CLUSTER:  ${{ matrix.cluster }}
-          RESOURCE: nais/${{ matrix.name }}
-          VAR: image=${{ steps.docker-build-push.outputs.image }}
-          TELEMETRY: ${{ steps.docker-build-push.outputs.telemetry }}
-          DEPLOY_SERVER: deploy.nav.cloud.nais.io:443
-          VARS: nais/${{ matrix.vars }}
-          PRINT_PAYLOAD: true
+          CLUSTER: dev-gcp
+          RESOURCE: nais/aiven-sykepengedager-infotrygd.yml
