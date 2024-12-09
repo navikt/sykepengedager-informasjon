@@ -45,5 +45,5 @@ jobs:
           VAR: image=${{ steps.docker-build-push.outputs.image }}
           TELEMETRY: ${{ steps.docker-build-push.outputs.telemetry }}
           DEPLOY_SERVER: deploy.nav.cloud.nais.io:443
-          VARS: .nais/${{ matrix.vars }}
+          VARS: nais/${{ matrix.vars }}
           PRINT_PAYLOAD: true
