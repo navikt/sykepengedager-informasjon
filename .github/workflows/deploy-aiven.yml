@@ -4,7 +4,7 @@ on:
   push:
     paths:
       - nais/aiven-sykepengedager-infotrygd-dev.yml
-      - ../../nais/aiven-sykepengedager-infotrygd-dev.yml
+      - nais/aiven-sykepengedager-infotrygd-prod.yml
       - .github/workflows/deploy-aiven.yml
       - nais/nais-prod.yaml
       - nais/nais-dev.yaml
