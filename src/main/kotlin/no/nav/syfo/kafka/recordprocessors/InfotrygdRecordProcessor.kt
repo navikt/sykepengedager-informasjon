@@ -3,9 +3,9 @@ package no.nav.syfo.kafka.recordprocessors
 import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
 import no.nav.syfo.config.kafka.topicSykepengedagerInfotrygd
 import no.nav.syfo.db.UtbetalingInfotrygdDAO
-import no.nav.syfo.kafka.consumers.infotrygd.domain.InfotrygdSource
-import no.nav.syfo.kafka.consumers.infotrygd.domain.KInfotrygdSykepengedager
-import no.nav.syfo.kafka.consumers.infotrygd.gjenstaendeSykepengedager
+import no.nav.syfo.kafka.consumers.aapInfotrygd.domain.InfotrygdSource
+import no.nav.syfo.kafka.consumers.aapInfotrygd.domain.KInfotrygdSykepengedager
+import no.nav.syfo.kafka.consumers.aapInfotrygd.gjenstaendeSykepengedager
 import no.nav.syfo.kafka.producers.SykepengedagerInformasjonKafkaService
 import no.nav.syfo.logger
 import no.nav.syfo.utils.parseDate

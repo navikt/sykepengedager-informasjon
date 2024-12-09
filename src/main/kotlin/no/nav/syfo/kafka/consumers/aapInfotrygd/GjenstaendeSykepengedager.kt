@@ -1,4 +1,4 @@
-package no.nav.syfo.kafka.consumers.infotrygd
+package no.nav.syfo.kafka.consumers.aapInfotrygd
 
 import no.nav.syfo.utils.isEqualOrBefore
 import java.time.DayOfWeek

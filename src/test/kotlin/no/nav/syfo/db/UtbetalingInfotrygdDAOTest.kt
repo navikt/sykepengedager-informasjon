@@ -7,7 +7,7 @@ import io.kotest.matchers.shouldBe
 import io.kotest.matchers.shouldNotBe
 import no.nav.syfo.LocalApplication
 import no.nav.syfo.db.util.DatabaseCleaner
-import no.nav.syfo.kafka.consumers.infotrygd.domain.InfotrygdSource
+import no.nav.syfo.kafka.consumers.aapInfotrygd.domain.InfotrygdSource
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.context.SpringBootTest
 import java.time.LocalDate
