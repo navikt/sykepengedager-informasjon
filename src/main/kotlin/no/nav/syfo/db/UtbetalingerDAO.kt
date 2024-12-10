@@ -23,7 +23,7 @@ class UtbetalingerDAO(
                 (SELECT UTBETALINGER2.UUID
                 FROM UTBETALINGER AS UTBETALINGER2
                 WHERE UTBETALINGER1.FNR = UTBETALINGER2.FNR
-                ORDER BY OPPRETTET DESC
+                ORDER BY UTBETALT_TOM DESC, OPPRETTET DESC
                 LIMIT 1)
             AND FNR = :FNR
             """.trimIndent()
