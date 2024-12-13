@@ -14,7 +14,7 @@ class SykepengedagerInformasjonKafkaService(
     val log = logger()
 
     private fun getEventDTO(fnr: String): KSykepengedagerInformasjonDTO {
-        val maksDato = utbetalingerDAO.fetchMaksDatoByFnr(fnr)
+        val maksDato = utbetalingerDAO.fetchMaksDatoByFnrForKafka(fnr)
 
         return if (maksDato != null) {
             KSykepengedagerInformasjonDTO(
