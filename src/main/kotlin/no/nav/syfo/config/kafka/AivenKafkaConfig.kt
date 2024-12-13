@@ -23,7 +23,8 @@ import org.springframework.kafka.core.KafkaTemplate
 import org.springframework.kafka.core.ProducerFactory
 import org.springframework.kafka.listener.ContainerProperties
 
-const val topicSykepengedagerInfotrygd = "aap.sykepengedager.infotrygd.v1"
+const val topicAapSykepengedagerInfotrygd = "aap.sykepengedager.infotrygd.v1"
+const val topicSykepengedagerInfotrygd = "team-esyfo.sykepengedager.infotrygd.v1"
 const val topicUtbetaling = "tbd.utbetaling"
 
 @Configuration
