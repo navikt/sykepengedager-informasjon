@@ -49,6 +49,42 @@ class UtbetalingerDAO(
             }
         }
     }
+
+    fun fetchMaksDatoByFnrForKafka(fnr: String): PMaksDato? {
+        val queryStatement =
+            """
+            SELECT *
+            FROM UTBETALINGER AS UTBETALINGER1
+            WHERE UUID =
+                (SELECT UTBETALINGER2.UUID
+                FROM UTBETALINGER AS UTBETALINGER2
+                WHERE UTBETALINGER1.FNR = UTBETALINGER2.FNR
+                ORDER BY OPPRETTET DESC
+                LIMIT 1)
+            AND FNR = :FNR
+            """.trimIndent()
+
+        val timer = metric.createTimer("utbetalinger_view_kafka", TimerBuilderName.DATABASE_QUERY_LATENCY.name)
+
+        return timer.record<PMaksDato> {
+            val mapQueryStatement =
+                MapSqlParameterSource()
+                    .addValue("FNR", fnr)
+
+            val resultList =
+                try {
+                    namedParameterJdbcTemplate.query(queryStatement, mapQueryStatement, MaxDateRowMapper())
+                } catch (e: EmptyResultDataAccessException) {
+                    emptyList()
+                }
+
+            return@record if (resultList.isNotEmpty()) {
+                resultList.first()
+            } else {
+                null
+            }
+        }
+    }
 }
 
 private class MaxDateRowMapper : RowMapper<PMaksDato> {
