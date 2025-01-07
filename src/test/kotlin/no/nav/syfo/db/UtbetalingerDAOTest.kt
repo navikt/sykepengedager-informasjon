@@ -45,7 +45,7 @@ class UtbetalingerDAOTest : FunSpec() {
                     event = "event",
                     type = "type",
                     fom = LocalDate.now().minusDays(3).toString(),
-                    tom = LocalDate.now().plusDays(3).toString(),
+                    tom = LocalDate.now().plusDays(20).toString(),
                     foreløpigBeregnetSluttPåSykepenger = forelopigBeregnetSluttPaSykepenger.toString(),
                     forbrukteSykedager = 4,
                     gjenståendeSykedager = 5,
@@ -105,6 +105,61 @@ class UtbetalingerDAOTest : FunSpec() {
             result shouldNotBe null
             result?.forelopig_beregnet_slutt shouldNotBe forelopigBeregnetSluttPaSykepenger
             result?.forelopig_beregnet_slutt shouldBe maxDate
+        }
+
+        test("Selects latest utbetaling Infotrygd by utebetalt_tom") {
+            val fnr = "12121212121"
+            val forelopigBeregnetSluttPaSykepenger = LocalDate.now().plusDays(15)
+            val forelopigBeregnetSluttPaSykepengerLengst = LocalDate.now().plusDays(15)
+            val maxDate = LocalDate.now().plusDays(30)
+            val utb =
+                UtbetalingSpleis(
+                    fødselsnummer = fnr,
+                    organisasjonsnummer = "123123",
+                    event = "event",
+                    type = "type",
+                    fom = LocalDate.now().minusDays(3).toString(),
+                    tom = LocalDate.now().plusDays(5).toString(),
+                    foreløpigBeregnetSluttPåSykepenger = forelopigBeregnetSluttPaSykepengerLengst.toString(),
+                    forbrukteSykedager = 4,
+                    gjenståendeSykedager = 5,
+                    stønadsdager = 5,
+                    antallVedtak = 5,
+                    utbetalingId = "123456",
+                    korrelasjonsId = "654321",
+                )
+            val utb2 =
+                UtbetalingSpleis(
+                    fødselsnummer = fnr,
+                    organisasjonsnummer = "123123",
+                    event = "event",
+                    type = "type",
+                    fom = LocalDate.now().minusDays(3).toString(),
+                    tom = LocalDate.now().plusDays(4).toString(),
+                    foreløpigBeregnetSluttPåSykepenger = forelopigBeregnetSluttPaSykepenger.toString(),
+                    forbrukteSykedager = 4,
+                    gjenståendeSykedager = 5,
+                    stønadsdager = 5,
+                    antallVedtak = 5,
+                    utbetalingId = "223456",
+                    korrelasjonsId = "654321",
+                )
+
+            utbetalingSpleisDAO.storeSpleisUtbetaling(utb)
+            utbetalingSpleisDAO.storeSpleisUtbetaling(utb2)
+            utbetalingInfotrygdDAO.storeInfotrygdUtbetaling(
+                fnr = fnr,
+                sykepengerMaxDate = maxDate,
+                LocalDate.now().plusDays(3),
+                gjenstaendeSykepengedager = 5,
+                source = InfotrygdSource.AAP_KAFKA_TOPIC,
+            )
+
+            val result = utbetalingerDAO.fetchMaksDatoByFnr(fnr = fnr)
+
+            result shouldNotBe null
+            result?.utbetalt_tom shouldBe LocalDate.now().plusDays(5)
+            result?.forelopig_beregnet_slutt shouldBe forelopigBeregnetSluttPaSykepengerLengst
         }
     }
 }
