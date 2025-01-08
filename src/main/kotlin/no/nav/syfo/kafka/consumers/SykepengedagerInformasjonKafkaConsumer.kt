@@ -93,6 +93,7 @@ class SykepengedagerInformasjonKafkaConsumer(
                 topicSykepengedagerInfotrygd -> {
                     log.info(
                         "Going to process record from topicSykepengedagerInfotrygd $topic",
+                        infotrygdRecordProcessor.processRecordTest(record)
                     )
                 }
             }
