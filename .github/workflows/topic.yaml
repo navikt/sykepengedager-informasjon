@@ -49,6 +49,7 @@ jobs:
           RESOURCE: nais/topics/sykepengedager-informasjon-prod.yaml
 
   deploy-infotrygd-topic-to-prod:
+    if: github.ref == 'refs/heads/main'
     name: Deploy topic to prod
     permissions:
       id-token: write
