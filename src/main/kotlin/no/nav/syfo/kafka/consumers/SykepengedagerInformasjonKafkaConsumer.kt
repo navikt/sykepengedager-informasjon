@@ -76,7 +76,7 @@ class SykepengedagerInformasjonKafkaConsumer(
     }
 
     @KafkaListener(
-        topics = [topicAapSykepengedagerInfotrygd],
+        topics = [topicSykepengedagerInfotrygd],
         autoStartup = "true", // Enable consuming
         containerFactory = "infotrygdKafkaListenerContainerFactory",
     )
