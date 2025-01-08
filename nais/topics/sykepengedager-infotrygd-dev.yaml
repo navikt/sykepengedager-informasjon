@@ -1,7 +1,7 @@
 apiVersion: kafka.nais.io/v1
 kind: Topic
 metadata:
-  name: sykepengedager.infotrygd-dev.v1
+  name: sykepengedager.infotrygd.v1
   namespace: team-esyfo
   labels:
     team: team-esyfo
