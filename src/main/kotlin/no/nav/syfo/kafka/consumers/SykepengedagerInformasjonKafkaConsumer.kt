@@ -88,15 +88,6 @@ class SykepengedagerInformasjonKafkaConsumer(
             log.info(
                 "Received a record with key ${record.key()} from topic $topicSykepengedagerInfotrygd",
             )
-            val topic = record.topic()
-            when (topic) {
-                topicSykepengedagerInfotrygd -> {
-                    log.info(
-                        "Going to process record from topicSykepengedagerInfotrygd $topic",
-                        infotrygdRecordProcessor.processRecordTest(record)
-                    )
-                }
-            }
 
             ack.acknowledge()
         } catch (e: Exception) {

@@ -24,7 +24,7 @@ jobs:
           RESOURCE: nais/aiven-sykepengedager-infotrygd-dev.yml
 
   deploy-to-prod:
-#    if: github.ref == 'refs/heads/main'
+    if: github.ref == 'refs/heads/main'
     name: Deploy to prod
     permissions:
       id-token: write

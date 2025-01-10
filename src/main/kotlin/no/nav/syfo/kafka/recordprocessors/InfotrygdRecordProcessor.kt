@@ -47,23 +47,6 @@ class InfotrygdRecordProcessor(
         }
     }
 
-    // TODO: test only
-    fun processRecordTest(record: ConsumerRecord<String, String>) {
-        try {
-            val kInfotrygdSykepengedager = objectMapper.readValue(record.value(), KInfotrygdSykepengedager::class.java)
-            val fnr = kInfotrygdSykepengedager.after.F_NR
-            val sykepengerMaxDate = parseDate(kInfotrygdSykepengedager.after.MAX_DATO)
-            val utbetaltTom = kInfotrygdSykepengedager.after.UTBET_TOM
-
-            log.info(
-                "Processing record with fnr:" +
-                    " $fnr, sykepengerMaxDate: $sykepengerMaxDate, utbetaltTom: $utbetaltTom"
-            )
-        } catch (e: Exception) {
-            log.error("Exception in [$topicAapSykepengedagerInfotrygd]-processor: $e", e)
-        }
-    }
-
     private fun processInfotrygdEvent(
         fnr: String,
         sykepengerMaxDate: LocalDate,
