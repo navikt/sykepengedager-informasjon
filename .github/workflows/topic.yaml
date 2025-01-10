@@ -19,6 +19,20 @@ jobs:
           CLUSTER: dev-gcp
           RESOURCE: nais/topics/sykepengedager-informasjon-dev.yaml
 
+  deploy-infotrygd-topic-to-dev:
+    name: Deploy topic to dev
+    permissions:
+      id-token: write
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+      - name: Deploy topic sykepengedager.infotrygd-topic to dev
+        uses: nais/deploy/actions/deploy@v2
+        env:
+          CLUSTER: dev-gcp
+          RESOURCE: nais/topics/sykepengedager-infotrygd-dev.yaml
+
   deploy-topic-to-prod:
     if: github.ref == 'refs/heads/main'
     name: Deploy topic to prod
@@ -33,3 +47,18 @@ jobs:
         env:
           CLUSTER: prod-gcp
           RESOURCE: nais/topics/sykepengedager-informasjon-prod.yaml
+
+  deploy-infotrygd-topic-to-prod:
+    if: github.ref == 'refs/heads/main'
+    name: Deploy topic to prod
+    permissions:
+      id-token: write
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+      - name: Deploy topic sykepengedager.infotrygd-topic to prod
+        uses: nais/deploy/actions/deploy@v2
+        env:
+          CLUSTER: prod-gcp
+          RESOURCE: nais/topics/sykepengedager-infotrygd-prod.yaml

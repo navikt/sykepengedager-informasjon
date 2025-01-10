@@ -1,5 +1,6 @@
 package no.nav.syfo.kafka.consumers
 
+import no.nav.syfo.config.kafka.topicAapSykepengedagerInfotrygd
 import no.nav.syfo.config.kafka.topicSykepengedagerInfotrygd
 import no.nav.syfo.config.kafka.topicUtbetaling
 import no.nav.syfo.kafka.recordprocessors.InfotrygdRecordProcessor
@@ -46,7 +47,36 @@ class SykepengedagerInformasjonKafkaConsumer(
     }
 
     @KafkaListener(
-        topics = [ topicSykepengedagerInfotrygd],
+        topics = [topicAapSykepengedagerInfotrygd],
+        autoStartup = "true", // Enable consuming
+        containerFactory = "infotrygdKafkaListenerContainerFactory",
+    )
+    fun listenAapTopicSykepengedagerInfotrygd(
+        record: ConsumerRecord<String, String>,
+        ack: Acknowledgment,
+    ) {
+        try {
+            val topic = record.topic()
+            log.info(
+                "Received a record from topic $topicAapSykepengedagerInfotrygd",
+            )
+
+            when (topic) {
+                topicAapSykepengedagerInfotrygd -> {
+                    log.info(
+                        "Going to process record from topicAapSykepengedagerInfotrygd $topic",
+                    )
+                    infotrygdRecordProcessor.processRecord(record)
+                }
+            }
+            ack.acknowledge()
+        } catch (e: Exception) {
+            log.error("Exception in ${SykepengedagerInformasjonKafkaConsumer::class.qualifiedName}-listener: $e", e)
+        }
+    }
+
+    @KafkaListener(
+        topics = [topicSykepengedagerInfotrygd],
         autoStartup = "true", // Enable consuming
         containerFactory = "infotrygdKafkaListenerContainerFactory",
     )
@@ -55,19 +85,10 @@ class SykepengedagerInformasjonKafkaConsumer(
         ack: Acknowledgment,
     ) {
         try {
-            val topic = record.topic()
             log.info(
-                "Received a record from topic $topicSykepengedagerInfotrygd",
+                "Received a record with key ${record.key()} from topic $topicSykepengedagerInfotrygd",
             )
 
-            when (topic) {
-                topicSykepengedagerInfotrygd -> {
-                    log.info(
-                        "Going to process record from topicSykepengedagerInfotrygd $topic",
-                    )
-                    infotrygdRecordProcessor.processRecord(record)
-                }
-            }
             ack.acknowledge()
         } catch (e: Exception) {
             log.error("Exception in ${SykepengedagerInformasjonKafkaConsumer::class.qualifiedName}-listener: $e", e)

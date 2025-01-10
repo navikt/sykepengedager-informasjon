@@ -1,0 +1,10 @@
+apiVersion: aiven.nais.io/v1
+kind: AivenApplication
+metadata:
+  name: sykepengedager-infotrygd
+  namespace: team-esyfo
+spec:
+  kafka:
+    pool: nav-dev
+  secretName:  aiven-sykepengedager-infotrygd-dev-8g7hjk3w
+  protected: true
