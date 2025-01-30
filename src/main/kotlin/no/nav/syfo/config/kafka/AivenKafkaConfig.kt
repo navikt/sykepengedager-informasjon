@@ -97,7 +97,7 @@ class AivenKafkaConfig(
         val config = listenerContainerConfig().toMutableMap()
         config.remove(ConsumerConfig.AUTO_OFFSET_RESET_CONFIG)
         config.remove(ConsumerConfig.GROUP_ID_CONFIG)
-        config[ConsumerConfig.AUTO_OFFSET_RESET_CONFIG] = "latest"
+        config[ConsumerConfig.AUTO_OFFSET_RESET_CONFIG] = "earliest"
         config[ConsumerConfig.GROUP_ID_CONFIG] = "sykepengedager-informasjon-group-v2"
 
         return DefaultKafkaConsumerFactory(config as Map<String, Any>)

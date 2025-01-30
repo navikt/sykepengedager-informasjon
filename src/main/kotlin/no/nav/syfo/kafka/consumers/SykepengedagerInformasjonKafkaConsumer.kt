@@ -85,10 +85,18 @@ class SykepengedagerInformasjonKafkaConsumer(
         ack: Acknowledgment,
     ) {
         try {
+            val topic = record.topic()
             log.info(
                 "Received a record with key ${record.key()} from topic $topicSykepengedagerInfotrygd",
             )
-
+            when (topic) {
+                topicSykepengedagerInfotrygd -> {
+                    log.info(
+                        "Going to process record from topicSykepengedagerInfotrygd $topic",
+                    )
+                    infotrygdRecordProcessor.processRecord(record)
+                }
+            }
             ack.acknowledge()
         } catch (e: Exception) {
             log.error("Exception in ${SykepengedagerInformasjonKafkaConsumer::class.qualifiedName}-listener: $e", e)
