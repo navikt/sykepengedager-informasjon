@@ -23,13 +23,11 @@ repositories {
     }
 }
 
-val logstashLogbackEncoderVersion = "7.4"
-val detektVersion = "1.23.6"
+val logstashLogbackEncoderVersion = "8.1"
+val detektVersion = "1.23.8"
 val kotestVersion = "5.9.1"
-val springKotestExtensionVersion = "1.1.3"
-val mockkVersion = "1.13.11"
-val wiremockVersion = "3.6.0"
-val wiremockKotestExtensionVersion = "3.0.1"
+val springKotestExtensionVersion = "1.3.0"
+val mockkVersion = "1.14.2"
 val tokenSupportVersion = "5.0.25"
 val kotlinxCoroutinesVersion = "1.10.2"
 
@@ -58,7 +56,6 @@ dependencies {
     testImplementation("io.kotest:kotest-assertions-core:$kotestVersion")
     testImplementation("io.kotest:kotest-property:$kotestVersion")
     testImplementation("io.kotest.extensions:kotest-extensions-spring:$springKotestExtensionVersion")
-    testImplementation("io.kotest.extensions:kotest-extensions-wiremock:$wiremockKotestExtensionVersion")
     testImplementation("org.springframework.kafka:spring-kafka-test")
     testImplementation("com.h2database:h2")
     testImplementation("no.nav.security:token-validation-spring-test:$tokenSupportVersion")
