@@ -1,11 +1,12 @@
-import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
+import org.jetbrains.kotlin.gradle.dsl.JvmTarget
+import org.jetbrains.kotlin.gradle.tasks.KotlinJvmCompile
 
 plugins {
-    id("org.springframework.boot") version "3.3.0"
-    id("io.spring.dependency-management") version "1.1.5"
-    kotlin("jvm") version "1.9.23"
-    kotlin("plugin.spring") version "1.9.23"
-    id("io.gitlab.arturbosch.detekt") version "1.23.6"
+    id("org.springframework.boot") version "3.4.5"
+    id("io.spring.dependency-management") version "1.1.7"
+    kotlin("jvm") version "2.0.21"
+    kotlin("plugin.spring") version "2.0.21"
+    id("io.gitlab.arturbosch.detekt") version "1.23.8"
 }
 
 group = "no.nav.syfo"
@@ -22,15 +23,13 @@ repositories {
     }
 }
 
-val logstashLogbackEncoderVersion = "7.4"
-val detektVersion = "1.23.6"
-val kotestVersion = "5.9.0"
-val springKotestExtensionVersion = "1.1.3"
-val mockkVersion = "1.13.11"
-val wiremockVersion = "3.6.0"
-val wiremockKotestExtensionVersion = "3.0.1"
-val tokenSupportVersion = "4.1.7"
-val kotlinxCoroutinesVersion = "1.8.1"
+val logstashLogbackEncoderVersion = "8.1"
+val detektVersion = "1.23.8"
+val kotestVersion = "5.9.1"
+val springKotestExtensionVersion = "1.3.0"
+val mockkVersion = "1.14.2"
+val tokenSupportVersion = "5.0.25"
+val kotlinxCoroutinesVersion = "1.10.2"
 
 dependencies {
     implementation("org.springframework.boot:spring-boot-starter")
@@ -57,7 +56,6 @@ dependencies {
     testImplementation("io.kotest:kotest-assertions-core:$kotestVersion")
     testImplementation("io.kotest:kotest-property:$kotestVersion")
     testImplementation("io.kotest.extensions:kotest-extensions-spring:$springKotestExtensionVersion")
-    testImplementation("io.kotest.extensions:kotest-extensions-wiremock:$wiremockKotestExtensionVersion")
     testImplementation("org.springframework.kafka:spring-kafka-test")
     testImplementation("com.h2database:h2")
     testImplementation("no.nav.security:token-validation-spring-test:$tokenSupportVersion")
@@ -72,10 +70,10 @@ tasks.named<org.springframework.boot.gradle.tasks.bundling.BootJar>("bootJar") {
     this.archiveFileName.set("app.jar")
 }
 
-tasks.withType<KotlinCompile> {
-    kotlinOptions {
-        freeCompilerArgs += "-Xjsr305=strict"
-        jvmTarget = "17"
+tasks.withType<KotlinJvmCompile>().configureEach {
+    compilerOptions {
+        freeCompilerArgs.add("-Xjsr305=strict")
+        jvmTarget.set(JvmTarget.JVM_17)
     }
 }
 
