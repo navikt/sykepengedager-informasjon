@@ -27,7 +27,7 @@ val logstashLogbackEncoderVersion = "8.1"
 val detektVersion = "1.23.8"
 val kotestVersion = "5.9.1"
 val springKotestExtensionVersion = "1.3.0"
-val mockkVersion = "1.14.2"
+val mockkVersion = "1.14.4"
 val tokenSupportVersion = "5.0.25"
 val kotlinxCoroutinesVersion = "1.10.2"
 
