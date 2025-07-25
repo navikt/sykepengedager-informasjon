@@ -28,7 +28,7 @@ val detektVersion = "1.23.8"
 val kotestVersion = "5.9.1"
 val springKotestExtensionVersion = "1.3.0"
 val mockkVersion = "1.14.2"
-val tokenSupportVersion = "5.0.25"
+val tokenSupportVersion = "5.0.33"
 val kotlinxCoroutinesVersion = "1.10.2"
 
 dependencies {
