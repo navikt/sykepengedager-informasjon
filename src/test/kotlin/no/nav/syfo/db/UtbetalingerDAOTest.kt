@@ -53,6 +53,7 @@ class UtbetalingerDAOTest : FunSpec() {
                     antallVedtak = 5,
                     utbetalingId = "123456",
                     korrelasjonsId = "654321",
+                    utbetalinsgdager = emptyList(),
                 )
             utbetalingInfotrygdDAO.storeInfotrygdUtbetaling(
                 fnr = fnr,
@@ -89,6 +90,7 @@ class UtbetalingerDAOTest : FunSpec() {
                     antallVedtak = 5,
                     utbetalingId = "123456",
                     korrelasjonsId = "654321",
+                    utbetalinsgdager = emptyList(),
                 )
 
             utbetalingSpleisDAO.storeSpleisUtbetaling(utb)
@@ -127,6 +129,7 @@ class UtbetalingerDAOTest : FunSpec() {
                     antallVedtak = 5,
                     utbetalingId = "123456",
                     korrelasjonsId = "654321",
+                    utbetalinsgdager = emptyList(),
                 )
             val utb2 =
                 UtbetalingSpleis(
@@ -143,6 +146,7 @@ class UtbetalingerDAOTest : FunSpec() {
                     antallVedtak = 5,
                     utbetalingId = "223456",
                     korrelasjonsId = "654321",
+                    utbetalinsgdager = emptyList(),
                 )
 
             utbetalingSpleisDAO.storeSpleisUtbetaling(utb)

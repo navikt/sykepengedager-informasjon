@@ -44,13 +44,14 @@ class UtbetalingSpleisDAOTest : FunSpec() {
                 antallVedtak = 5,
                 utbetalingId = utbetalingId,
                 korrelasjonsId = "654321",
+                utbetalinsgdager = emptyList(),
             )
 
         test("Store utbetaling Spleis") {
             utbetalingSpleisDAO.storeSpleisUtbetaling(utb)
 
             val result =
-                utbetalingSpleisDAO.fetchSpleisUtbettalingByFnr(
+                utbetalingSpleisDAO.fetchSpleisUtbetalingByFnr(
                     fnr = fnr,
                 )
             result shouldNotBe null

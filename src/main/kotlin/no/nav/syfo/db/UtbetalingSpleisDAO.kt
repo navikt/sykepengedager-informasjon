@@ -86,7 +86,7 @@ class UtbetalingSpleisDAO(
     }
 
     // Test only
-    fun fetchSpleisUtbettalingByFnr(fnr: String): UtbetalingSpleis? {
+    fun fetchSpleisUtbetalingByFnr(fnr: String): UtbetalingSpleis? {
         val queryStatement =
             """
             SELECT *
@@ -133,5 +133,6 @@ private class UtbetalingSpleisRowMapper : RowMapper<UtbetalingSpleis> {
             antallVedtak = rs.getInt("ANTALL_VEDTAK"),
             utbetalingId = rs.getString("UTBETALING_ID"),
             korrelasjonsId = rs.getString("KORRELASJON_ID"),
+            utbetalinsgdager = emptyList(),
         )
 }
