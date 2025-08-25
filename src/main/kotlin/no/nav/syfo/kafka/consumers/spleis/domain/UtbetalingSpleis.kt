@@ -18,7 +18,7 @@ data class UtbetalingSpleis(
     val tom: String,
     val utbetalingId: String,
     val korrelasjonsId: String,
-    val utbetalinsgdager: List<UtbetalingdagDto>,
+    val utbetalingdager: List<UtbetalingdagDto>,
 )
 
 @JsonIgnoreProperties(ignoreUnknown = true)
@@ -69,3 +69,4 @@ UKJENT
 
 const val UTBETALING_UTBETALT = "utbetaling_utbetalt"
 const val UTBETALING_UTEN_UTBETALING = "utbetaling_uten_utbetaling"
+const val ANNULERING ="ANNULLERING"

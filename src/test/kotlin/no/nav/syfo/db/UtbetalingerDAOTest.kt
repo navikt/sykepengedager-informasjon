@@ -53,7 +53,7 @@ class UtbetalingerDAOTest : FunSpec() {
                     antallVedtak = 5,
                     utbetalingId = "123456",
                     korrelasjonsId = "654321",
-                    utbetalinsgdager = emptyList(),
+                    utbetalingdager = emptyList(),
                 )
             utbetalingInfotrygdDAO.storeInfotrygdUtbetaling(
                 fnr = fnr,
@@ -62,7 +62,7 @@ class UtbetalingerDAOTest : FunSpec() {
                 gjenstaendeSykepengedager = 5,
                 source = InfotrygdSource.AAP_KAFKA_TOPIC,
             )
-            utbetalingSpleisDAO.storeSpleisUtbetaling(utb)
+            utbetalingSpleisDAO.storeSpleisUtbetaling(utb, LocalDate.parse(utb.tom))
 
             val result = utbetalingerDAO.fetchMaksDatoByFnr(fnr = fnr)
 
@@ -90,10 +90,10 @@ class UtbetalingerDAOTest : FunSpec() {
                     antallVedtak = 5,
                     utbetalingId = "123456",
                     korrelasjonsId = "654321",
-                    utbetalinsgdager = emptyList(),
+                    utbetalingdager = emptyList(),
                 )
 
-            utbetalingSpleisDAO.storeSpleisUtbetaling(utb)
+            utbetalingSpleisDAO.storeSpleisUtbetaling(utb, LocalDate.parse(utb.tom))
             utbetalingInfotrygdDAO.storeInfotrygdUtbetaling(
                 fnr = fnr,
                 sykepengerMaxDate = maxDate,
@@ -129,7 +129,7 @@ class UtbetalingerDAOTest : FunSpec() {
                     antallVedtak = 5,
                     utbetalingId = "123456",
                     korrelasjonsId = "654321",
-                    utbetalinsgdager = emptyList(),
+                    utbetalingdager = emptyList(),
                 )
             val utb2 =
                 UtbetalingSpleis(
@@ -146,11 +146,11 @@ class UtbetalingerDAOTest : FunSpec() {
                     antallVedtak = 5,
                     utbetalingId = "223456",
                     korrelasjonsId = "654321",
-                    utbetalinsgdager = emptyList(),
+                    utbetalingdager = emptyList(),
                 )
 
-            utbetalingSpleisDAO.storeSpleisUtbetaling(utb)
-            utbetalingSpleisDAO.storeSpleisUtbetaling(utb2)
+            utbetalingSpleisDAO.storeSpleisUtbetaling(utb, LocalDate.parse(utb.tom))
+            utbetalingSpleisDAO.storeSpleisUtbetaling(utb2, LocalDate.parse(utb2.tom))
             utbetalingInfotrygdDAO.storeInfotrygdUtbetaling(
                 fnr = fnr,
                 sykepengerMaxDate = maxDate,

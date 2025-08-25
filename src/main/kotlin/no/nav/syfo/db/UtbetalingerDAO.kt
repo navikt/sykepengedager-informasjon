@@ -19,7 +19,7 @@ class UtbetalingerDAO(
             """
             SELECT *
             FROM UTBETALINGER
-            WHERE FNR = :FNR
+            WHERE FNR = :FNR AND UTBETALT_TOM IS NOT NULL
             ORDER BY UTBETALT_TOM DESC, OPPRETTET DESC
             """.trimIndent()
 
@@ -49,14 +49,9 @@ class UtbetalingerDAO(
         val queryStatement =
             """
             SELECT *
-            FROM UTBETALINGER AS UTBETALINGER1
-            WHERE UUID =
-                (SELECT UTBETALINGER2.UUID
-                FROM UTBETALINGER AS UTBETALINGER2
-                WHERE UTBETALINGER1.FNR = UTBETALINGER2.FNR
-                ORDER BY OPPRETTET DESC
-                LIMIT 1)
-            AND FNR = :FNR
+            FROM UTBETALINGER
+            WHERE FNR = :FNR AND UTBET_TOM IS NOT NULL
+            ORDER BY UTBETALT_TOM DESC, OPPRETTET DESC
             """.trimIndent()
 
         val timer = metric.createTimer("utbetalinger_view_kafka", TimerBuilderName.DATABASE_QUERY_LATENCY.name)
