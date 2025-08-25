@@ -69,4 +69,4 @@ UKJENT
 
 const val UTBETALING_UTBETALT = "utbetaling_utbetalt"
 const val UTBETALING_UTEN_UTBETALING = "utbetaling_uten_utbetaling"
-const val ANNULERING ="ANNULLERING"
+const val ANNULERING = "ANNULLERING"

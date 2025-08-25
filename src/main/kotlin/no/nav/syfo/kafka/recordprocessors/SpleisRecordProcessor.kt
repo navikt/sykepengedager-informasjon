@@ -30,7 +30,10 @@ class SpleisRecordProcessor(
     fun processRecord(record: ConsumerRecord<String, String>) {
         try {
             val utbetaling = objectMapper.readValue(record.value(), UtbetalingSpleis::class.java)
-            if (utbetaling.type != ANNULERING && (utbetaling.event == UTBETALING_UTBETALT || utbetaling.event == UTBETALING_UTEN_UTBETALING)) {
+            if (
+                utbetaling.type != ANNULERING &&
+                (utbetaling.event == UTBETALING_UTBETALT || utbetaling.event == UTBETALING_UTEN_UTBETALING)
+            ) {
                 processUtbetalingSpleisEvent(utbetaling)
             }
         } catch (e: Exception) {
@@ -41,7 +44,7 @@ class SpleisRecordProcessor(
     private fun processUtbetalingSpleisEvent(utbetaling: UtbetalingSpleis) {
         val utbetTom = calculateUtbetTom(utbetaling)
         utbetalingSpleisDAO.storeSpleisUtbetaling(utbetaling, utbetTom)
-        if (utbetTom != null){
+        if (utbetTom != null) {
             sykepengedagerInformasjonKafkaService.publishSykepengedagerInformasjonEvent(utbetaling.fødselsnummer)
         }
     }
