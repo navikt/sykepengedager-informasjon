@@ -10,6 +10,7 @@ import no.nav.syfo.db.util.DatabaseCleaner
 import no.nav.syfo.kafka.consumers.spleis.domain.UtbetalingSpleis
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.context.SpringBootTest
+import scala.concurrent.Await.result
 import java.time.LocalDate
 
 @SpringBootTest(classes = [LocalApplication::class])
@@ -47,10 +48,10 @@ class UtbetalingSpleisDAOTest : FunSpec() {
             )
 
         test("Store utbetaling Spleis") {
-            utbetalingSpleisDAO.storeSpleisUtbetaling(utb)
+            utbetalingSpleisDAO.storeSpleisUtbetaling(utb, null)
 
             val result =
-                utbetalingSpleisDAO.fetchSpleisUtbettalingByFnr(
+                utbetalingSpleisDAO.fetchSpleisUtbetalingByFnr(
                     fnr = fnr,
                 )
             result shouldNotBe null
