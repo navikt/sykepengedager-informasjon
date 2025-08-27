@@ -36,7 +36,7 @@ class UtbetalingSpleisDAO(
             UTBETALING_ID,
             KORRELASJON_ID,
             OPPRETTET,
-            UTBET_TOM)  
+            UTBETALT_TOM)  
             
             VALUES (
             :UUID, 
@@ -54,7 +54,7 @@ class UtbetalingSpleisDAO(
             :UTBETALING_ID,
             :KORRELASJON_ID,
             :OPPRETTET,
-            :UTBET_TOM)
+            :UTBETALT_TOM)
             """.trimIndent()
 
         val uuid = UUID.randomUUID()
@@ -82,7 +82,7 @@ class UtbetalingSpleisDAO(
                 .addValue("UTBETALING_ID", utbetaling.utbetalingId)
                 .addValue("KORRELASJON_ID", utbetaling.korrelasjonsId)
                 .addValue("OPPRETTET", Timestamp.valueOf(LocalDateTime.now()))
-                .addValue("UTBET_TOM", utbetaltTom)
+                .addValue("UTBETALT_TOM", utbetaltTom)
 
         namedParameterJdbcTemplate.update(sql, params)
 
