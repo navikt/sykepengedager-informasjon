@@ -36,17 +36,17 @@ class SpleisRecordProcessor(
         }
     }
     private fun processUtbetalingSpleisEvent(utbetaling: UtbetalingSpleis) {
-        val utbetTom = calculateUtbetTom(utbetaling)
-        utbetalingSpleisDAO.storeSpleisUtbetaling(utbetaling, utbetTom)
-        if (utbetTom != LocalDate.parse(utbetaling.tom)) {
+        val utbetaltTom = calculateUtbetaltTom(utbetaling)
+        utbetalingSpleisDAO.storeSpleisUtbetaling(utbetaling, utbetaltTom)
+        if (utbetaltTom != LocalDate.parse(utbetaling.tom)) {
             log.info(
-                "UtbetTom $utbetTom er forskjellig fra tom ${utbetaling.tom} i utbetaling med dager: " +
+                "UtbetTom $utbetaltTom er forskjellig fra tom ${utbetaling.tom} i utbetaling med dager: " +
                     "${utbetaling.utbetalingdager.joinToString()}"
             )
         }
         sykepengedagerInformasjonKafkaService.publishSykepengedagerInformasjonEvent(utbetaling.fødselsnummer)
     }
 
-    private fun calculateUtbetTom(utbetaling: UtbetalingSpleis): LocalDate? =
+    private fun calculateUtbetaltTom(utbetaling: UtbetalingSpleis): LocalDate? =
         utbetaling.utbetalingdager.filter { it.type in sykepengedagtyper }.maxOfOrNull { it.dato }
 }

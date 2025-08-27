@@ -17,7 +17,7 @@ import java.util.*
 class UtbetalingSpleisDAO(
     private val namedParameterJdbcTemplate: NamedParameterJdbcTemplate,
 ) {
-    fun storeSpleisUtbetaling(utbetaling: UtbetalingSpleis, utbetTom: LocalDate? = null): UUID {
+    fun storeSpleisUtbetaling(utbetaling: UtbetalingSpleis, utbetaltTom: LocalDate? = null): UUID {
         val sql =
             """
              INSERT INTO UTBETALING_SPLEIS  (
@@ -82,7 +82,7 @@ class UtbetalingSpleisDAO(
                 .addValue("UTBETALING_ID", utbetaling.utbetalingId)
                 .addValue("KORRELASJON_ID", utbetaling.korrelasjonsId)
                 .addValue("OPPRETTET", Timestamp.valueOf(LocalDateTime.now()))
-                .addValue("UTBET_TOM", utbetTom)
+                .addValue("UTBET_TOM", utbetaltTom)
 
         namedParameterJdbcTemplate.update(sql, params)
 
