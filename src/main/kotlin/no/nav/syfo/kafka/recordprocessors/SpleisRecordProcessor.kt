@@ -41,12 +41,12 @@ class SpleisRecordProcessor(
         if (utbetaltTom != LocalDate.parse(utbetaling.tom)) {
             log.info(
                 "UtbetTom $utbetaltTom er forskjellig fra tom ${utbetaling.tom} i utbetaling med dager: " +
-                    "${utbetaling.utbetalingdager.joinToString()}"
+                    "${utbetaling.utbetalingsdager.joinToString()}"
             )
         }
         sykepengedagerInformasjonKafkaService.publishSykepengedagerInformasjonEvent(utbetaling.fødselsnummer)
     }
 
     private fun calculateUtbetaltTom(utbetaling: UtbetalingSpleis): LocalDate? =
-        utbetaling.utbetalingdager.filter { it.type in sykepengedagtyper }.maxOfOrNull { it.dato }
+        utbetaling.utbetalingsdager.filter { it.type in sykepengedagtyper }.maxOfOrNull { it.dato }
 }

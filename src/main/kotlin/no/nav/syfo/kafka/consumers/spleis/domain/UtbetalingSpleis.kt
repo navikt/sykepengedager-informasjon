@@ -18,11 +18,11 @@ data class UtbetalingSpleis(
     val tom: String,
     val utbetalingId: String,
     val korrelasjonsId: String,
-    val utbetalingdager: List<UtbetalingdagDto> = emptyList(),
+    val utbetalingsdager: List<UtbetalingsdagDto> = emptyList(),
 )
 
 @JsonIgnoreProperties(ignoreUnknown = true)
-data class UtbetalingdagDto(
+data class UtbetalingsdagDto(
     val dato: LocalDate,
     val type: DagType,
     val begrunnelser: List<String>,

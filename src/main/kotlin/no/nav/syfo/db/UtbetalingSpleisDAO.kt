@@ -137,6 +137,6 @@ private class UtbetalingSpleisRowMapper : RowMapper<UtbetalingSpleis> {
             antallVedtak = rs.getInt("ANTALL_VEDTAK"),
             utbetalingId = rs.getString("UTBETALING_ID"),
             korrelasjonsId = rs.getString("KORRELASJON_ID"),
-            utbetalingdager = emptyList(),
+            utbetalingsdager = emptyList(),
         )
 }
