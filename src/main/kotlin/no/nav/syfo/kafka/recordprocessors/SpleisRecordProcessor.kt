@@ -40,7 +40,7 @@ class SpleisRecordProcessor(
         utbetalingSpleisDAO.storeSpleisUtbetaling(utbetaling, utbetaltTom)
         if (utbetaltTom != LocalDate.parse(utbetaling.tom)) {
             log.info(
-                "UtbetTom $utbetaltTom er forskjellig fra tom ${utbetaling.tom} i utbetaling med dager: " +
+                "UtbetaltTom $utbetaltTom er forskjellig fra tom ${utbetaling.tom} i utbetaling med dager: " +
                     "${utbetaling.utbetalingsdager.joinToString()}"
             )
         }
