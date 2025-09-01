@@ -1,6 +1,6 @@
 package no.nav.syfo.kafka.recordprocessors
 
-import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
+import com.fasterxml.jackson.databind.ObjectMapper
 import no.nav.syfo.config.kafka.topicUtbetaling
 import no.nav.syfo.db.UtbetalingSpleisDAO
 import no.nav.syfo.kafka.consumers.spleis.domain.DagType
@@ -17,9 +17,9 @@ import java.time.LocalDate
 @Component
 class SpleisRecordProcessor(
     val sykepengedagerInformasjonKafkaService: SykepengedagerInformasjonKafkaService,
+    private val objectMapper: ObjectMapper,
 ) {
     private val log = logger()
-    private val objectMapper = jacksonObjectMapper()
     private val sykepengedagtyper = listOf(DagType.NavDag, DagType.NavHelgDag, DagType.ArbeidsgiverperiodeDag)
 
     @Autowired
@@ -33,6 +33,7 @@ class SpleisRecordProcessor(
             }
         } catch (e: Exception) {
             log.error("Exception in [$topicUtbetaling]-processor: $e", e)
+            throw e
         }
     }
     private fun processUtbetalingSpleisEvent(utbetaling: UtbetalingSpleis) {
