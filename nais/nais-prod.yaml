@@ -14,7 +14,7 @@ spec:
   port: 8080
   liveness:
     path: /internal/health/livenessState
-    initialDelay: 120
+    initialDelay: 10
     timeout: 5
     periodSeconds: 10
     failureThreshold: 5
