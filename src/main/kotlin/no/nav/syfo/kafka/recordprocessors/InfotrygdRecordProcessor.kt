@@ -1,6 +1,6 @@
 package no.nav.syfo.kafka.recordprocessors
 
-import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
+import com.fasterxml.jackson.databind.ObjectMapper
 import no.nav.syfo.db.UtbetalingInfotrygdDAO
 import no.nav.syfo.kafka.consumers.aapInfotrygd.domain.InfotrygdSource
 import no.nav.syfo.kafka.consumers.aapInfotrygd.domain.KInfotrygdSykepengedager
@@ -16,9 +16,9 @@ import java.time.LocalDate
 @Component
 class InfotrygdRecordProcessor(
     val sykepengedagerInformasjonKafkaService: SykepengedagerInformasjonKafkaService,
+    private val objectMapper: ObjectMapper,
 ) {
     private val log = logger()
-    private val objectMapper = jacksonObjectMapper()
 
     @Autowired
     private lateinit var utbetalingInfotrygdDAO: UtbetalingInfotrygdDAO
