@@ -24,7 +24,7 @@ class UtbetalingInfotrygdDAO(
         utbetaltTilDate: LocalDate,
         gjenstaendeSykepengedager: Int,
         source: InfotrygdSource,
-    ): UUID? {
+    ) {
         val sql =
             """
             INSERT INTO UTBETALING_INFOTRYGD  (
@@ -56,13 +56,7 @@ class UtbetalingInfotrygdDAO(
                 .addValue("GJENSTAENDE_SYKEDAGER", gjenstaendeSykepengedager)
                 .addValue("OPPRETTET", Timestamp.valueOf(LocalDateTime.now()))
                 .addValue("SOURCE", source.name)
-        try {
-            namedParameterJdbcTemplate.update(sql, params)
-            return uuid
-        } catch (e: Exception) {
-            log.error("Could not execute insert a message for infotrygd, message: ${e.message}")
-            return null
-        }
+        namedParameterJdbcTemplate.update(sql, params)
     }
 
     fun isInfotrygdUtbetalingExists(

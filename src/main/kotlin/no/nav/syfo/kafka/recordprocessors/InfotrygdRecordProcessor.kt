@@ -1,7 +1,6 @@
 package no.nav.syfo.kafka.recordprocessors
 
 import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
-import no.nav.syfo.config.kafka.topicAapSykepengedagerInfotrygd
 import no.nav.syfo.db.UtbetalingInfotrygdDAO
 import no.nav.syfo.kafka.consumers.aapInfotrygd.domain.InfotrygdSource
 import no.nav.syfo.kafka.consumers.aapInfotrygd.domain.KInfotrygdSykepengedager
@@ -25,25 +24,21 @@ class InfotrygdRecordProcessor(
     private lateinit var utbetalingInfotrygdDAO: UtbetalingInfotrygdDAO
 
     fun processRecord(record: ConsumerRecord<String, String>) {
-        try {
-            val kInfotrygdSykepengedager = objectMapper.readValue(record.value(), KInfotrygdSykepengedager::class.java)
-            val fnr = kInfotrygdSykepengedager.after.F_NR
-            val sykepengerMaxDate = parseDate(kInfotrygdSykepengedager.after.MAX_DATO)
-            val utbetaltTom = kInfotrygdSykepengedager.after.UTBET_TOM
+        val kInfotrygdSykepengedager = objectMapper.readValue(record.value(), KInfotrygdSykepengedager::class.java)
+        val fnr = kInfotrygdSykepengedager.after.F_NR
+        val sykepengerMaxDate = parseDate(kInfotrygdSykepengedager.after.MAX_DATO)
+        val utbetaltTom = kInfotrygdSykepengedager.after.UTBET_TOM
 
-            if (utbetaltTom != null) {
-                val utbetaltTomDate = parseDate(utbetaltTom)
+        if (utbetaltTom != null) {
+            val utbetaltTomDate = parseDate(utbetaltTom)
 
-                processInfotrygdEvent(
-                    fnr,
-                    sykepengerMaxDate,
-                    utbetaltTomDate,
-                    utbetaltTomDate.gjenstaendeSykepengedager(sykepengerMaxDate),
-                    InfotrygdSource.AAP_KAFKA_TOPIC,
-                )
-            }
-        } catch (e: Exception) {
-            log.error("Exception in [$topicAapSykepengedagerInfotrygd]-processor: $e", e)
+            processInfotrygdEvent(
+                fnr,
+                sykepengerMaxDate,
+                utbetaltTomDate,
+                utbetaltTomDate.gjenstaendeSykepengedager(sykepengerMaxDate),
+                InfotrygdSource.AAP_KAFKA_TOPIC,
+            )
         }
     }
 
