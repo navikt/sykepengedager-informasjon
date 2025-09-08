@@ -43,7 +43,6 @@ class SykepengedagerInformasjonProducer(
                 e.message ?: "",
                 event.createdAt,
             )
-            throw e
         } catch (e: KafkaException) {
             log.error(
                 "KafkaException was thrown when attempting to " +
@@ -54,7 +53,6 @@ class SykepengedagerInformasjonProducer(
                 e.message ?: "",
                 event.createdAt,
             )
-            throw e
         }
     }
 

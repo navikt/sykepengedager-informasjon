@@ -11,6 +11,7 @@ import no.nav.syfo.utils.parseDate
 import org.apache.kafka.clients.consumer.ConsumerRecord
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Component
+import org.springframework.transaction.annotation.Transactional
 import java.time.LocalDate
 
 @Component
@@ -23,6 +24,7 @@ class InfotrygdRecordProcessor(
     @Autowired
     private lateinit var utbetalingInfotrygdDAO: UtbetalingInfotrygdDAO
 
+    @Transactional
     fun processRecord(record: ConsumerRecord<String, String>) {
         val kInfotrygdSykepengedager = objectMapper.readValue(record.value(), KInfotrygdSykepengedager::class.java)
         val fnr = kInfotrygdSykepengedager.after.F_NR
