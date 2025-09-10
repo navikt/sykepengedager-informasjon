@@ -9,6 +9,7 @@ import org.springframework.stereotype.Repository
 import java.sql.Date
 import java.sql.ResultSet
 import java.sql.Timestamp
+import java.time.LocalDate
 import java.time.LocalDateTime
 import java.util.*
 
@@ -16,7 +17,7 @@ import java.util.*
 class UtbetalingSpleisDAO(
     private val namedParameterJdbcTemplate: NamedParameterJdbcTemplate,
 ) {
-    fun storeSpleisUtbetaling(utbetaling: UtbetalingSpleis): UUID {
+    fun storeSpleisUtbetaling(utbetaling: UtbetalingSpleis, utbetaltTom: LocalDate? = null): UUID {
         val sql =
             """
              INSERT INTO UTBETALING_SPLEIS  (
@@ -34,7 +35,8 @@ class UtbetalingSpleisDAO(
             TOM,
             UTBETALING_ID,
             KORRELASJON_ID,
-            OPPRETTET)  
+            OPPRETTET,
+            UTBETALT_TOM)  
             
             VALUES (
             :UUID, 
@@ -51,7 +53,8 @@ class UtbetalingSpleisDAO(
             :TOM,
             :UTBETALING_ID,
             :KORRELASJON_ID,
-            :OPPRETTET)
+            :OPPRETTET,
+            :UTBETALT_TOM)
             """.trimIndent()
 
         val uuid = UUID.randomUUID()
@@ -79,6 +82,7 @@ class UtbetalingSpleisDAO(
                 .addValue("UTBETALING_ID", utbetaling.utbetalingId)
                 .addValue("KORRELASJON_ID", utbetaling.korrelasjonsId)
                 .addValue("OPPRETTET", Timestamp.valueOf(LocalDateTime.now()))
+                .addValue("UTBETALT_TOM", utbetaltTom?.let { Date.valueOf(it) })
 
         namedParameterJdbcTemplate.update(sql, params)
 
@@ -86,7 +90,7 @@ class UtbetalingSpleisDAO(
     }
 
     // Test only
-    fun fetchSpleisUtbettalingByFnr(fnr: String): UtbetalingSpleis? {
+    fun fetchSpleisUtbetalingByFnr(fnr: String): UtbetalingSpleis? {
         val queryStatement =
             """
             SELECT *
@@ -133,5 +137,6 @@ private class UtbetalingSpleisRowMapper : RowMapper<UtbetalingSpleis> {
             antallVedtak = rs.getInt("ANTALL_VEDTAK"),
             utbetalingId = rs.getString("UTBETALING_ID"),
             korrelasjonsId = rs.getString("KORRELASJON_ID"),
+            utbetalingsdager = emptyList(),
         )
 }

@@ -47,10 +47,10 @@ class UtbetalingSpleisDAOTest : FunSpec() {
             )
 
         test("Store utbetaling Spleis") {
-            utbetalingSpleisDAO.storeSpleisUtbetaling(utb)
+            utbetalingSpleisDAO.storeSpleisUtbetaling(utb, null)
 
             val result =
-                utbetalingSpleisDAO.fetchSpleisUtbettalingByFnr(
+                utbetalingSpleisDAO.fetchSpleisUtbetalingByFnr(
                     fnr = fnr,
                 )
             result shouldNotBe null
