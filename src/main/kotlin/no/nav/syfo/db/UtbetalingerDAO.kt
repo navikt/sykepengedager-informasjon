@@ -18,15 +18,10 @@ class UtbetalingerDAO(
         val queryStatement =
             """
             SELECT *
-            FROM UTBETALINGER AS UTBETALINGER1
-            WHERE UUID =
-                (SELECT UTBETALINGER2.UUID
-                FROM UTBETALINGER AS UTBETALINGER2
-                WHERE UTBETALINGER1.FNR = UTBETALINGER2.FNR
-                ORDER BY UTBETALT_TOM DESC, OPPRETTET DESC
-                LIMIT 1)
-            AND FNR = :FNR
-            """.trimIndent()
+            FROM UTBETALINGER
+            WHERE FNR = :FNR
+            ORDER BY UTBETALT_TOM DESC, OPPRETTET DESC
+             """.trimIndent()
 
         val timer = metric.createTimer("utbetalinger_view", TimerBuilderName.DATABASE_QUERY_LATENCY.name)
 

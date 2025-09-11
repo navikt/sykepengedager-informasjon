@@ -30,6 +30,7 @@ val springKotestExtensionVersion = "1.3.0"
 val mockkVersion = "1.14.5"
 val tokenSupportVersion = "5.0.34"
 val kotlinxCoroutinesVersion = "1.10.2"
+val springmockkVersion = "4.0.2"
 
 dependencies {
     implementation("org.springframework.boot:spring-boot-starter")
@@ -60,6 +61,7 @@ dependencies {
     testImplementation("org.springframework.kafka:spring-kafka-test")
     testImplementation("com.h2database:h2")
     testImplementation("no.nav.security:token-validation-spring-test:$tokenSupportVersion")
+    testImplementation("com.ninja-squad:springmockk:$springmockkVersion")
     testRuntimeOnly("org.junit.platform:junit-platform-launcher")
     runtimeOnly("org.jetbrains.kotlinx:kotlinx-coroutines-core:$kotlinxCoroutinesVersion")
     runtimeOnly("org.jetbrains.kotlinx:kotlinx-coroutines-reactor:$kotlinxCoroutinesVersion")
