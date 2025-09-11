@@ -235,12 +235,11 @@ class UtbetalingerDAOTest : FunSpec() {
         test("Selects correct utebetalt_tom when soknad contains feriedager") {
             val fnr = "12121212121"
             val forelopigBeregnetSluttPaSykepenger = LocalDate.now().plusDays(15)
-            val forelopigBeregnetSluttPaSykepengerLengst = LocalDate.now().plusDays(15)
             val fom = LocalDate.now().minusDays(3)
-            val tom = LocalDate.now().plusDays(4)
+            val tom = LocalDate.now().plusDays(7)
             val utbetalingsdagerMedFeriedager = 
-                createUtbetalingsdager(fom, tom, DagType.NavDag) + 
-                    createUtbetalingsdager(tom.plusDays(1), tom.plusDays(3), DagType.Feriedag)
+                createUtbetalingsdager(fom, tom.minusDays(3), DagType.NavDag) +
+                    createUtbetalingsdager(tom.minusDays(2), tom, DagType.Feriedag)
             val utb =
                 UtbetalingSpleis(
                     fødselsnummer = fnr,
@@ -248,8 +247,8 @@ class UtbetalingerDAOTest : FunSpec() {
                     event = "event",
                     type = "type",
                     fom = fom.toString(),
-                    tom = tom.plusDays(3).toString(),
-                    foreløpigBeregnetSluttPåSykepenger = forelopigBeregnetSluttPaSykepengerLengst.toString(),
+                    tom = tom.toString(),
+                    foreløpigBeregnetSluttPåSykepenger = forelopigBeregnetSluttPaSykepenger.toString(),
                     forbrukteSykedager = 4,
                     gjenståendeSykedager = 5,
                     stønadsdager = 5,
@@ -263,7 +262,7 @@ class UtbetalingerDAOTest : FunSpec() {
             val result = utbetalingerDAO.fetchMaksDatoByFnr(fnr = fnr)
 
             result shouldNotBe null
-            result?.utbetalt_tom shouldBe tom
+            result?.utbetalt_tom shouldBe tom.minusDays(3)
             result?.forelopig_beregnet_slutt shouldBe forelopigBeregnetSluttPaSykepenger
         }
 
