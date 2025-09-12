@@ -5,7 +5,18 @@ kafka.credstore.password: /credstore/password
 kafka.schema.registry.user: "kafka.schema.registry.user"
 kafka.schema.registry.password: "kafka.schema.registry.password"
 kafka.schema.registry: "kafka.schema.registry"
-spring.flyway.clean-disabled: "false"
+spring:
+  datasource:
+    driver-class-name: org.postgresql.Driver
+  flyway:
+    enabled: true
+    locations: classpath:db/migration
+    schemas: public
+    clean-disabled: "false"
+  jpa:
+    generate-ddl: false
+    hibernate:
+      ddl-auto: none
 azure:
   app:
     client:
@@ -16,9 +27,7 @@ azure:
       token:
         endpoint: "https://token-endpoint"
 
-
-istilgangskontroll.url": "http://istilgangskontrollUrl:9099"
+istilgangskontroll.url: "http://istilgangskontrollUrl:9099"
 istilgangskontroll.scope: "istilgangskontrollScope"
 ditt.sykefravaer.client.id: "dittSykefravaerClientId"
 meroppfolging.frontend.client.id: "meroppfolgingFrontendClientId"
-

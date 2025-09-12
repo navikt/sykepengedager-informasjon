@@ -14,11 +14,12 @@ import no.nav.syfo.kafka.consumers.spleis.domain.UtbetalingSpleis
 import no.nav.syfo.kafka.consumers.spleis.domain.UtbetalingsdagDto
 import no.nav.syfo.kafka.producers.SykepengedagerInformasjonKafkaService
 import no.nav.syfo.kafka.recordprocessors.SpleisRecordProcessor
+import no.nav.syfo.config.EmbeddedPostgresTestConfig
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.context.SpringBootTest
 import java.time.LocalDate
 
-@SpringBootTest(classes = [LocalApplication::class])
+@SpringBootTest(classes = [LocalApplication::class, EmbeddedPostgresTestConfig::class])
 class UtbetalingerDAOTest : FunSpec() {
     @Autowired
     private lateinit var utbetalingerDAO: UtbetalingerDAO
