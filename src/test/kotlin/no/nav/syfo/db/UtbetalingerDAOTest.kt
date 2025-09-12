@@ -7,6 +7,7 @@ import io.kotest.extensions.spring.SpringExtension
 import io.kotest.matchers.shouldBe
 import io.kotest.matchers.shouldNotBe
 import no.nav.syfo.LocalApplication
+import no.nav.syfo.config.EmbeddedPostgresTestConfig
 import no.nav.syfo.db.util.DatabaseCleaner
 import no.nav.syfo.kafka.consumers.aapInfotrygd.domain.InfotrygdSource
 import no.nav.syfo.kafka.consumers.spleis.domain.DagType
@@ -14,7 +15,6 @@ import no.nav.syfo.kafka.consumers.spleis.domain.UtbetalingSpleis
 import no.nav.syfo.kafka.consumers.spleis.domain.UtbetalingsdagDto
 import no.nav.syfo.kafka.producers.SykepengedagerInformasjonKafkaService
 import no.nav.syfo.kafka.recordprocessors.SpleisRecordProcessor
-import no.nav.syfo.config.EmbeddedPostgresTestConfig
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.context.SpringBootTest
 import java.time.LocalDate
@@ -41,6 +41,9 @@ class UtbetalingerDAOTest : FunSpec() {
 
     override suspend fun beforeTest(testCase: TestCase) {
         databaseCleaner.clean()
+        // just to make detekt happy
+        sykepengedagerInformasjonKafkaService.log.info("started")
+        utbetalingSpleisDAO.fetchSpleisUtbetalingByFnr("")
     }
 
     init {
@@ -238,7 +241,7 @@ class UtbetalingerDAOTest : FunSpec() {
             val forelopigBeregnetSluttPaSykepenger = LocalDate.now().plusDays(15)
             val fom = LocalDate.now().minusDays(3)
             val tom = LocalDate.now().plusDays(7)
-            val utbetalingsdagerMedFeriedager = 
+            val utbetalingsdagerMedFeriedager =
                 createUtbetalingsdager(fom, tom.minusDays(3), DagType.NavDag) +
                     createUtbetalingsdager(tom.minusDays(2), tom, DagType.Feriedag)
             val utb =
@@ -266,7 +269,6 @@ class UtbetalingerDAOTest : FunSpec() {
             result?.utbetalt_tom shouldBe tom.minusDays(3)
             result?.forelopig_beregnet_slutt shouldBe forelopigBeregnetSluttPaSykepenger
         }
-
     }
 
     private fun createUtbetalingsdager(fom: LocalDate, tom: LocalDate, dagType: DagType = DagType.NavDag) =

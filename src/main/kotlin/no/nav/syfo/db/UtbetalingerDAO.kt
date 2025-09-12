@@ -21,7 +21,7 @@ class UtbetalingerDAO(
             FROM UTBETALINGER
             WHERE FNR = :FNR
             ORDER BY UTBETALT_TOM DESC, OPPRETTET DESC
-             """.trimIndent()
+            """.trimIndent()
 
         val timer = metric.createTimer("utbetalinger_view", TimerBuilderName.DATABASE_QUERY_LATENCY.name)
 
