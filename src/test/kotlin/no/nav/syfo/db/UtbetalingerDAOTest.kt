@@ -142,23 +142,6 @@ class UtbetalingerDAOTest : FunSpec() {
                     event = "event",
                     type = "type",
                     fom = fom.toString(),
-                    tom = tom.plusDays(1).toString(),
-                    foreløpigBeregnetSluttPåSykepenger = forelopigBeregnetSluttPaSykepengerLengst.toString(),
-                    forbrukteSykedager = 4,
-                    gjenståendeSykedager = 5,
-                    stønadsdager = 5,
-                    antallVedtak = 5,
-                    utbetalingId = "123456",
-                    korrelasjonsId = "654321",
-                    utbetalingsdager = createUtbetalingsdager(fom, tom.plusDays(1)),
-                )
-            val utb2 =
-                UtbetalingSpleis(
-                    fødselsnummer = fnr,
-                    organisasjonsnummer = "123123",
-                    event = "event",
-                    type = "type",
-                    fom = fom.toString(),
                     tom = tom.toString(),
                     foreløpigBeregnetSluttPåSykepenger = forelopigBeregnetSluttPaSykepenger.toString(),
                     forbrukteSykedager = 4,
@@ -168,6 +151,23 @@ class UtbetalingerDAOTest : FunSpec() {
                     utbetalingId = "223456",
                     korrelasjonsId = "654321",
                     utbetalingsdager = createUtbetalingsdager(fom, tom),
+                )
+            val utb2 =
+                UtbetalingSpleis(
+                    fødselsnummer = fnr,
+                    organisasjonsnummer = "123123",
+                    event = "event",
+                    type = "type",
+                    fom = fom.toString(),
+                    tom = tom.plusDays(1).toString(),
+                    foreløpigBeregnetSluttPåSykepenger = forelopigBeregnetSluttPaSykepengerLengst.toString(),
+                    forbrukteSykedager = 4,
+                    gjenståendeSykedager = 5,
+                    stønadsdager = 5,
+                    antallVedtak = 5,
+                    utbetalingId = "123456",
+                    korrelasjonsId = "654321",
+                    utbetalingsdager = createUtbetalingsdager(fom, tom.plusDays(1)),
                 )
 
             spleisRecordProcessor.processUtbetalingSpleisEvent(utb)
@@ -233,7 +233,7 @@ class UtbetalingerDAOTest : FunSpec() {
 
             result shouldNotBe null
             result?.utbetalt_tom shouldBe tom
-            result?.forelopig_beregnet_slutt shouldBe forelopigBeregnetSluttPaSykepenger
+            result?.forelopig_beregnet_slutt shouldBe forelopigBeregnetSluttPaSykepengerLengst
         }
 
         test("Selects correct utebetalt_tom when soknad contains feriedager") {

@@ -14,16 +14,26 @@ class UtbetalingerDAO(
     private val namedParameterJdbcTemplate: NamedParameterJdbcTemplate,
     private val metric: Metric,
 ) {
-    fun fetchMaksDatoByFnr(fnr: String): PMaksDato? {
+    fun  fetchMaksDatoByFnr(fnr: String): PMaksDato? {
+        val pMaksDato = maksDato(fnr)
+        val utbetaltTom = utbetaling(fnr)
+        return if (utbetaltTom?.utbetalt_tom == null) {
+            pMaksDato
+        } else {
+            pMaksDato?.copy(utbetalt_tom = utbetaltTom.utbetalt_tom)
+        }
+    }
+
+    private fun maksDato(fnr: String): PMaksDato? {
         val queryStatement =
             """
             SELECT *
-            FROM UTBETALINGER
+            FROM MAXDATO
             WHERE FNR = :FNR
             ORDER BY UTBETALT_TOM DESC, OPPRETTET DESC
             """.trimIndent()
 
-        val timer = metric.createTimer("utbetalinger_view", TimerBuilderName.DATABASE_QUERY_LATENCY.name)
+        val timer = metric.createTimer("maxdato_view", TimerBuilderName.DATABASE_QUERY_LATENCY.name)
 
         return timer.record<PMaksDato> {
             val mapQueryStatement =
@@ -37,7 +47,38 @@ class UtbetalingerDAO(
                     emptyList()
                 }
 
-            return@record if (resultList.isNotEmpty()) {
+            if (resultList.isNotEmpty()) {
+                resultList.first()
+            } else {
+                null
+            }
+        }
+    }
+
+    private fun utbetaling(fnr: String): PMaksDato? {
+        val queryStatement =
+            """
+            SELECT *
+            FROM UTBETALINGER
+            WHERE FNR = :FNR
+            ORDER BY UTBETALT_TOM DESC, OPPRETTET DESC
+            """.trimIndent()
+
+        val timer = metric.createTimer("utbetaling_view", TimerBuilderName.DATABASE_QUERY_LATENCY.name)
+
+        return timer.record<PMaksDato> {
+            val mapQueryStatement =
+                MapSqlParameterSource()
+                    .addValue("FNR", fnr)
+
+            val resultList =
+                try {
+                    namedParameterJdbcTemplate.query(queryStatement, mapQueryStatement, MaxDateRowMapper())
+                } catch (e: EmptyResultDataAccessException) {
+                    emptyList()
+                }
+
+            if (resultList.isNotEmpty()) {
                 resultList.first()
             } else {
                 null
