@@ -14,7 +14,7 @@ class UtbetalingerDAO(
     private val namedParameterJdbcTemplate: NamedParameterJdbcTemplate,
     private val metric: Metric,
 ) {
-    fun  fetchMaksDatoByFnr(fnr: String): PMaksDato? {
+    fun fetchMaksDatoByFnr(fnr: String): PMaksDato? {
         val pMaksDato = maksDato(fnr)
         val utbetaltTom = utbetaling(fnr)
         return if (utbetaltTom?.utbetalt_tom == null) {

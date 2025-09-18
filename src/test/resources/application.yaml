@@ -13,6 +13,9 @@ spring:
     locations: classpath:db/migration
     schemas: public
     clean-disabled: "false"
+    postgresql:
+      transactional:
+        lock: "false"
   jpa:
     generate-ddl: false
     hibernate:
