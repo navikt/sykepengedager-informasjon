@@ -30,7 +30,6 @@ val springKotestExtensionVersion = "1.3.0"
 val mockkVersion = "1.14.5"
 val tokenSupportVersion = "5.0.34"
 val kotlinxCoroutinesVersion = "1.10.2"
-val springmockkVersion = "4.0.2"
 val postgresEmbeddedVersion = "2.1.0"
 val postgresRuntimeVersion = "17.5.0"
 
