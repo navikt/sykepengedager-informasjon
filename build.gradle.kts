@@ -30,6 +30,8 @@ val springKotestExtensionVersion = "1.3.0"
 val mockkVersion = "1.14.5"
 val tokenSupportVersion = "5.0.34"
 val kotlinxCoroutinesVersion = "1.10.2"
+val postgresEmbeddedVersion = "2.1.0"
+val postgresRuntimeVersion = "17.5.0"
 
 dependencies {
     implementation("org.springframework.boot:spring-boot-starter")
@@ -58,7 +60,8 @@ dependencies {
     testImplementation("io.kotest:kotest-property:$kotestVersion")
     testImplementation("io.kotest.extensions:kotest-extensions-spring:$springKotestExtensionVersion")
     testImplementation("org.springframework.kafka:spring-kafka-test")
-    testImplementation("com.h2database:h2")
+    testImplementation("io.zonky.test:embedded-postgres:$postgresEmbeddedVersion")
+    testImplementation(platform("io.zonky.test.postgres:embedded-postgres-binaries-bom:$postgresRuntimeVersion"))
     testImplementation("no.nav.security:token-validation-spring-test:$tokenSupportVersion")
     testRuntimeOnly("org.junit.platform:junit-platform-launcher")
     runtimeOnly("org.jetbrains.kotlinx:kotlinx-coroutines-core:$kotlinxCoroutinesVersion")
