@@ -57,11 +57,11 @@ class SykepengerMaxDateAzureApiV2(
             val callId = headers[NAV_CALL_ID_HEADER].toString()
 
             if (veilederTilgangskontrollClient.hasAccess(personIdent, token, callId)) {
-                val sykepengerMaxDate = utbetalingerDAO.fetchMaksDatoByFnr(personIdent)
+                val pMaksDato = utbetalingerDAO.fetchMaksDatoByFnr(fnr = personIdent)
 
-                log.info("Fetched sykepengerMaxDate from database: ${sykepengerMaxDate?.forelopig_beregnet_slutt}")
+                log.info("Fetched sykepengerMaxDate from database: ${pMaksDato?.forelopig_beregnet_slutt}")
 
-                return SykepengerMaxDateAzureV2Response(maxDate = sykepengerMaxDate)
+                return SykepengerMaxDateAzureV2Response(maxDate = pMaksDato)
             } else {
                 throw VeilederNoAccessException()
             }

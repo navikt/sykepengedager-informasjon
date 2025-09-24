@@ -52,6 +52,7 @@ class SykepengerMaxDateRestV1Test :
                         fnr = fnr,
                         forelopig_beregnet_slutt = maxDate,
                         utbetalt_tom = utbetaltTom,
+                        tom = utbetaltTom,
                         gjenstaende_sykedager = "30",
                         opprettet = LocalDateTime.now().minusDays(60),
                     )
@@ -77,6 +78,7 @@ class SykepengerMaxDateRestV1Test :
                     fnr = fnr,
                     forelopig_beregnet_slutt = maxDate,
                     utbetalt_tom = utbetaltTom,
+                    tom = utbetaltTom,
                     gjenstaende_sykedager = "30",
                     opprettet = LocalDateTime.now().minusDays(60),
                 )

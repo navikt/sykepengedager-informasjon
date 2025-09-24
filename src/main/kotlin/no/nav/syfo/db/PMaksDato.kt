@@ -7,7 +7,8 @@ data class PMaksDato(
     val id: String,
     val fnr: String,
     val forelopig_beregnet_slutt: LocalDate,
-    val utbetalt_tom: LocalDate,
+    val utbetalt_tom: LocalDate?,
+    val tom: LocalDate,
     val gjenstaende_sykedager: String,
     val opprettet: LocalDateTime,
 )

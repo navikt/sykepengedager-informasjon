@@ -17,7 +17,7 @@ import java.util.*
 class UtbetalingSpleisDAO(
     private val namedParameterJdbcTemplate: NamedParameterJdbcTemplate,
 ) {
-    fun storeSpleisUtbetaling(utbetaling: UtbetalingSpleis, utbetaltTom: LocalDate? = null): UUID {
+    fun storeSpleisUtbetaling(utbetaling: UtbetalingSpleis, utbetaltTom: LocalDate?): UUID {
         val sql =
             """
              INSERT INTO UTBETALING_SPLEIS  (

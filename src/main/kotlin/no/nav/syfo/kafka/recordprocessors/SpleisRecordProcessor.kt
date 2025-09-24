@@ -30,7 +30,7 @@ class SpleisRecordProcessor(
             processUtbetalingSpleisEvent(utbetaling)
         }
     }
-    private fun processUtbetalingSpleisEvent(utbetaling: UtbetalingSpleis) {
+    fun processUtbetalingSpleisEvent(utbetaling: UtbetalingSpleis) {
         val utbetaltTom = calculateUtbetaltTom(utbetaling)
         utbetalingSpleisDAO.storeSpleisUtbetaling(utbetaling, utbetaltTom)
         if (utbetaltTom != LocalDate.parse(utbetaling.tom)) {
