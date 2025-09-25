@@ -59,7 +59,8 @@ class SykepengerMaxDateAzureApiV2(
             if (veilederTilgangskontrollClient.hasAccess(personIdent, token, callId)) {
                 val pMaksDato = utbetalingerDAO.fetchMaksDatoByFnr(fnr = personIdent)
 
-                log.info("Fetched sykepengerMaxDate from database: ${pMaksDato?.forelopig_beregnet_slutt}")
+                log.info("Fetched sykepengerMaxDate from database: Beregnet slutt: ${pMaksDato?.forelopig_beregnet_slutt}, " +
+                        " Utbetalt tom: ${pMaksDato?.utbetalt_tom}, behandlet tom: ${pMaksDato?.tom}")
 
                 return SykepengerMaxDateAzureV2Response(maxDate = pMaksDato)
             } else {

@@ -33,12 +33,6 @@ class SpleisRecordProcessor(
     fun processUtbetalingSpleisEvent(utbetaling: UtbetalingSpleis) {
         val utbetaltTom = calculateUtbetaltTom(utbetaling)
         utbetalingSpleisDAO.storeSpleisUtbetaling(utbetaling, utbetaltTom)
-        if (utbetaltTom != LocalDate.parse(utbetaling.tom)) {
-            log.info(
-                "UtbetaltTom $utbetaltTom er forskjellig fra tom ${utbetaling.tom} i utbetaling med dager: " +
-                    "${utbetaling.utbetalingsdager.joinToString()}"
-            )
-        }
         sykepengedagerInformasjonKafkaService.publishSykepengedagerInformasjonEvent(utbetaling.fødselsnummer)
     }
 
