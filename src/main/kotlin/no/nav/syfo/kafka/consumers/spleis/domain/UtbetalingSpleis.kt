@@ -42,6 +42,7 @@ enum class DagType {
     ArbeidIkkeGjenopptattDag,
     AndreYtelser,
     Venteperiodedag,
+    Ventetidsdag,
 }
 
 /**
