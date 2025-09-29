@@ -31,6 +31,7 @@ class UtbetalingerDAO(
             FROM MAXDATO
             WHERE FNR = :FNR
             ORDER BY TOM DESC, OPPRETTET DESC
+            LIMIT 1
             """.trimIndent()
 
         val timer = metric.createTimer("maxdato_view", TimerBuilderName.DATABASE_QUERY_LATENCY.name)
@@ -62,6 +63,7 @@ class UtbetalingerDAO(
             FROM UTBETALING
             WHERE FNR = :FNR
             ORDER BY UTBETALT_TOM DESC, OPPRETTET DESC
+            LIMIT 1
             """.trimIndent()
 
         val timer = metric.createTimer("utbetaling_view", TimerBuilderName.DATABASE_QUERY_LATENCY.name)
@@ -77,12 +79,7 @@ class UtbetalingerDAO(
                 } catch (e: EmptyResultDataAccessException) {
                     emptyList()
                 }
-
-            if (resultList.isNotEmpty()) {
-                resultList.first()
-            } else {
-                null
-            }
+            resultList.firstOrNull()
         }
     }
 
@@ -93,6 +90,7 @@ class UtbetalingerDAO(
             FROM MAXDATO
             AND FNR = :FNR
             ORDER BY OPPRETTET DESC
+            LIMIT 1
             """.trimIndent()
 
         val timer = metric.createTimer("utbetalinger_view_kafka", TimerBuilderName.DATABASE_QUERY_LATENCY.name)
@@ -108,12 +106,7 @@ class UtbetalingerDAO(
                 } catch (e: EmptyResultDataAccessException) {
                     emptyList()
                 }
-
-            return@record if (resultList.isNotEmpty()) {
-                resultList.first()
-            } else {
-                null
-            }
+            resultList.firstOrNull()
         }
     }
 }
