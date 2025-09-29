@@ -83,7 +83,7 @@ class UtbetalingerDAO(
             """
             SELECT *
             FROM MAXDATO
-            AND FNR = :FNR
+            WHERE FNR = :FNR
             ORDER BY OPPRETTET DESC
             LIMIT 1
             """.trimIndent()
