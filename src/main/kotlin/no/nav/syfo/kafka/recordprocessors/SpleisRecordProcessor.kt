@@ -7,7 +7,6 @@ import no.nav.syfo.kafka.consumers.spleis.domain.UTBETALING_UTBETALT
 import no.nav.syfo.kafka.consumers.spleis.domain.UTBETALING_UTEN_UTBETALING
 import no.nav.syfo.kafka.consumers.spleis.domain.UtbetalingSpleis
 import no.nav.syfo.kafka.producers.SykepengedagerInformasjonKafkaService
-import no.nav.syfo.logger
 import org.apache.kafka.clients.consumer.ConsumerRecord
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Component
@@ -18,7 +17,6 @@ class SpleisRecordProcessor(
     val sykepengedagerInformasjonKafkaService: SykepengedagerInformasjonKafkaService,
     private val objectMapper: ObjectMapper,
 ) {
-    private val log = logger()
     private val sykepengedagtyper = listOf(DagType.NavDag, DagType.NavHelgDag, DagType.ArbeidsgiverperiodeDag)
 
     @Autowired
