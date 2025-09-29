@@ -1,5 +1,6 @@
 package no.nav.syfo.kafka.consumers.spleis.domain
 
+import com.fasterxml.jackson.annotation.JsonEnumDefaultValue
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties
 import java.time.LocalDate
 
@@ -43,6 +44,9 @@ enum class DagType {
     AndreYtelser,
     Venteperiodedag,
     Ventetidsdag,
+
+    @JsonEnumDefaultValue
+    Ukjent,
 }
 
 /**
