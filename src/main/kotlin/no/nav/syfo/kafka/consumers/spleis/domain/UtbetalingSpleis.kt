@@ -44,6 +44,7 @@ enum class DagType {
     AndreYtelser,
     Venteperiodedag,
     Ventetidsdag,
+
     @JsonEnumDefaultValue
     Ukjent,
 }
