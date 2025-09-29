@@ -11,6 +11,7 @@ fun jacksonMapper() =
         registerModule(JavaTimeModule())
         configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false)
         configure(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS, false)
+        enable(DeserializationFeature.READ_UNKNOWN_ENUM_VALUES_USING_DEFAULT_VALUE)
     }
 
 class JacksonKafkaSerializer : Serializer<Any> {
