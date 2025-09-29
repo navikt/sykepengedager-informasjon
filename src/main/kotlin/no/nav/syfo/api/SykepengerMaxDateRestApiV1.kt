@@ -75,9 +75,9 @@ class SykepengerMaxDateRestApiV1(
             val utbetaltTom =
                 sykepengerMaxDate?.let {
                     if (isoFormat) {
-                        it.utbetalt_tom.toString()
+                        (it.utbetalt_tom ?: it.tom).toString()
                     } else {
-                        formatDateForLetter(it.utbetalt_tom)
+                        formatDateForLetter(it.utbetalt_tom ?: it.tom)
                     }
                 }
             log.info("Fetched sykepengerMaxDate from database: ${sykepengerMaxDate?.forelopig_beregnet_slutt}")

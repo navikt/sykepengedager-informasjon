@@ -21,7 +21,7 @@ class SykepengedagerInformasjonKafkaService(
                 id = maksDato.id,
                 personIdent = maksDato.fnr,
                 forelopigBeregnetSlutt = maksDato.forelopig_beregnet_slutt,
-                utbetaltTom = maksDato.utbetalt_tom,
+                utbetaltTom = maksDato.utbetalt_tom ?: maksDato.tom,
                 gjenstaendeSykedager = maksDato.gjenstaende_sykedager,
                 createdAt = LocalDateTime.now(),
             )
