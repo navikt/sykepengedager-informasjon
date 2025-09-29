@@ -47,12 +47,7 @@ class UtbetalingerDAO(
                 } catch (e: EmptyResultDataAccessException) {
                     emptyList()
                 }
-
-            if (resultList.isNotEmpty()) {
-                resultList.first()
-            } else {
-                null
-            }
+            resultList.firstOrNull()
         }
     }
 
