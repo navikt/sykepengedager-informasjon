@@ -44,6 +44,7 @@ class SykepengerMaxDateRestV1Test :
             it("Should return formatted for letter max date with isoformat false") {
                 val maxDate = LocalDate.now().plusDays(30)
                 val utbetaltTom = LocalDate.now().plusDays(20)
+                val tom = LocalDate.now().plusDays(25)
 
                 every { tokenValidator.validateTokenXClaims().getFnr() } returns fnr
                 every { utbetalingerDAO.fetchMaksDatoByFnr(fnr) } returns
@@ -52,7 +53,7 @@ class SykepengerMaxDateRestV1Test :
                         fnr = fnr,
                         forelopig_beregnet_slutt = maxDate,
                         utbetalt_tom = utbetaltTom,
-                        tom = utbetaltTom,
+                        tom = tom,
                         gjenstaende_sykedager = "30",
                         opprettet = LocalDateTime.now().minusDays(60),
                     )
@@ -63,13 +64,14 @@ class SykepengerMaxDateRestV1Test :
                 val response = controller.getMaxDateInfo(isoformat = "false")
 
                 TestCase.assertEquals(formatDateForLetter(maxDate), response?.maxDate)
-                TestCase.assertEquals(formatDateForLetter(utbetaltTom), response?.utbetaltTom)
+                TestCase.assertEquals(formatDateForLetter(tom), response?.utbetaltTom)
             }
         }
 
         it("Should return raw max date with isoformat true") {
             val maxDate = LocalDate.now().plusDays(30)
             val utbetaltTom = LocalDate.now().plusDays(20)
+            val tom = LocalDate.now().plusDays(25)
 
             every { tokenValidator.validateTokenXClaims().getFnr() } returns fnr
             every { utbetalingerDAO.fetchMaksDatoByFnr(fnr) } returns
@@ -78,7 +80,7 @@ class SykepengerMaxDateRestV1Test :
                     fnr = fnr,
                     forelopig_beregnet_slutt = maxDate,
                     utbetalt_tom = utbetaltTom,
-                    tom = utbetaltTom,
+                    tom = tom,
                     gjenstaende_sykedager = "30",
                     opprettet = LocalDateTime.now().minusDays(60),
                 )
@@ -89,6 +91,6 @@ class SykepengerMaxDateRestV1Test :
             val response = controller.getMaxDateInfo(isoformat = "true")
 
             TestCase.assertEquals(maxDate.toString(), response?.maxDate)
-            TestCase.assertEquals(utbetaltTom.toString(), response?.utbetaltTom)
+            TestCase.assertEquals(tom.toString(), response?.utbetaltTom)
         }
     })
