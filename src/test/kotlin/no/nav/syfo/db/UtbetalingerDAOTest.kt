@@ -11,6 +11,8 @@ import no.nav.syfo.config.EmbeddedPostgresTestConfig
 import no.nav.syfo.db.util.DatabaseCleaner
 import no.nav.syfo.kafka.consumers.aapInfotrygd.domain.InfotrygdSource
 import no.nav.syfo.kafka.consumers.spleis.domain.DagType
+import no.nav.syfo.kafka.consumers.spleis.domain.UTBETALING_UTBETALT
+import no.nav.syfo.kafka.consumers.spleis.domain.UTBETALING_UTEN_UTBETALING
 import no.nav.syfo.kafka.consumers.spleis.domain.UtbetalingSpleis
 import no.nav.syfo.kafka.consumers.spleis.domain.UtbetalingsdagDto
 import no.nav.syfo.kafka.producers.SykepengedagerInformasjonKafkaService
@@ -139,7 +141,7 @@ class UtbetalingerDAOTest : FunSpec() {
                 UtbetalingSpleis(
                     fødselsnummer = fnr,
                     organisasjonsnummer = "123123",
-                    event = "event",
+                    event = UTBETALING_UTBETALT,
                     type = "type",
                     fom = fom.toString(),
                     tom = tom.toString(),
@@ -156,7 +158,7 @@ class UtbetalingerDAOTest : FunSpec() {
                 UtbetalingSpleis(
                     fødselsnummer = fnr,
                     organisasjonsnummer = "123123",
-                    event = "event",
+                    event = UTBETALING_UTBETALT,
                     type = "type",
                     fom = fom.toString(),
                     tom = tom.plusDays(1).toString(),
@@ -196,7 +198,7 @@ class UtbetalingerDAOTest : FunSpec() {
                 UtbetalingSpleis(
                     fødselsnummer = fnr,
                     organisasjonsnummer = "123123",
-                    event = "event",
+                    event = UTBETALING_UTBETALT,
                     type = "type",
                     fom = fom.toString(),
                     tom = tom.plusDays(1).toString(),
@@ -213,7 +215,56 @@ class UtbetalingerDAOTest : FunSpec() {
                 UtbetalingSpleis(
                     fødselsnummer = fnr,
                     organisasjonsnummer = "123123",
-                    event = "event",
+                    event = UTBETALING_UTBETALT,
+                    type = "type",
+                    fom = fom.toString(),
+                    tom = tom.toString(),
+                    foreløpigBeregnetSluttPåSykepenger = forelopigBeregnetSluttPaSykepenger.toString(),
+                    forbrukteSykedager = 4,
+                    gjenståendeSykedager = 5,
+                    stønadsdager = 5,
+                    antallVedtak = 5,
+                    utbetalingId = "223456",
+                    korrelasjonsId = "654321",
+                    utbetalingsdager = createUtbetalingsdager(fom, tom),
+                )
+
+            spleisRecordProcessor.processUtbetalingSpleisEvent(utb)
+            spleisRecordProcessor.processUtbetalingSpleisEvent(utb2)
+            val result = utbetalingerDAO.fetchMaksDatoByFnr(fnr = fnr)
+
+            result shouldNotBe null
+            result?.utbetalt_tom shouldBe tom
+            result?.forelopig_beregnet_slutt shouldBe forelopigBeregnetSluttPaSykepengerLengst
+        }
+        test("Selects latest utbetaling by utebetalt_tom when soknad event is utbetalt_uten_utbetaling") {
+            val fnr = "12121212121"
+            val forelopigBeregnetSluttPaSykepenger = LocalDate.now().plusDays(15)
+            val forelopigBeregnetSluttPaSykepengerLengst = LocalDate.now().plusDays(15)
+            val fom = LocalDate.now().minusDays(3)
+            val tom = LocalDate.now().plusDays(4)
+            val utb =
+                UtbetalingSpleis(
+                    fødselsnummer = fnr,
+                    organisasjonsnummer = "123123",
+                    event = UTBETALING_UTEN_UTBETALING,
+                    type = "type",
+                    fom = fom.toString(),
+                    tom = tom.plusDays(1).toString(),
+                    foreløpigBeregnetSluttPåSykepenger = forelopigBeregnetSluttPaSykepengerLengst.toString(),
+                    forbrukteSykedager = 4,
+                    gjenståendeSykedager = 5,
+                    stønadsdager = 5,
+                    antallVedtak = 5,
+                    utbetalingId = "123456",
+                    korrelasjonsId = "654321",
+                    utbetalingsdager = createUtbetalingsdager(fom, tom.plusDays(1)),
+                )
+            val utb2 =
+                UtbetalingSpleis(
+                    fødselsnummer = fnr,
+                    organisasjonsnummer = "123123",
+                    event = UTBETALING_UTBETALT,
                     type = "type",
                     fom = fom.toString(),
                     tom = tom.toString(),
@@ -248,7 +299,7 @@ class UtbetalingerDAOTest : FunSpec() {
                 UtbetalingSpleis(
                     fødselsnummer = fnr,
                     organisasjonsnummer = "123123",
-                    event = "event",
+                    event = UTBETALING_UTBETALT,
                     type = "type",
                     fom = fom.toString(),
                     tom = tom.toString(),
