@@ -23,7 +23,7 @@ repositories {
     }
 }
 
-val logstashLogbackEncoderVersion = "8.1"
+val logstashLogbackEncoderVersion = "9.0"
 val detektVersion = "1.23.8"
 val kotestVersion = "5.9.1"
 val springKotestExtensionVersion = "1.3.0"
