@@ -6,7 +6,7 @@ plugins {
     id("io.spring.dependency-management") version "1.1.7"
     kotlin("jvm") version "2.0.21"
     kotlin("plugin.spring") version "2.2.21"
-    id("io.gitlab.arturbosch.detekt") version "1.23.8"
+    id("org.jlleitschuh.gradle.ktlint") version "14.0.1"
 }
 
 group = "no.nav.syfo"
@@ -24,10 +24,9 @@ repositories {
 }
 
 val logstashLogbackEncoderVersion = "9.0"
-val detektVersion = "1.23.8"
 val kotestVersion = "5.9.1"
 val springKotestExtensionVersion = "1.3.0"
-val mockkVersion = "1.14.6"
+val mockkVersion = "1.14.7"
 val tokenSupportVersion = "5.0.40"
 val kotlinxCoroutinesVersion = "1.10.2"
 val springmockkVersion = "4.0.2"
@@ -65,34 +64,33 @@ dependencies {
     testImplementation("io.zonky.test:embedded-postgres:$postgresEmbeddedVersion")
     testImplementation(platform("io.zonky.test.postgres:embedded-postgres-binaries-bom:$postgresRuntimeVersion"))
     testImplementation("no.nav.security:token-validation-spring-test:$tokenSupportVersion")
-    testImplementation("com.ninja-squad:springmockk:${springmockkVersion}")
+    testImplementation("com.ninja-squad:springmockk:$springmockkVersion")
     testRuntimeOnly("org.junit.platform:junit-platform-launcher")
     runtimeOnly("org.jetbrains.kotlinx:kotlinx-coroutines-core:$kotlinxCoroutinesVersion")
     runtimeOnly("org.jetbrains.kotlinx:kotlinx-coroutines-reactor:$kotlinxCoroutinesVersion")
-
-    detektPlugins("io.gitlab.arturbosch.detekt:detekt-formatting:$detektVersion")
 }
 
-tasks.named<org.springframework.boot.gradle.tasks.bundling.BootJar>("bootJar") {
-    this.archiveFileName.set("app.jar")
-}
-
-tasks.withType<KotlinJvmCompile>().configureEach {
-    compilerOptions {
-        freeCompilerArgs.add("-Xjsr305=strict")
-        jvmTarget.set(JvmTarget.JVM_17)
+tasks {
+    named<org.springframework.boot.gradle.tasks.bundling.BootJar>("bootJar") {
+        this.archiveFileName.set("app.jar")
     }
-}
 
-tasks.named<Jar>("jar") {
-    enabled = false
-}
+    withType<KotlinJvmCompile>().configureEach {
+        compilerOptions {
+            freeCompilerArgs.add("-Xjsr305=strict")
+            jvmTarget.set(JvmTarget.JVM_17)
+        }
+    }
 
-tasks.withType<Test> {
-    useJUnitPlatform()
-}
+    named<Jar>("jar") {
+        enabled = false
+    }
 
-detekt {
-    config.from("detekt-config.yml")
-    buildUponDefaultConfig = true
+    withType<Test> {
+        useJUnitPlatform()
+    }
+
+    named("check") {
+        dependsOn("ktlintCheck")
+    }
 }
