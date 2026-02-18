@@ -7,12 +7,16 @@ spring:
     locations:
       - "classpath:db/migration"
   datasource:
-    url: "jdbc:postgresql://${DB_HOST}:${DB_PORT}/${DB_DATABASE}?sslcert=${DB_SSLCERT}"
+    url: "jdbc:postgresql://${DB_HOST}:${DB_PORT}/${DB_DATABASE}"
     username: ${DB_USERNAME}
     password: ${DB_PASSWORD}
     hikari:
       minimum-idle: 1
       maximum-pool-size: 5
+      data-source-properties.sslcert: ${DB_SSLCERT}
+      data-source-properties.sslrootcert: ${DB_SSLROOTCERT}
+      data-source-properties.sslrootkey: ${DB_SSLKEY}
+      data-source-properties.sslmode: ${DB_SSLMODE}
 
 management:
   endpoint:
