@@ -11,6 +11,8 @@ on:
     types: [opened, synchronize, reopened, ready_for_review]
     paths-ignore:
       - '**.md'
+  merge_group:
+    types: [checks_requested]
   workflow_dispatch:
 
 jobs:
