@@ -1,5 +1,6 @@
 package no.nav.syfo.db
 
+import io.kotest.core.extensions.ApplyExtension
 import io.kotest.core.spec.style.FunSpec
 import io.kotest.core.test.TestCase
 import io.kotest.extensions.spring.SpringExtension
@@ -13,6 +14,7 @@ import org.springframework.boot.test.context.SpringBootTest
 import java.time.LocalDate
 
 @SpringBootTest(classes = [LocalApplication::class])
+@ApplyExtension(SpringExtension::class)
 class UtbetalingSpleisDAOTest : FunSpec() {
     @Autowired
     private lateinit var utbetalingSpleisDAO: UtbetalingSpleisDAO
@@ -25,8 +27,6 @@ class UtbetalingSpleisDAOTest : FunSpec() {
     }
 
     init {
-        extension(SpringExtension)
-
         val fnr = "12121212121"
         val utbetalingId = "123456"
         val utb =
