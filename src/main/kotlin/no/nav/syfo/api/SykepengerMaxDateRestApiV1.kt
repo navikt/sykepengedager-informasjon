@@ -47,9 +47,7 @@ class SykepengerMaxDateRestApiV1(
 
     @GetMapping("api/v1/sykepenger/maxdate", produces = [MediaType.APPLICATION_JSON_VALUE])
     @ResponseBody
-    fun getMaxDateInfo(
-        @RequestParam isoformat: String?,
-    ): SykepengerMaxDateResponse? {
+    fun getMaxDateInfo(@RequestParam isoformat: String?,): SykepengerMaxDateResponse? {
         log.info("Got api request /v1/sykepenger/maxdate")
 
         val timer = metric.createTimer(

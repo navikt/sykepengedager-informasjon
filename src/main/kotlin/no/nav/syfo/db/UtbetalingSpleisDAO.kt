@@ -14,9 +14,7 @@ import java.time.LocalDateTime
 import java.util.*
 
 @Repository
-class UtbetalingSpleisDAO(
-    private val namedParameterJdbcTemplate: NamedParameterJdbcTemplate,
-) {
+class UtbetalingSpleisDAO(private val namedParameterJdbcTemplate: NamedParameterJdbcTemplate,) {
     fun storeSpleisUtbetaling(utbetaling: UtbetalingSpleis, utbetaltTom: LocalDate?): UUID {
         val sql =
             """
@@ -118,25 +116,20 @@ class UtbetalingSpleisDAO(
 }
 
 private class UtbetalingSpleisRowMapper : RowMapper<UtbetalingSpleis> {
-    override fun mapRow(
-        rs: ResultSet,
-        rowNum: Int,
-    ): UtbetalingSpleis =
-
-        UtbetalingSpleis(
-            fødselsnummer = rs.getString("FNR"),
-            organisasjonsnummer = rs.getString("ORGANISASJONSNUMMER"),
-            event = rs.getString("EVENT"),
-            type = rs.getString("TYPE"),
-            fom = rs.getDate("FOM").toString(),
-            tom = rs.getDate("TOM").toString(),
-            foreløpigBeregnetSluttPåSykepenger = rs.getDate("FORELOPIG_BEREGNET_SLUTT").toString(),
-            forbrukteSykedager = rs.getInt("FORBRUKTE_SYKEDAGER"),
-            gjenståendeSykedager = rs.getInt("GJENSTAENDE_SYKEDAGER"),
-            stønadsdager = rs.getInt("STONADSDAGER"),
-            antallVedtak = rs.getInt("ANTALL_VEDTAK"),
-            utbetalingId = rs.getString("UTBETALING_ID"),
-            korrelasjonsId = rs.getString("KORRELASJON_ID"),
-            utbetalingsdager = emptyList(),
-        )
+    override fun mapRow(rs: ResultSet, rowNum: Int,): UtbetalingSpleis = UtbetalingSpleis(
+        fødselsnummer = rs.getString("FNR"),
+        organisasjonsnummer = rs.getString("ORGANISASJONSNUMMER"),
+        event = rs.getString("EVENT"),
+        type = rs.getString("TYPE"),
+        fom = rs.getDate("FOM").toString(),
+        tom = rs.getDate("TOM").toString(),
+        foreløpigBeregnetSluttPåSykepenger = rs.getDate("FORELOPIG_BEREGNET_SLUTT").toString(),
+        forbrukteSykedager = rs.getInt("FORBRUKTE_SYKEDAGER"),
+        gjenståendeSykedager = rs.getInt("GJENSTAENDE_SYKEDAGER"),
+        stønadsdager = rs.getInt("STONADSDAGER"),
+        antallVedtak = rs.getInt("ANTALL_VEDTAK"),
+        utbetalingId = rs.getString("UTBETALING_ID"),
+        korrelasjonsId = rs.getString("KORRELASJON_ID"),
+        utbetalingsdager = emptyList(),
+    )
 }

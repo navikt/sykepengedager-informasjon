@@ -17,9 +17,7 @@ class SykepengedagerInformasjonProducer(
     private val sentSykepengedagerInformasjonDAO: SentSykepengedagerInformasjonDAO,
     private val sendingFailedSykepengedagerInformasjonDAO: SendingFailedSykepengedagerInformasjonDAO,
 ) {
-    fun publishSykepengedagerInformasjon(
-        event: KSykepengedagerInformasjonDTO,
-    ) {
+    fun publishSykepengedagerInformasjon(event: KSykepengedagerInformasjonDTO,) {
         try {
             log.info(
                 "SykepengedagerInformasjonProducer: Publishing sykepengedager-informasjon-topic with id: ${event.id}"

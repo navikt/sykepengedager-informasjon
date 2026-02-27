@@ -4,9 +4,7 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties
 import com.fasterxml.jackson.annotation.JsonProperty
 
 @JsonIgnoreProperties(ignoreUnknown = true)
-data class KInfotrygdSykepengedager(
-    val after: After,
-) {
+data class KInfotrygdSykepengedager(val after: After,) {
     @JsonIgnoreProperties(ignoreUnknown = true)
     data class After(
         @JsonProperty("MAX_DATO")

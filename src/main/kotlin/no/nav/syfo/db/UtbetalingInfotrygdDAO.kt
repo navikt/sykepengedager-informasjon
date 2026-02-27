@@ -13,9 +13,7 @@ import java.time.LocalDateTime
 import java.util.*
 
 @Repository
-class UtbetalingInfotrygdDAO(
-    private val namedParameterJdbcTemplate: NamedParameterJdbcTemplate,
-) {
+class UtbetalingInfotrygdDAO(private val namedParameterJdbcTemplate: NamedParameterJdbcTemplate,) {
     private val log = logger()
 
     fun storeInfotrygdUtbetaling(
@@ -59,11 +57,7 @@ class UtbetalingInfotrygdDAO(
         namedParameterJdbcTemplate.update(sql, params)
     }
 
-    fun isInfotrygdUtbetalingExists(
-        fnr: String,
-        sykepengerMaxDate: LocalDate,
-        utbetaltTilDate: LocalDate,
-    ): Boolean {
+    fun isInfotrygdUtbetalingExists(fnr: String, sykepengerMaxDate: LocalDate, utbetaltTilDate: LocalDate,): Boolean {
         val queryStatement =
             """
             SELECT *

@@ -24,9 +24,10 @@ class TokenValidator(
     }
 }
 
-class NoAccess(override val message: String) : AbstractApiError(
-    message = message,
-    httpStatus = HttpStatus.FORBIDDEN,
-    reason = "INGEN_TILGANG",
-    loglevel = LogLevel.WARN,
-)
+class NoAccess(override val message: String) :
+    AbstractApiError(
+        message = message,
+        httpStatus = HttpStatus.FORBIDDEN,
+        reason = "INGEN_TILGANG",
+        loglevel = LogLevel.WARN,
+    )

@@ -23,11 +23,7 @@ class VeilederTilgangskontrollClient(
 ) {
     private val log = logger()
 
-    fun hasAccess(
-        personIdent: String,
-        token: String,
-        callId: String,
-    ): Boolean {
+    fun hasAccess(personIdent: String, token: String, callId: String,): Boolean {
         val requestURL = "$baseUrl/api/tilgang/navident/person"
 
         try {
