@@ -23,9 +23,9 @@ import org.springframework.kafka.core.KafkaTemplate
 import org.springframework.kafka.core.ProducerFactory
 import org.springframework.kafka.listener.ContainerProperties
 
-const val topicAapSykepengedagerInfotrygd = "aap.sykepengedager.infotrygd.v1"
-const val topicSykepengedagerInfotrygd = "team-esyfo.sykepengedager.infotrygd.v1"
-const val topicUtbetaling = "tbd.utbetaling"
+const val TOPIC_AAP_SYKEPENGEDAGER_INFOTRYGD = "aap.sykepengedager.infotrygd.v1"
+const val TOPIC_SYKEPENGEDAGER_INFOTRYGD = "team-esyfo.sykepengedager.infotrygd.v1"
+const val TOPIC_UTBETALING = "tbd.utbetaling"
 
 @Configuration
 @EnableKafka
@@ -115,22 +115,20 @@ class AivenKafkaConfig(
         return factory
     }
 
-    fun commonKafkaAivenProducerConfig(): HashMap<String, Any> {
-        return HashMap<String, Any>().apply {
-            putAll(commonConfig())
-            put(
-                ProducerConfig.ACKS_CONFIG,
-                "all",
-            )
-            put(
-                ProducerConfig.KEY_SERIALIZER_CLASS_CONFIG,
-                StringSerializer::class.java,
-            )
-            put(
-                ProducerConfig.VALUE_SERIALIZER_CLASS_CONFIG,
-                JacksonKafkaSerializer::class.java,
-            )
-        }
+    fun commonKafkaAivenProducerConfig(): HashMap<String, Any> = HashMap<String, Any>().apply {
+        putAll(commonConfig())
+        put(
+            ProducerConfig.ACKS_CONFIG,
+            "all",
+        )
+        put(
+            ProducerConfig.KEY_SERIALIZER_CLASS_CONFIG,
+            StringSerializer::class.java,
+        )
+        put(
+            ProducerConfig.VALUE_SERIALIZER_CLASS_CONFIG,
+            JacksonKafkaSerializer::class.java,
+        )
     }
 
     @Bean
@@ -138,6 +136,7 @@ class AivenKafkaConfig(
         DefaultKafkaProducerFactory(commonKafkaAivenProducerConfig())
 
     @Bean
-    fun sykepengedagerInformasjonKafkaTemplate(producerFactory: ProducerFactory<String, KSykepengedagerInformasjonDTO>):
-        KafkaTemplate<String, KSykepengedagerInformasjonDTO> = KafkaTemplate(producerFactory)
+    fun sykepengedagerInformasjonKafkaTemplate(
+        producerFactory: ProducerFactory<String, KSykepengedagerInformasjonDTO>
+    ): KafkaTemplate<String, KSykepengedagerInformasjonDTO> = KafkaTemplate(producerFactory)
 }

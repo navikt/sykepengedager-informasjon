@@ -4,8 +4,8 @@ import org.jetbrains.kotlin.gradle.tasks.KotlinJvmCompile
 plugins {
     id("org.springframework.boot") version "3.5.6"
     id("io.spring.dependency-management") version "1.1.7"
-    kotlin("jvm") version "2.0.21"
-    kotlin("plugin.spring") version "2.2.21"
+    kotlin("jvm") version "2.3.10"
+    kotlin("plugin.spring") version "2.3.10"
     id("org.jlleitschuh.gradle.ktlint") version "14.0.1"
 }
 
@@ -26,12 +26,12 @@ repositories {
 val logstashLogbackEncoderVersion = "9.0"
 val kotestVersion = "5.9.1"
 val springKotestExtensionVersion = "1.3.0"
-val mockkVersion = "1.14.7"
+val mockkVersion = "1.14.9"
 val tokenSupportVersion = "5.0.40"
 val kotlinxCoroutinesVersion = "1.10.2"
-val springmockkVersion = "4.0.2"
+val springmockkVersion = "5.0.1"
 val postgresEmbeddedVersion = "2.2.0"
-val postgresRuntimeVersion = "17.5.0"
+val postgresRuntimeVersion = "18.2.0"
 
 dependencies {
     implementation("org.springframework.boot:spring-boot-starter")
@@ -46,7 +46,7 @@ dependencies {
     implementation("org.jetbrains.kotlin:kotlin-reflect")
     implementation("org.springframework.kafka:spring-kafka")
     implementation("com.fasterxml.jackson.module:jackson-module-kotlin")
-    implementation("com.fasterxml.jackson.datatype:jackson-datatype-jsr310:2.20.1")
+    implementation("com.fasterxml.jackson.datatype:jackson-datatype-jsr310:2.21.0")
     implementation("no.nav.security:token-client-spring:$tokenSupportVersion")
     implementation("no.nav.security:token-validation-spring:$tokenSupportVersion")
 

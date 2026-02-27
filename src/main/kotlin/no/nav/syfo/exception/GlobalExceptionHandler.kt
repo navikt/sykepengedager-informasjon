@@ -15,28 +15,23 @@ class GlobalExceptionHandler {
     private val log = logger()
 
     @ExceptionHandler(java.lang.Exception::class)
-    fun handleException(
-        ex: Exception,
-        request: HttpServletRequest,
-    ): ResponseEntity<Any> {
-        return when (ex) {
-            is AbstractApiError -> {
-                when (ex.loglevel) {
-                    LogLevel.WARN -> log.warn(ex.message, ex)
-                    LogLevel.ERROR -> log.error(ex.message, ex)
-                    LogLevel.OFF -> {}
-                }
-
-                ResponseEntity(ApiError(ex.reason), ex.httpStatus)
+    fun handleException(ex: Exception, request: HttpServletRequest,): ResponseEntity<Any> = when (ex) {
+        is AbstractApiError -> {
+            when (ex.loglevel) {
+                LogLevel.WARN -> log.warn(ex.message, ex)
+                LogLevel.ERROR -> log.error(ex.message, ex)
+                LogLevel.OFF -> {}
             }
 
-            is JwtTokenInvalidClaimException -> createResponseEntity(HttpStatus.UNAUTHORIZED)
-            is JwtTokenUnauthorizedException -> createResponseEntity(HttpStatus.UNAUTHORIZED)
-            is HttpMediaTypeNotAcceptableException -> createResponseEntity(HttpStatus.NOT_ACCEPTABLE)
-            else -> {
-                log.error("Internal server error - ${ex.message} - ${request.method}: ${request.requestURI}", ex)
-                createResponseEntity(HttpStatus.INTERNAL_SERVER_ERROR)
-            }
+            ResponseEntity(ApiError(ex.reason), ex.httpStatus)
+        }
+
+        is JwtTokenInvalidClaimException -> createResponseEntity(HttpStatus.UNAUTHORIZED)
+        is JwtTokenUnauthorizedException -> createResponseEntity(HttpStatus.UNAUTHORIZED)
+        is HttpMediaTypeNotAcceptableException -> createResponseEntity(HttpStatus.NOT_ACCEPTABLE)
+        else -> {
+            log.error("Internal server error - ${ex.message} - ${request.method}: ${request.requestURI}", ex)
+            createResponseEntity(HttpStatus.INTERNAL_SERVER_ERROR)
         }
     }
 }

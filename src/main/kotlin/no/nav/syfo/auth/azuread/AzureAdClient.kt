@@ -19,10 +19,7 @@ class AzureAdClient(
     @Value("\${azure.openid.config.token.endpoint}") private val azureTokenEndpoint: String,
     private val restTemplate: RestTemplate,
 ) {
-    fun onBehalfOfTokenEntity(
-        scope: String,
-        token: String,
-    ): HttpEntity<MultiValueMap<String, String>> {
+    fun onBehalfOfTokenEntity(scope: String, token: String,): HttpEntity<MultiValueMap<String, String>> {
         val headers = HttpHeaders()
 
         headers.contentType = MediaType.MULTIPART_FORM_DATA
@@ -39,37 +36,33 @@ class AzureAdClient(
         return HttpEntity(body, headers)
     }
 
-    fun getOnBehalfOfToken(
-        scope: String,
-        token: String,
-    ): String =
-        try {
-            log.debug("Requesting new token for scope: $scope")
-            val requestEntity =
-                onBehalfOfTokenEntity(
-                    scope = scope,
-                    token = token,
-                )
-            val response =
-                restTemplate.exchange(
-                    azureTokenEndpoint,
-                    HttpMethod.POST,
-                    requestEntity,
-                    AzureAdTokenResponse::class.java,
-                )
-            val tokenResponse = response.body!!
-
-            val azureAdToken = tokenResponse.toAzureAdToken()
-
-            azureAdToken.accessToken
-        } catch (e: RestClientResponseException) {
-            log.error(
-                "Could not get obo-token from Azure AD for scope: " +
-                    "$scope with status: ${e.statusCode} and message: ${e.responseBodyAsString}",
-                e,
+    fun getOnBehalfOfToken(scope: String, token: String,): String = try {
+        log.debug("Requesting new token for scope: $scope")
+        val requestEntity =
+            onBehalfOfTokenEntity(
+                scope = scope,
+                token = token,
             )
-            throw AzureAdClientException("Failed to get AzureADToken for scope: $scope", e)
-        }
+        val response =
+            restTemplate.exchange(
+                azureTokenEndpoint,
+                HttpMethod.POST,
+                requestEntity,
+                AzureAdTokenResponse::class.java,
+            )
+        val tokenResponse = response.body!!
+
+        val azureAdToken = tokenResponse.toAzureAdToken()
+
+        azureAdToken.accessToken
+    } catch (e: RestClientResponseException) {
+        log.error(
+            "Could not get obo-token from Azure AD for scope: " +
+                "$scope with status: ${e.statusCode} and message: ${e.responseBodyAsString}",
+            e,
+        )
+        throw AzureAdClientException("Failed to get AzureADToken for scope: $scope", e)
+    }
 
     companion object {
         private const val CLIENT_ID = "client_id"
@@ -84,7 +77,4 @@ class AzureAdClient(
     }
 }
 
-class AzureAdClientException(
-    message: String,
-    cause: Throwable,
-) : RuntimeException(message, cause)
+class AzureAdClientException(message: String, cause: Throwable,) : RuntimeException(message, cause)

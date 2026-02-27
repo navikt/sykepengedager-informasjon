@@ -36,9 +36,7 @@ class SykepengerMaxDateAzureApiV2(
 
     @GetMapping("/api/azure/v2/sykepenger/maxdate", produces = [MediaType.APPLICATION_JSON_VALUE])
     @ResponseBody
-    suspend fun getMaxDateInfo(
-        @RequestHeader headers: Map<String, String>,
-    ): SykepengerMaxDateAzureV2Response? {
+    suspend fun getMaxDateInfo(@RequestHeader headers: Map<String, String>,): SykepengerMaxDateAzureV2Response? {
         val timer =
             metric.createTimer(
                 "get_sykepenger_max_date_azure_api_v2",
@@ -77,9 +75,7 @@ class SykepengerMaxDateAzureApiV2(
         }
     }
 
-    data class SykepengerMaxDateAzureV2Response(
-        val maxDate: PMaksDato?,
-    ) : Serializable {
+    data class SykepengerMaxDateAzureV2Response(val maxDate: PMaksDato?,) : Serializable {
         companion object {
             private const val serialVersionUID: Long = 1L
         }
