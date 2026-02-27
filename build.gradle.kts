@@ -24,7 +24,7 @@ repositories {
 }
 
 val logstashLogbackEncoderVersion = "9.0"
-val kotestVersion = "5.9.1"
+val kotestVersion = "6.1.3"
 val springKotestExtensionVersion = "1.3.0"
 val mockkVersion = "1.14.9"
 val tokenSupportVersion = "5.0.40"
@@ -59,7 +59,7 @@ dependencies {
     testImplementation("io.kotest:kotest-runner-junit5-jvm:$kotestVersion")
     testImplementation("io.kotest:kotest-assertions-core:$kotestVersion")
     testImplementation("io.kotest:kotest-property:$kotestVersion")
-    testImplementation("io.kotest.extensions:kotest-extensions-spring:$springKotestExtensionVersion")
+    testImplementation("io.kotest:kotest-extensions-spring:$kotestVersion")
     testImplementation("org.springframework.kafka:spring-kafka-test")
     testImplementation("io.zonky.test:embedded-postgres:$postgresEmbeddedVersion")
     testImplementation(platform("io.zonky.test.postgres:embedded-postgres-binaries-bom:$postgresRuntimeVersion"))

@@ -1,6 +1,7 @@
 package no.nav.syfo.db
 
 import com.ninjasquad.springmockk.MockkBean
+import io.kotest.core.extensions.ApplyExtension
 import io.kotest.core.spec.style.FunSpec
 import io.kotest.core.test.TestCase
 import io.kotest.extensions.spring.SpringExtension
@@ -22,6 +23,7 @@ import org.springframework.boot.test.context.SpringBootTest
 import java.time.LocalDate
 
 @SpringBootTest(classes = [LocalApplication::class, EmbeddedPostgresTestConfig::class])
+@ApplyExtension(SpringExtension::class)
 class UtbetalingerDAOTest : FunSpec() {
     @Autowired
     private lateinit var utbetalingerDAO: UtbetalingerDAO
@@ -49,8 +51,6 @@ class UtbetalingerDAOTest : FunSpec() {
     }
 
     init {
-        extension(SpringExtension)
-
         test("Selects latest utbetaling Spleis entry") {
             val fnr = "12121212121"
             val forelopigBeregnetSluttPaSykepenger = LocalDate.now().plusDays(15)
