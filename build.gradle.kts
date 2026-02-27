@@ -59,7 +59,7 @@ dependencies {
     testImplementation("io.kotest:kotest-runner-junit5-jvm:$kotestVersion")
     testImplementation("io.kotest:kotest-assertions-core:$kotestVersion")
     testImplementation("io.kotest:kotest-property:$kotestVersion")
-    testImplementation("io.kotest.extensions:kotest-extensions-spring:$springKotestExtensionVersion")
+    testImplementation("io.kotest:kotest-extensions-spring:$kotestVersion")
     testImplementation("org.springframework.kafka:spring-kafka-test")
     testImplementation("io.zonky.test:embedded-postgres:$postgresEmbeddedVersion")
     testImplementation(platform("io.zonky.test.postgres:embedded-postgres-binaries-bom:$postgresRuntimeVersion"))
