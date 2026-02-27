@@ -23,11 +23,7 @@ data class UtbetalingSpleis(
 )
 
 @JsonIgnoreProperties(ignoreUnknown = true)
-data class UtbetalingsdagDto(
-    val dato: LocalDate,
-    val type: DagType,
-    val begrunnelser: List<String>,
-)
+data class UtbetalingsdagDto(val dato: LocalDate, val type: DagType, val begrunnelser: List<String>,)
 
 enum class DagType {
     ArbeidsgiverperiodeDag,

@@ -24,10 +24,7 @@ class SykepengedagerInformasjonKafkaConsumer(
         topics = [topicUtbetaling],
         autoStartup = "true" // Enable consuming
     )
-    fun listen(
-        record: ConsumerRecord<String, String>,
-        ack: Acknowledgment,
-    ) {
+    fun listen(record: ConsumerRecord<String, String>, ack: Acknowledgment,) {
         try {
             val topic = record.topic()
             log.info(
@@ -51,10 +48,7 @@ class SykepengedagerInformasjonKafkaConsumer(
         autoStartup = "true", // Enable consuming
         containerFactory = "infotrygdKafkaListenerContainerFactory",
     )
-    fun listenAapTopicSykepengedagerInfotrygd(
-        record: ConsumerRecord<String, String>,
-        ack: Acknowledgment,
-    ) {
+    fun listenAapTopicSykepengedagerInfotrygd(record: ConsumerRecord<String, String>, ack: Acknowledgment,) {
         try {
             val topic = record.topic()
             log.info(
@@ -80,10 +74,7 @@ class SykepengedagerInformasjonKafkaConsumer(
         autoStartup = "true", // Enable consuming
         containerFactory = "infotrygdKafkaListenerContainerFactory",
     )
-    fun listenTopicSykepengedagerInfotrygd(
-        record: ConsumerRecord<String, String>,
-        ack: Acknowledgment,
-    ) {
+    fun listenTopicSykepengedagerInfotrygd(record: ConsumerRecord<String, String>, ack: Acknowledgment,) {
         try {
             val topic = record.topic()
             log.info(

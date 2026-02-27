@@ -10,10 +10,7 @@ import org.springframework.stereotype.Repository
 import java.sql.ResultSet
 
 @Repository
-class UtbetalingerDAO(
-    private val namedParameterJdbcTemplate: NamedParameterJdbcTemplate,
-    private val metric: Metric,
-) {
+class UtbetalingerDAO(private val namedParameterJdbcTemplate: NamedParameterJdbcTemplate, private val metric: Metric,) {
     fun fetchMaksDatoByFnr(fnr: String): PMaksDato? {
         val pMaksDato = maksDato(fnr)
         val utbetaltTom = utbetaling(fnr)
@@ -107,17 +104,13 @@ class UtbetalingerDAO(
 }
 
 private class MaxDateRowMapper : RowMapper<PMaksDato> {
-    override fun mapRow(
-        rs: ResultSet,
-        rowNum: Int,
-    ): PMaksDato =
-        PMaksDato(
-            id = rs.getString("UUID"),
-            fnr = rs.getString("FNR"),
-            forelopig_beregnet_slutt = rs.getTimestamp("FORELOPIG_BEREGNET_SLUTT").toLocalDateTime().toLocalDate(),
-            utbetalt_tom = rs.getTimestamp("UTBETALT_TOM")?.toLocalDateTime()?.toLocalDate(),
-            tom = rs.getTimestamp("TOM").toLocalDateTime().toLocalDate(),
-            gjenstaende_sykedager = rs.getString("GJENSTAENDE_SYKEDAGER"),
-            opprettet = rs.getTimestamp("OPPRETTET").toLocalDateTime(),
-        )
+    override fun mapRow(rs: ResultSet, rowNum: Int,): PMaksDato = PMaksDato(
+        id = rs.getString("UUID"),
+        fnr = rs.getString("FNR"),
+        forelopig_beregnet_slutt = rs.getTimestamp("FORELOPIG_BEREGNET_SLUTT").toLocalDateTime().toLocalDate(),
+        utbetalt_tom = rs.getTimestamp("UTBETALT_TOM")?.toLocalDateTime()?.toLocalDate(),
+        tom = rs.getTimestamp("TOM").toLocalDateTime().toLocalDate(),
+        gjenstaende_sykedager = rs.getString("GJENSTAENDE_SYKEDAGER"),
+        opprettet = rs.getTimestamp("OPPRETTET").toLocalDateTime(),
+    )
 }

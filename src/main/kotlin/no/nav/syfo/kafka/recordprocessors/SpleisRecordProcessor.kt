@@ -34,9 +34,10 @@ class SpleisRecordProcessor(
         sykepengedagerInformasjonKafkaService.publishSykepengedagerInformasjonEvent(utbetaling.fødselsnummer)
     }
 
-    private fun calculateUtbetaltTom(utbetaling: UtbetalingSpleis): LocalDate? {
-        return if (utbetaling.event == UTBETALING_UTBETALT) {
+    private fun calculateUtbetaltTom(utbetaling: UtbetalingSpleis): LocalDate? =
+        if (utbetaling.event == UTBETALING_UTBETALT) {
             utbetaling.utbetalingsdager.filter { it.type in sykepengedagtyper }.maxOfOrNull { it.dato }
-        } else null
-    }
+        } else {
+            null
+        }
 }
