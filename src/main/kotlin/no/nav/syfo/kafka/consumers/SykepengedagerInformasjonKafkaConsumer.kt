@@ -1,8 +1,8 @@
 package no.nav.syfo.kafka.consumers
 
-import no.nav.syfo.config.kafka.topicAapSykepengedagerInfotrygd
-import no.nav.syfo.config.kafka.topicSykepengedagerInfotrygd
-import no.nav.syfo.config.kafka.topicUtbetaling
+import no.nav.syfo.config.kafka.TOPIC_AAP_SYKEPENGEDAGER_INFOTRYGD
+import no.nav.syfo.config.kafka.TOPIC_SYKEPENGEDAGER_INFOTRYGD
+import no.nav.syfo.config.kafka.TOPIC_UTBETALING
 import no.nav.syfo.kafka.recordprocessors.InfotrygdRecordProcessor
 import no.nav.syfo.kafka.recordprocessors.SpleisRecordProcessor
 import no.nav.syfo.logger
@@ -21,18 +21,18 @@ class SykepengedagerInformasjonKafkaConsumer(
     private val log = logger()
 
     @KafkaListener(
-        topics = [topicUtbetaling],
+        topics = [TOPIC_UTBETALING],
         autoStartup = "true" // Enable consuming
     )
     fun listen(record: ConsumerRecord<String, String>, ack: Acknowledgment,) {
         try {
             val topic = record.topic()
             log.info(
-                "Received a record from topic $topicUtbetaling",
+                "Received a record from topic $TOPIC_UTBETALING",
             )
 
             when (topic) {
-                topicUtbetaling -> {
+                TOPIC_UTBETALING -> {
                     log.info("Going to process record from topicUtbetaling $topic")
                     spleisRecordProcessor.processRecord(record)
                 }
@@ -44,7 +44,7 @@ class SykepengedagerInformasjonKafkaConsumer(
     }
 
     @KafkaListener(
-        topics = [topicAapSykepengedagerInfotrygd],
+        topics = [TOPIC_AAP_SYKEPENGEDAGER_INFOTRYGD],
         autoStartup = "true", // Enable consuming
         containerFactory = "infotrygdKafkaListenerContainerFactory",
     )
@@ -52,11 +52,11 @@ class SykepengedagerInformasjonKafkaConsumer(
         try {
             val topic = record.topic()
             log.info(
-                "Received a record from topic $topicAapSykepengedagerInfotrygd",
+                "Received a record from topic $TOPIC_AAP_SYKEPENGEDAGER_INFOTRYGD",
             )
 
             when (topic) {
-                topicAapSykepengedagerInfotrygd -> {
+                TOPIC_AAP_SYKEPENGEDAGER_INFOTRYGD -> {
                     log.info(
                         "Going to process record from topicAapSykepengedagerInfotrygd $topic",
                     )
@@ -70,7 +70,7 @@ class SykepengedagerInformasjonKafkaConsumer(
     }
 
     @KafkaListener(
-        topics = [topicSykepengedagerInfotrygd],
+        topics = [TOPIC_SYKEPENGEDAGER_INFOTRYGD],
         autoStartup = "true", // Enable consuming
         containerFactory = "infotrygdKafkaListenerContainerFactory",
     )
@@ -78,10 +78,10 @@ class SykepengedagerInformasjonKafkaConsumer(
         try {
             val topic = record.topic()
             log.info(
-                "Received a record with key ${record.key()} from topic $topicSykepengedagerInfotrygd",
+                "Received a record with key ${record.key()} from topic $TOPIC_SYKEPENGEDAGER_INFOTRYGD",
             )
             when (topic) {
-                topicSykepengedagerInfotrygd -> {
+                TOPIC_SYKEPENGEDAGER_INFOTRYGD -> {
                     log.info(
                         "Going to process record from topicSykepengedagerInfotrygd $topic",
                     )
