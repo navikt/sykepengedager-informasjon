@@ -31,7 +31,7 @@ val tokenSupportVersion = "5.0.40"
 val kotlinxCoroutinesVersion = "1.10.2"
 val springmockkVersion = "5.0.1"
 val postgresEmbeddedVersion = "2.2.2"
-val postgresRuntimeVersion = "18.2.0"
+val postgresRuntimeVersion = "18.3.0"
 
 dependencies {
     implementation("org.springframework.boot:spring-boot-starter")
