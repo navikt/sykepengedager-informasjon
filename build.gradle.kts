@@ -2,15 +2,17 @@ import org.jetbrains.kotlin.gradle.dsl.JvmTarget
 import org.jetbrains.kotlin.gradle.tasks.KotlinJvmCompile
 
 plugins {
-    id("org.springframework.boot") version "3.5.11"
+    id("org.springframework.boot") version "3.5.13"
     id("io.spring.dependency-management") version "1.1.7"
-    kotlin("jvm") version "2.3.20"
-    kotlin("plugin.spring") version "2.3.20"
+    kotlin("jvm") version "2.3.10"
+    kotlin("plugin.spring") version "2.3.10"
     id("org.jlleitschuh.gradle.ktlint") version "14.2.0"
 }
 
 group = "no.nav.syfo"
 version = "0.0.1-SNAPSHOT"
+
+extra["tomcat.version"] = "10.1.54"
 
 java {
     sourceCompatibility = JavaVersion.VERSION_17
