@@ -12,7 +12,8 @@ plugins {
 group = "no.nav.syfo"
 version = "0.0.1-SNAPSHOT"
 
-extra["tomcat.version"] = "10.1.54"
+extra["tomcat.version"] = "10.1.55"
+extra["netty.version"] = "4.1.133.Final"
 
 java {
     sourceCompatibility = JavaVersion.VERSION_17
