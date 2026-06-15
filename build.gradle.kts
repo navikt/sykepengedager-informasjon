@@ -13,7 +13,7 @@ group = "no.nav.syfo"
 version = "0.0.1-SNAPSHOT"
 
 extra["tomcat.version"] = "10.1.55"
-extra["netty.version"] = "4.1.133.Final"
+extra["netty.version"] = "4.1.135.Final"
 
 java {
     sourceCompatibility = JavaVersion.VERSION_17
