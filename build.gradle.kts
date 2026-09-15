@@ -1,5 +1,19 @@
+import org.gradle.api.file.RegularFileProperty
+import org.gradle.api.tasks.InputFile
+import org.gradle.api.tasks.PathSensitive
+import org.gradle.api.tasks.PathSensitivity
+import org.gradle.process.CommandLineArgumentProvider
 import org.jetbrains.kotlin.gradle.dsl.JvmTarget
 import org.jetbrains.kotlin.gradle.tasks.KotlinJvmCompile
+import org.springframework.boot.gradle.tasks.bundling.BootJar
+
+abstract class AppJarArgumentProvider : CommandLineArgumentProvider {
+    @get:InputFile
+    @get:PathSensitive(PathSensitivity.RELATIVE)
+    abstract val appJar: RegularFileProperty
+
+    override fun asArguments(): Iterable<String> = listOf(appJar.get().asFile.absolutePath)
+}
 
 plugins {
     id("org.springframework.boot") version "4.1.0"
@@ -12,8 +26,8 @@ plugins {
 group = "no.nav.syfo"
 version = "0.0.1-SNAPSHOT"
 
-extra["tomcat.version"] = "10.1.55"
-extra["netty.version"] = "4.1.135.Final"
+extra["tomcat.version"] = "10.1.59"
+extra["netty.version"] = "4.1.137.Final"
 
 java {
     sourceCompatibility = JavaVersion.VERSION_17
@@ -27,11 +41,12 @@ repositories {
 }
 
 val logstashLogbackEncoderVersion = "9.0"
-val kotestVersion = "6.1.11"
+val kotestVersion = "6.2.3"
 val springKotestExtensionVersion = "1.3.0"
 val mockkVersion = "1.14.11"
 val tokenSupportVersion = "5.0.40"
 val kotlinxCoroutinesVersion = "1.11.0"
+extra["kotlin-coroutines.version"] = kotlinxCoroutinesVersion
 val springmockkVersion = "5.0.1"
 val postgresEmbeddedVersion = "2.2.2"
 val postgresRuntimeVersion = "18.4.0"
@@ -49,7 +64,7 @@ dependencies {
     implementation("org.jetbrains.kotlin:kotlin-reflect")
     implementation("org.springframework.kafka:spring-kafka")
     implementation("com.fasterxml.jackson.module:jackson-module-kotlin")
-    implementation("com.fasterxml.jackson.datatype:jackson-datatype-jsr310:2.22.0")
+    implementation("com.fasterxml.jackson.datatype:jackson-datatype-jsr310:2.22.1")
     implementation("no.nav.security:token-client-spring:$tokenSupportVersion")
     implementation("no.nav.security:token-validation-spring:$tokenSupportVersion")
 
@@ -68,15 +83,30 @@ dependencies {
     testImplementation(platform("io.zonky.test.postgres:embedded-postgres-binaries-bom:$postgresRuntimeVersion"))
     testImplementation("no.nav.security:token-validation-spring-test:$tokenSupportVersion")
     testImplementation("com.ninja-squad:springmockk:$springmockkVersion")
+    testCompileOnly("org.jetbrains.kotlinx:kotlinx-coroutines-reactor:$kotlinxCoroutinesVersion")
     testRuntimeOnly("org.junit.platform:junit-platform-launcher")
     runtimeOnly("org.jetbrains.kotlinx:kotlinx-coroutines-core:$kotlinxCoroutinesVersion")
     runtimeOnly("org.jetbrains.kotlinx:kotlinx-coroutines-reactor:$kotlinxCoroutinesVersion")
 }
 
 tasks {
-    named<org.springframework.boot.gradle.tasks.bundling.BootJar>("bootJar") {
+    val bootJarTask = named<BootJar>("bootJar") {
         this.archiveFileName.set("app.jar")
     }
+
+    val verifyCoroutineRuntime =
+        register<JavaExec>("verifyCoroutineRuntime") {
+            group = "verification"
+            description = "Verifies the packaged coroutine runtime and its cancellation ABI."
+            dependsOn(bootJarTask, named("testClasses"))
+            classpath = files(sourceSets["test"].output, configurations["runtimeClasspath"])
+            mainClass.set("no.nav.syfo.CoroutineRuntimeVerifier")
+            argumentProviders.add(
+                objects.newInstance<AppJarArgumentProvider>().apply {
+                    appJar.set(bootJarTask.flatMap { it.archiveFile })
+                },
+            )
+        }
 
     withType<KotlinJvmCompile>().configureEach {
         compilerOptions {
@@ -94,6 +124,6 @@ tasks {
     }
 
     named("check") {
-        dependsOn("ktlintCheck")
+        dependsOn("ktlintCheck", verifyCoroutineRuntime)
     }
 }
