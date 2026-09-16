@@ -89,14 +89,13 @@ class JacksonKafkaContractTest {
                 tom = "2026-09-30",
                 utbetalingId = "utbetaling-123",
                 korrelasjonsId = "korrelasjon-123",
-                utbetalingsdager =
-                    listOf(
-                        UtbetalingsdagDto(
-                            dato = LocalDate.parse("2026-09-16"),
-                            type = DagType.Ukjent,
-                            begrunnelser = listOf("UKJENT"),
-                        ),
+                utbetalingsdager = listOf(
+                    UtbetalingsdagDto(
+                        dato = LocalDate.parse("2026-09-16"),
+                        type = DagType.Ukjent,
+                        begrunnelser = listOf("UKJENT"),
                     ),
+                ),
             ),
             actual,
         )

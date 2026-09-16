@@ -262,27 +262,24 @@ class HttpJsonContractTest {
             )
     }
 
-    private fun maksDato(personIdent: String) =
-        PMaksDato(
-            id = "maksdato-id",
-            fnr = personIdent,
-            forelopig_beregnet_slutt = LocalDate.of(2026, 9, 30),
-            utbetalt_tom = LocalDate.of(2026, 9, 20),
-            tom = LocalDate.of(2026, 9, 20),
-            gjenstaende_sykedager = "30",
-            opprettet = LocalDateTime.of(2026, 8, 29, 8, 0),
-        )
+    private fun maksDato(personIdent: String) = PMaksDato(
+        id = "maksdato-id",
+        fnr = personIdent,
+        forelopig_beregnet_slutt = LocalDate.of(2026, 9, 30),
+        utbetalt_tom = LocalDate.of(2026, 9, 20),
+        tom = LocalDate.of(2026, 9, 20),
+        gjenstaende_sykedager = "30",
+        opprettet = LocalDateTime.of(2026, 8, 29, 8, 0),
+    )
 
-    private fun azureRequest(path: String) =
-        get(path)
-            .header(NAV_PERSONIDENT_HEADER, "12121212121")
-            .header(NAV_CALL_ID_HEADER, "call-id")
-            .header("authorization", "test-token")
+    private fun azureRequest(path: String) = get(path)
+        .header(NAV_PERSONIDENT_HEADER, "12121212121")
+        .header(NAV_CALL_ID_HEADER, "call-id")
+        .header("authorization", "test-token")
 
-    private fun standaloneSetup(vararg controllers: Any): StandaloneMockMvcBuilder =
-        MockMvcBuilders
-            .standaloneSetup(*controllers)
-            .setMessageConverters(MappingJackson2HttpMessageConverter(jacksonMapper()))
+    private fun standaloneSetup(vararg controllers: Any): StandaloneMockMvcBuilder = MockMvcBuilders
+        .standaloneSetup(*controllers)
+        .setMessageConverters(MappingJackson2HttpMessageConverter(jacksonMapper()))
 }
 
 @RestController
