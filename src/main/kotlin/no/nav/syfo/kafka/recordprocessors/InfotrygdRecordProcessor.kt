@@ -1,6 +1,5 @@
 package no.nav.syfo.kafka.recordprocessors
 
-import com.fasterxml.jackson.databind.ObjectMapper
 import no.nav.syfo.db.UtbetalingInfotrygdDAO
 import no.nav.syfo.kafka.consumers.aapInfotrygd.domain.InfotrygdSource
 import no.nav.syfo.kafka.consumers.aapInfotrygd.domain.KInfotrygdSykepengedager
@@ -11,12 +10,13 @@ import no.nav.syfo.utils.parseDate
 import org.apache.kafka.clients.consumer.ConsumerRecord
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Component
+import tools.jackson.databind.json.JsonMapper
 import java.time.LocalDate
 
 @Component
 class InfotrygdRecordProcessor(
     val sykepengedagerInformasjonKafkaService: SykepengedagerInformasjonKafkaService,
-    private val objectMapper: ObjectMapper,
+    private val objectMapper: JsonMapper,
 ) {
     private val log = logger()
 

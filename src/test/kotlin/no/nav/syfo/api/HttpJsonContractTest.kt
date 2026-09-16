@@ -20,7 +20,7 @@ import no.nav.syfo.utils.NAV_CALL_ID_HEADER
 import no.nav.syfo.utils.NAV_PERSONIDENT_HEADER
 import org.junit.jupiter.api.Test
 import org.springframework.http.HttpStatus
-import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter
+import org.springframework.http.converter.json.JacksonJsonHttpMessageConverter
 import org.springframework.test.json.JsonCompareMode
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders.asyncDispatch
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get
@@ -279,7 +279,7 @@ class HttpJsonContractTest {
 
     private fun standaloneSetup(vararg controllers: Any): StandaloneMockMvcBuilder = MockMvcBuilders
         .standaloneSetup(*controllers)
-        .setMessageConverters(MappingJackson2HttpMessageConverter(jacksonMapper()))
+        .setMessageConverters(JacksonJsonHttpMessageConverter(jacksonMapper()))
 }
 
 @RestController

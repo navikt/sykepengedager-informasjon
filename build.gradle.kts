@@ -60,9 +60,7 @@ dependencies {
     implementation("org.flywaydb:flyway-database-postgresql")
     implementation("org.jetbrains.kotlin:kotlin-reflect")
     implementation("org.springframework.boot:spring-boot-starter-kafka")
-    implementation("org.springframework.boot:spring-boot-jackson2")
-    implementation("com.fasterxml.jackson.module:jackson-module-kotlin")
-    implementation("com.fasterxml.jackson.datatype:jackson-datatype-jsr310:2.22.1")
+    implementation("tools.jackson.module:jackson-module-kotlin")
     implementation("no.nav.security:token-client-spring:$tokenSupportVersion")
     implementation("no.nav.security:token-validation-spring:$tokenSupportVersion")
 
