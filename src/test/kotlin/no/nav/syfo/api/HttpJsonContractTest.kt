@@ -5,8 +5,8 @@ import io.mockk.mockk
 import io.mockk.mockkObject
 import io.mockk.unmockkObject
 import no.nav.security.token.support.core.context.TokenValidationContextHolder
-import no.nav.syfo.auth.TokenValidator
 import no.nav.syfo.auth.TokenUtil
+import no.nav.syfo.auth.TokenValidator
 import no.nav.syfo.auth.getFnr
 import no.nav.syfo.config.kafka.jacksonMapper
 import no.nav.syfo.consumer.veiledertilgang.VeilederTilgangskontrollClient
