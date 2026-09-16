@@ -30,7 +30,7 @@ extra["tomcat.version"] = "10.1.59"
 extra["netty.version"] = "4.1.137.Final"
 
 java {
-    sourceCompatibility = JavaVersion.VERSION_17
+    sourceCompatibility = JavaVersion.VERSION_21
 }
 
 repositories {
@@ -111,7 +111,7 @@ tasks {
     withType<KotlinJvmCompile>().configureEach {
         compilerOptions {
             freeCompilerArgs.add("-Xjsr305=strict")
-            jvmTarget.set(JvmTarget.JVM_17)
+            jvmTarget.set(JvmTarget.JVM_21)
         }
     }
 
