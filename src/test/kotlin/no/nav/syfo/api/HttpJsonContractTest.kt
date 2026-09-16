@@ -5,10 +5,10 @@ import io.mockk.mockk
 import io.mockk.mockkObject
 import io.mockk.unmockkObject
 import no.nav.security.token.support.core.context.TokenValidationContextHolder
+import no.nav.syfo.LocalApplication
 import no.nav.syfo.auth.TokenUtil
 import no.nav.syfo.auth.TokenValidator
 import no.nav.syfo.auth.getFnr
-import no.nav.syfo.config.kafka.jacksonMapper
 import no.nav.syfo.consumer.veiledertilgang.VeilederTilgangskontrollClient
 import no.nav.syfo.db.PMaksDato
 import no.nav.syfo.db.UtbetalingerDAO
@@ -19,6 +19,8 @@ import no.nav.syfo.metric.Metric
 import no.nav.syfo.utils.NAV_CALL_ID_HEADER
 import no.nav.syfo.utils.NAV_PERSONIDENT_HEADER
 import org.junit.jupiter.api.Test
+import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.boot.test.context.SpringBootTest
 import org.springframework.http.HttpStatus
 import org.springframework.http.converter.json.JacksonJsonHttpMessageConverter
 import org.springframework.test.json.JsonCompareMode
@@ -31,10 +33,15 @@ import org.springframework.test.web.servlet.setup.MockMvcBuilders
 import org.springframework.test.web.servlet.setup.StandaloneMockMvcBuilder
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.RestController
+import tools.jackson.databind.json.JsonMapper
 import java.time.LocalDate
 import java.time.LocalDateTime
 
+@SpringBootTest(classes = [LocalApplication::class])
 class HttpJsonContractTest {
+    @Autowired
+    private lateinit var objectMapper: JsonMapper
+
     @Test
     fun `REST v1 serializes ISO and letter-formatted max date responses`() {
         val personIdent = "12121212121"
@@ -279,7 +286,7 @@ class HttpJsonContractTest {
 
     private fun standaloneSetup(vararg controllers: Any): StandaloneMockMvcBuilder = MockMvcBuilders
         .standaloneSetup(*controllers)
-        .setMessageConverters(JacksonJsonHttpMessageConverter(jacksonMapper()))
+        .setMessageConverters(JacksonJsonHttpMessageConverter(objectMapper))
 }
 
 @RestController

@@ -1,5 +1,6 @@
 package no.nav.syfo.config.kafka
 
+import no.nav.syfo.LocalApplication
 import no.nav.syfo.kafka.consumers.aapInfotrygd.domain.KInfotrygdSykepengedager
 import no.nav.syfo.kafka.consumers.spleis.domain.DagType
 import no.nav.syfo.kafka.consumers.spleis.domain.UtbetalingSpleis
@@ -7,10 +8,17 @@ import no.nav.syfo.kafka.consumers.spleis.domain.UtbetalingsdagDto
 import no.nav.syfo.kafka.producers.domain.KSykepengedagerInformasjonDTO
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
+import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.boot.test.context.SpringBootTest
+import tools.jackson.databind.json.JsonMapper
 import java.time.LocalDate
 import java.time.LocalDateTime
 
+@SpringBootTest(classes = [LocalApplication::class])
 class JacksonKafkaContractTest {
+    @Autowired
+    private lateinit var objectMapper: JsonMapper
+
     @Test
     fun `serializes published sykepengedager information with camel case ISO fields`() {
         val event =
@@ -26,7 +34,7 @@ class JacksonKafkaContractTest {
         val serialized = JacksonKafkaSerializer().serialize("sykepengedager", event)
 
         assertEquals(
-            jacksonMapper().readTree(
+            objectMapper.readTree(
                 """
                 {
                   "id": "event-123",
@@ -38,14 +46,14 @@ class JacksonKafkaContractTest {
                 }
                 """.trimIndent(),
             ),
-            jacksonMapper().readTree(serialized),
+            objectMapper.readTree(serialized),
         )
     }
 
     @Test
     fun `deserializes Spleis Norwegian properties and uses Ukjent for an unknown day type`() {
         val actual =
-            jacksonMapper().readValue(
+            objectMapper.readValue(
                 """
                 {
                   "fødselsnummer": "synthetic-person-ident",
@@ -104,7 +112,7 @@ class JacksonKafkaContractTest {
     @Test
     fun `deserializes Infotrygd uppercase properties with nullable UTBET TOM`() {
         val actual =
-            jacksonMapper().readValue(
+            objectMapper.readValue(
                 """
                 {
                   "after": {
