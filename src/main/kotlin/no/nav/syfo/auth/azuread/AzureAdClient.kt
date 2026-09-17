@@ -14,9 +14,9 @@ import org.springframework.web.client.RestTemplate
 
 @Component
 class AzureAdClient(
-    @Value("\${azure.app.client.id}") private val azureAppClientId: String,
-    @Value("\${azure.app.client.secret}") private val azureAppClientSecret: String,
-    @Value("\${azure.openid.config.token.endpoint}") private val azureTokenEndpoint: String,
+    @param:Value("\${azure.app.client.id}") private val azureAppClientId: String,
+    @param:Value("\${azure.app.client.secret}") private val azureAppClientSecret: String,
+    @param:Value("\${azure.openid.config.token.endpoint}") private val azureTokenEndpoint: String,
     private val restTemplate: RestTemplate,
 ) {
     fun onBehalfOfTokenEntity(scope: String, token: String,): HttpEntity<MultiValueMap<String, String>> {

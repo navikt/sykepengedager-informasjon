@@ -16,7 +16,7 @@ abstract class AppJarArgumentProvider : CommandLineArgumentProvider {
 }
 
 plugins {
-    id("org.springframework.boot") version "3.5.13"
+    id("org.springframework.boot") version "4.1.1"
     id("io.spring.dependency-management") version "1.1.7"
     kotlin("jvm") version "2.3.21"
     kotlin("plugin.spring") version "2.3.21"
@@ -26,11 +26,10 @@ plugins {
 group = "no.nav.syfo"
 version = "0.0.1-SNAPSHOT"
 
-extra["tomcat.version"] = "10.1.59"
-extra["netty.version"] = "4.1.137.Final"
+extra["tomcat.version"] = "11.0.25"
 
 java {
-    sourceCompatibility = JavaVersion.VERSION_17
+    sourceCompatibility = JavaVersion.VERSION_25
 }
 
 repositories {
@@ -44,7 +43,7 @@ val logstashLogbackEncoderVersion = "9.0"
 val kotestVersion = "6.2.3"
 val springKotestExtensionVersion = "1.3.0"
 val mockkVersion = "1.14.11"
-val tokenSupportVersion = "5.0.40"
+val tokenSupportVersion = "6.0.12"
 val kotlinxCoroutinesVersion = "1.11.0"
 extra["kotlin-coroutines.version"] = kotlinxCoroutinesVersion
 val springmockkVersion = "5.0.1"
@@ -59,12 +58,11 @@ dependencies {
     implementation("org.springframework.boot:spring-boot-starter-data-jdbc")
     implementation("org.springframework.boot:spring-boot-starter-webflux")
     developmentOnly("org.springframework.boot:spring-boot-devtools")
-    implementation("org.flywaydb:flyway-core")
+    implementation("org.springframework.boot:spring-boot-starter-flyway")
     implementation("org.flywaydb:flyway-database-postgresql")
     implementation("org.jetbrains.kotlin:kotlin-reflect")
-    implementation("org.springframework.kafka:spring-kafka")
-    implementation("com.fasterxml.jackson.module:jackson-module-kotlin")
-    implementation("com.fasterxml.jackson.datatype:jackson-datatype-jsr310:2.22.1")
+    implementation("org.springframework.boot:spring-boot-starter-kafka")
+    implementation("tools.jackson.module:jackson-module-kotlin")
     implementation("no.nav.security:token-client-spring:$tokenSupportVersion")
     implementation("no.nav.security:token-validation-spring:$tokenSupportVersion")
 
@@ -111,7 +109,7 @@ tasks {
     withType<KotlinJvmCompile>().configureEach {
         compilerOptions {
             freeCompilerArgs.add("-Xjsr305=strict")
-            jvmTarget.set(JvmTarget.JVM_17)
+            jvmTarget.set(JvmTarget.JVM_25)
         }
     }
 

@@ -1,6 +1,5 @@
 package no.nav.syfo.kafka.recordprocessors
 
-import com.fasterxml.jackson.databind.ObjectMapper
 import no.nav.syfo.db.UtbetalingSpleisDAO
 import no.nav.syfo.kafka.consumers.spleis.domain.DagType
 import no.nav.syfo.kafka.consumers.spleis.domain.UTBETALING_UTBETALT
@@ -10,12 +9,13 @@ import no.nav.syfo.kafka.producers.SykepengedagerInformasjonKafkaService
 import org.apache.kafka.clients.consumer.ConsumerRecord
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Component
+import tools.jackson.databind.json.JsonMapper
 import java.time.LocalDate
 
 @Component
 class SpleisRecordProcessor(
     val sykepengedagerInformasjonKafkaService: SykepengedagerInformasjonKafkaService,
-    private val objectMapper: ObjectMapper,
+    private val objectMapper: JsonMapper,
 ) {
     private val sykepengedagtyper = listOf(DagType.NavDag, DagType.NavHelgDag, DagType.ArbeidsgiverperiodeDag)
 
