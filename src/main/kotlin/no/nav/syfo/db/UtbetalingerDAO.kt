@@ -33,7 +33,7 @@ class UtbetalingerDAO(private val namedParameterJdbcTemplate: NamedParameterJdbc
 
         val timer = metric.createTimer("maxdato_view", TimerBuilderName.DATABASE_QUERY_LATENCY.name)
 
-        return timer.record<PMaksDato> {
+        return timer.record<PMaksDato?> {
             val mapQueryStatement =
                 MapSqlParameterSource()
                     .addValue("FNR", fnr)
@@ -60,7 +60,7 @@ class UtbetalingerDAO(private val namedParameterJdbcTemplate: NamedParameterJdbc
 
         val timer = metric.createTimer("utbetaling_view", TimerBuilderName.DATABASE_QUERY_LATENCY.name)
 
-        return timer.record<PMaksDato> {
+        return timer.record<PMaksDato?> {
             val mapQueryStatement =
                 MapSqlParameterSource()
                     .addValue("FNR", fnr)
@@ -87,7 +87,7 @@ class UtbetalingerDAO(private val namedParameterJdbcTemplate: NamedParameterJdbc
 
         val timer = metric.createTimer("utbetalinger_view_kafka", TimerBuilderName.DATABASE_QUERY_LATENCY.name)
 
-        return timer.record<PMaksDato> {
+        return timer.record<PMaksDato?> {
             val mapQueryStatement =
                 MapSqlParameterSource()
                     .addValue("FNR", fnr)

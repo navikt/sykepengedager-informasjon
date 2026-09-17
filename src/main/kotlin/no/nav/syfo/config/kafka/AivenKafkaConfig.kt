@@ -31,10 +31,10 @@ const val TOPIC_UTBETALING = "tbd.utbetaling"
 @EnableKafka
 @Profile("remote")
 class AivenKafkaConfig(
-    @Value("\${kafka.brokers}") private val kafkaBrokers: String,
-    @Value("\${kafka.truststore.path}") private val kafkaTruststorePath: String,
-    @Value("\${kafka.keystore.path}") private val kafkaKeystorePath: String,
-    @Value("\${kafka.credstore.password}") private val kafkaCredstorePassword: String,
+    @param:Value("\${kafka.brokers}") private val kafkaBrokers: String,
+    @param:Value("\${kafka.truststore.path}") private val kafkaTruststorePath: String,
+    @param:Value("\${kafka.keystore.path}") private val kafkaKeystorePath: String,
+    @param:Value("\${kafka.credstore.password}") private val kafkaCredstorePassword: String,
 ) {
 
     fun commonConfig() = mapOf(
@@ -72,7 +72,7 @@ class AivenKafkaConfig(
         val consumerFactory = DefaultKafkaConsumerFactory<String, String>(config)
 
         val factory = ConcurrentKafkaListenerContainerFactory<String, String>()
-        factory.consumerFactory = consumerFactory
+        factory.setConsumerFactory(consumerFactory)
         factory.setCommonErrorHandler(aivenKafkaErrorHandler)
         factory.containerProperties.ackMode = ContainerProperties.AckMode.MANUAL_IMMEDIATE
         return factory
@@ -82,7 +82,10 @@ class AivenKafkaConfig(
     fun kafkaSykepengedagerInformasjonConsumer(
         kafkaListenerContainerFactory: ConcurrentKafkaListenerContainerFactory<String, String>,
     ): Consumer<String, String> {
-        val consumerFactory = kafkaListenerContainerFactory.consumerFactory
+        val consumerFactory =
+            requireNotNull(kafkaListenerContainerFactory.consumerFactory) {
+                "Kafka listener container factory must have a consumer factory"
+            }
         val consumerProps = consumerFactory.configurationProperties
 
         return DefaultKafkaConsumerFactory(
@@ -109,7 +112,7 @@ class AivenKafkaConfig(
     ): ConcurrentKafkaListenerContainerFactory<String, String> {
         val factory =
             ConcurrentKafkaListenerContainerFactory<String, String>()
-        factory.consumerFactory = infotrygdConsumerFactory()
+        factory.setConsumerFactory(infotrygdConsumerFactory())
         factory.setCommonErrorHandler(aivenKafkaErrorHandler)
         factory.containerProperties.ackMode = ContainerProperties.AckMode.MANUAL_IMMEDIATE
         return factory

@@ -28,9 +28,9 @@ import java.time.Instant
 class SykepengerMaxDateRestApiV1(
     val utbetalingerDAO: UtbetalingerDAO,
     private val metric: Metric,
-    @Value("\${ditt.sykefravaer.client.id}")
+    @param:Value("\${ditt.sykefravaer.client.id}")
     val dittSykefravaerClientId: String,
-    @Value("\${meroppfolging.frontend.client.id}")
+    @param:Value("\${meroppfolging.frontend.client.id}")
     val meroppfolgingFrontendClientId: String,
     val tokenValidationContextHolder: TokenValidationContextHolder,
 ) {

@@ -17,8 +17,8 @@ import org.springframework.web.client.RestTemplate
 @Component
 class VeilederTilgangskontrollClient(
     private val azureAdTokenConsumer: AzureAdClient,
-    @Value("\${istilgangskontroll.url}") private val baseUrl: String,
-    @Value("\${istilgangskontroll.scope}") private var targetAppScope: String,
+    @param:Value("\${istilgangskontroll.url}") private val baseUrl: String,
+    @param:Value("\${istilgangskontroll.scope}") private var targetAppScope: String,
     private val restTemplate: RestTemplate,
 ) {
     private val log = logger()
