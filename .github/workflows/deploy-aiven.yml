@@ -18,7 +18,7 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v7.0.1
       - name: Deploy sykepengedager-informasjon-aiven to dev
-        uses: nais/deploy/actions/deploy@v2
+        uses: nais/deploy/actions/deploy@v3
         env:
           CLUSTER: dev-gcp
           RESOURCE: nais/aiven-sykepengedager-infotrygd-dev.yml
@@ -33,7 +33,7 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v7.0.1
       - name: Deploy sykepengedager-informasjon-aiven to prod
-        uses: nais/deploy/actions/deploy@v2
+        uses: nais/deploy/actions/deploy@v3
         env:
           CLUSTER: prod-gcp
           RESOURCE: nais/aiven-sykepengedager-infotrygd-prod.yml
